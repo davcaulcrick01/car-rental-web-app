@@ -1,5 +1,12 @@
+import { Inter } from 'next/font/google'
 import './globals.css'
-import PerformanceOptimizer from '@/components/PerformanceOptimizer'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata = {
+  title: 'LuxuryCars - Premium Car Rental',
+  description: 'Experience luxury on wheels with our premium car rental service.',
+}
 
 export default function RootLayout({
   children,
@@ -8,8 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <PerformanceOptimizer />
+      <body className={inter.className}>
         {children}
       </body>
     </html>

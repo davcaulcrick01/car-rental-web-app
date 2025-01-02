@@ -1,8 +1,5 @@
-'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
@@ -19,25 +16,20 @@ const vehicles = [
 export default function Component() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovering, setIsHovering] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const timerRef = useRef(null)
+  //const tr
 
-  // Auto scroll effect
   useEffect(() => {
-    if (isHovering) return;
+    if (!isHovering) {
+      timerRef.current = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 3) % vehicles.length)
+      }, 5000)
+    }
+    return () => clearInterval(timerRef.current)
+  }, [isHovering])
 
-    timerRef.current = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % Math.max(0, vehicles.length - 2));
-    }, 3000);
-
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, [isHovering, vehicles.length]);
-
-  const visibleVehicles = vehicles.slice(currentIndex, currentIndex + 3)
+  const nextSlide = () => setCurrentIndex((prevIndex) => (prevIndex + 3) % vehicles.length)
+  const prevSlide = () => setCurrentIndex((prevIndex) => (prevIndex - 3 + vehicles.length) % vehicles.length)
 
   return (
     <div className="bg-gray-900 text-white py-12">
@@ -123,6 +115,6 @@ export default function Component() {
           </Button>
         </div>
       </div>
-    </AnimatedSection>
-  );
+    </div>
+  )
 }

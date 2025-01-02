@@ -1,12 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  reactStrictMode: true,
   images: {
-    domains: ['images.unsplash.com'],
-    unoptimized: true
-  },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+    unoptimized: true,
+    dangerouslyAllowSVG: true,
   },
 }
 

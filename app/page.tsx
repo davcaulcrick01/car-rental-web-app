@@ -12,7 +12,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Check, ChevronLeft, ChevronRight, Instagram, Facebook, Twitter, Star, Award, Zap, MapPin, Phone, Mail } from 'lucide-react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import cars, { Car } from '@/lib/cars'; // Importing all cars from car.ts
+import cars from '@/lib/cars'; // Importing all cars from car.ts
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
@@ -51,17 +51,17 @@ const brandLogos = [
 ];
 
 const luxuryCars = [
-  { id: 1, image: "images/car-gallery/mercedes-gle-coupe.jpg", alt: "Mercedes Luxury Car", category: "mercedes-benz" },
-  { id: 2, image: "images/car-gallery/mclaren.jpg", alt: "Mclaren Luxury Car", category: "mclaren" },
-  { id: 3, image: "images/car-gallery/rollsroyce-cullinan.jpg", alt: "Cullinan Luxury Car", category: "rolls-royce" },
-  { id: 4, image: "images/car-gallery/lamborghini-centenario.jpg", alt: "Lambo Centenario Car", category: "lamborghini" },
-  { id: 5, image: "images/car-gallery/rollsroyce-phantom.jpg", alt: "White Luxury Car", category: "rolls-royce" },
-  { id: 6, image: "images/car-gallery/mercedes-G63.jpg", alt: "Silver Luxury Car", category: "mercedes-benz" },
-  { id: 7, image: "images/car-gallery/lamborghini-aventador.jpg", alt: "Blue Luxury Car", category: "lamborghini" },
-  { id: 8, image: "images/car-gallery/lamborghini-huracan.jpg", alt: "Lambo Huracan Car", category: "lamborghini" },
+  { id: 1, image: "/images/car-gallery/mercedes-gle-coupe.jpg", alt: "Mercedes Luxury Car" },
+  { id: 2, image: "/images/car-gallery/mclaren.jpg", alt: "Mclaren Luxury Car" },
+  { id: 3, image: "/images/car-gallery/rollsroyce-cullinan.jpg", alt: "Cullinan Luxury Car" },
+  { id: 4, image: "/images/car-gallery/lamborghini-centenario.jpg", alt: "Lambo Centenario Car" },
+  { id: 5, image: "/images/car-gallery/rollsroyce-phantom.jpg", alt: "White Luxury Car" },
+  { id: 6, image: "/images/car-gallery/mercedes-G63.jpg", alt: "Silver Luxury Car" },
+  { id: 7, image: "/images/car-gallery/lamborghini-aventador.jpg", alt: "Blue Luxury Car" },
+  { id: 8, image: "/images/car-gallery/lamborghini-huracan.jpg", alt: "Lambo Huracan Car" },
 ]
 
-const faqItems = [ 
+const faqItems = [
   { question: "Can international drivers rent exotic cars in the USA?", answer: "Yes, international drivers with a valid license can rent exotic cars in the USA." },
   { question: "In what condition am I required to return the vehicle?", answer: "The car should be returned relatively clean and smoke-free. Excessive damage or uncleanliness may result in additional fees." },
   { question: "How does renting a Lamborghini work?", answer: "Select your car, provide insurance and payment. Our staff will walk you through the car's features when you arrive." },
@@ -81,58 +81,29 @@ const faqItems = [
 ]
 
 // Helper function to chunk array into groups
-function chunkArray<T>(array: T[], size: number): T[][] {
-  const chunked: T[][] = [];
+function chunkArray(array, size) {
+  const chunked = [];
   for (let i = 0; i < array.length; i += size) {
     chunked.push(array.slice(i, i + size));
   }
   return chunked;
 }
 
-interface CarListItem {
-  id: number;
-  category: string;
-  image: string;
-  alt: string;
-}
-
-// Define the type for all car items to ensure consistency
-interface CarouselItem extends Car {
-  alt?: string;
-}
-
 export default function HomePage() {
   const [isDragging, setIsDragging] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const sliderRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef(null);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const [hoveredCar, setHoveredCar] = useState<number | null>(null);
+  const [hoveredCar, setHoveredCar] = useState(null);
 
   const categoryTypes = Array.from(new Set(cars.map(car => car.category))).map(category => ({
     name: category,
     image: cars.find(car => car.category === category)?.images[0] || '/placeholder-image.jpg'
   }));
 
-  const displayCars = cars.map(car => ({
-    ...car,
-    category: car.category || 'default',
-  })) as Car[];
-
-  const carList = cars.map(car => ({
-    ...car,
-    category: car.category || 'default',
-  })) as Car[];
-
-  // Convert cars to carousel items to ensure type safety
-  const carouselItems: CarouselItem[] = cars.map(car => ({
-    ...car,
-    alt: car.name // Use car name as alt text if not provided
-  }));
-
   // Handle mouse down to initiate dragging
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!sliderRef.current) return;
+  const handleMouseDown = (e) => {
     setIsDragging(true);
     setIsPaused(true);
     setStartX(e.pageX - sliderRef.current.offsetLeft);
@@ -140,8 +111,8 @@ export default function HomePage() {
   };
 
   // Handle mouse move for drag scroll
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging || !sliderRef.current) return;
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
     const x = e.pageX - sliderRef.current.offsetLeft;
     const walk = (x - startX) * 3;
     sliderRef.current.scrollLeft = scrollLeft - walk;
@@ -155,7 +126,6 @@ export default function HomePage() {
 
   // Scroll left using button
   const handleScrollLeft = () => {
-    if (!sliderRef.current) return;
     sliderRef.current.scrollBy({ left: -400, behavior: "smooth" });
     setIsPaused(true);
     setTimeout(() => setIsPaused(false), 3000);
@@ -163,7 +133,6 @@ export default function HomePage() {
 
   // Scroll right using button
   const handleScrollRight = () => {
-    if (!sliderRef.current) return;
     sliderRef.current.scrollBy({ left: 400, behavior: "smooth" });
     setIsPaused(true);
     setTimeout(() => setIsPaused(false), 3000);
@@ -171,10 +140,8 @@ export default function HomePage() {
 
   // Automated scroll with smooth continuous behavior
   useEffect(() => {
-    if (isPaused || !sliderRef.current) return;
+    if (isPaused) return;
     const autoScroll = setInterval(() => {
-      if (!sliderRef.current) return;
-      
       if (sliderRef.current.scrollLeft >= sliderRef.current.scrollWidth - sliderRef.current.clientWidth) {
         sliderRef.current.scrollLeft = 0;
       } else {
@@ -198,10 +165,12 @@ export default function HomePage() {
         <section className="relative h-[70vh] flex items-center justify-center text-center">
           {/* Background Image */}
           <Image
-            src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/hero-bg.jpg`}
-            alt="Hero Background"
+            src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=1920&h=1080&q=80"
+            alt="Luxury Car"
             fill
-            className="object-cover"
+            objectFit="cover"
+            className="absolute inset-0 z-0"
+            style={{ maxHeight: '70vh' }}  // Reduced height for a smaller hero section
           />
 
           {/* Overlay */}
@@ -446,7 +415,7 @@ export default function HomePage() {
               {/* Scroll Left Button */}
               <button
                 className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-10"
-                onClick={() => sliderRef.current?.scrollBy({ left: -300, behavior: 'smooth' })}
+                onClick={() => sliderRef.current.scrollBy({ left: -300, behavior: 'smooth' })}
               >
                 <ChevronLeft size={28} />
               </button>
@@ -454,7 +423,7 @@ export default function HomePage() {
               {/* Scroll Right Button */}
               <button
                 className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-10"
-                onClick={() => sliderRef.current?.scrollBy({ left: 300, behavior: 'smooth' })}
+                onClick={() => sliderRef.current.scrollBy({ left: 300, behavior: 'smooth' })}
               >
                 <ChevronRight size={28} />
               </button>
@@ -474,7 +443,7 @@ export default function HomePage() {
                     <div className="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl">
                       <div className="relative">
                         <Image
-                          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${type.name}/${type.image}`}
+                          src={type.image}
                           alt={type.name}
                           width={200}
                           height={120}
@@ -521,19 +490,19 @@ export default function HomePage() {
             >
               {chunkArray(cars, 6).map((carGroup, groupIndex) => (
                 <div key={groupIndex} className="w-full flex-shrink-0 grid grid-cols-3 gap-4">
-                  {carGroup.map((car: Car) => (
-                    <div key={`${car.id}-${groupIndex}`} className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                  {carGroup.map((car, carIndex) => (
+                    <div key={`${car.id}-${carIndex}`} className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/images/cars/${car.category}/${car.images[0]}`}
+                        src={car.images[0]} // Assuming each car has an `images` array
                         alt={car.name}
-                        width={400}
-                        height={300}
+                        width={600}
+                        height={400}
                         className="w-full h-64 object-cover"
                       />
                       <div className="p-4">
                         <h3 className="text-xl font-bold mb-2">{car.name}</h3>
                         <p className="text-gray-400 mb-4">{car.year} | ${car.price}/day</p>
-                        <Link href={`/booking?car=${car.id}`}>
+                        <Link href={`/booking?car={car.id}`}>
                           <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                             Book Now
                           </Button>
@@ -616,6 +585,8 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* Add new sections based on your screenshots */}
 
         {/* Updated FAQ Section */}
         <section className="py-16">
@@ -799,13 +770,13 @@ export default function HomePage() {
                     {/* Container with fixed height and overflow hidden to create cropped effect */}
                     <div className="relative w-full h-[450px] overflow-hidden">
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/${car.image}`}
+                        src={car.image}
                         alt={car.alt}
                         width={400}
                         height={600}
                         className={`object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-110`}
                         style={{
-                          objectPosition: 'center',
+                          objectPosition: 'center', // Ensure the image is centered in the container
                         }}
                       />
                     </div>
@@ -912,34 +883,6 @@ export default function HomePage() {
                   </form>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Carousel Section */}
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {carouselItems.map((car) => (
-                <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
-                  <div className="relative w-full h-[450px] overflow-hidden group">
-                    <Image
-                      src={car.images[0]}
-                      alt={car.alt || car.name}
-                      width={400}
-                      height={600}
-                      className="object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-110"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold mb-2">{car.name}</h3>
-                    <div className="flex justify-between items-center">
-                      <span className="text-green-400 text-lg">${car.price}/day</span>
-                      <span className="text-gray-400">{car.category}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </section>

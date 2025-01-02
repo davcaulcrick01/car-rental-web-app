@@ -1,35 +1,200 @@
-export interface Car {
-  id: number;
-  name: string;
-  brand: string;
-  type: string;
-  category: string;
-  year: number;
-  price: number;
-  threeDaySpecial: number;
-  description: string;
-  transmission: string;
-  engine: string;
-  topSpeed: string;
-  images: string[];
-  rating?: number;
-  logo: string;
-}
-
-const cars: Car[] = [
+interface Car {
+    id: number;
+    name: string;
+    year: number;
+    price: number;
+    images: string[];
+    category: string;
+    description: string;
+  }
+  
+  const cars: Car[] = [
+    {
+      id: 1,
+      name: 'Rolls-Royce Cullinan',
+      year: 2023,
+      price: 1299,
+      images: [
+        '/images/rolls-royce/cullinan/Rolls-Royce-Cullinan-front-view-600x400.jpg',
+        '/images/rolls-royce/cullinan/Rolls-Royce-Cullinan-side-view-600x400.jpg',
+        '/images/rolls-royce/cullinan/Rolls-Royce-Cullinan-rear-view-600x400.jpg',
+        '/images/rolls-royce/cullinan/Rolls-Royce-Cullinan-interior-600x400.jpg',
+        '/images/rolls-royce/cullinan/Rolls-Royce-Cullinan-dashboard-600x400.jpg',
+      ],
+      category: 'luxury',
+      description: `The Rolls-Royce Phantom is the epitome of automotive luxury. It features a 6.75-liter V12 engine delivering 563 horsepower, a top speed of 155 mph, and a 0-60 time of 5.1 seconds. Inside, it boasts bespoke craftsmanship with full-grain leather, a starlight headliner, and lambswool floor mats. The Phantom also offers advanced tech, including a premium infotainment system and adaptive cruise control.`,
+    },
+    {
+      id: 2,
+      name: 'Bentley Continental GT',
+      year: 2023,
+      price: 1499,
+      images: [
+        '/images/bentley/continental-gt/Bentley-Continental-GT-front-600x400.jpg',
+        '/images/bentley/continental-gt/Bentley-Continental-GT-side-600x400.jpg',
+        '/images/bentley/continental-gt/Bentley-Continental-GT-rear-600x400.jpg',
+        '/images/bentley/continental-gt/Bentley-Continental-GT-interior-600x400.jpg',
+        '/images/bentley/continental-gt/Bentley-Continental-GT-engine-600x400.jpg',
+      ],
+      category: 'luxury',
+      description: `The 2023 Bentley Continental GT is an extraordinary blend of power and luxury. Powered by a 6.0-liter W12 engine, it delivers 626 horsepower, 0-60 mph in 3.6 seconds, and a top speed of 207 mph. The interior is opulent, with quilted leather seats, a rotating infotainment display, and a Naim audio system. Its 22-inch alloy wheels and adaptive suspension ensure smooth handling on any surface.`,
+    },
+    {
+      id: 3,
+      name: 'Rolls-Royce Ghost',
+      year: 2022,
+      price: 1399,
+      images: [
+        '/images/rolls-royce/ghost/Rolls-Royce-Ghost-front-600x400.jpg',
+        '/images/rolls-royce/ghost/Rolls-Royce-Ghost-side-600x400.jpg',
+        '/images/rolls-royce/ghost/Rolls-Royce-Ghost-rear-600x400.jpg',
+        '/images/rolls-royce/ghost/Rolls-Royce-Ghost-interior-600x400.jpg',
+        '/images/rolls-royce/ghost/Rolls-Royce-Ghost-dashboard-600x400.jpg',
+      ],
+      category: 'luxury',
+      description: `The Rolls-Royce Ghost blends elegance and performance with a 6.75-liter twin-turbo V12 engine delivering 563 horsepower and 0-60 mph in 4.6 seconds. It offers unparalleled luxury with bespoke wood veneers, plush leather seating, and advanced infotainment. The adaptive suspension ensures a smooth ride, and the Ghost rides on 21-inch wheels for added grandeur.`,
+    },
+    {
+      id: 4,
+      name: 'Range Rover Sport',
+      year: 2023,
+      price: 799,
+      images: [
+        '/images/range-rover/sport/Range-Rover-Sport-front-600x400.jpg',
+        '/images/range-rover/sport/Range-Rover-Sport-side-600x400.jpg',
+        '/images/range-rover/sport/Range-Rover-Sport-rear-600x400.jpg',
+        '/images/range-rover/sport/Range-Rover-Sport-interior-600x400.jpg',
+        '/images/range-rover/sport/Range-Rover-Sport-offroad-600x400.jpg',
+      ],
+      category: 'SUVs',
+      description: `The Range Rover Sport is the perfect mix of luxury and off-road capability. Powered by a 3.0-liter inline-6 engine with 395 horsepower, it offers a 0-60 time of 5.6 seconds. The interior boasts a Touch Pro Duo infotainment system, 20-way adjustable leather seats, and a Meridian sound system. With adaptive air suspension and Terrain Response 2, the Range Rover Sport ensures a smooth ride on any surface.`,
+    },
+    {
+      id: 5,
+      name: 'Mercedes-Benz G-Class',
+      year: 2023,
+      price: 999,
+      images: [
+        '/images/mercedes-benz/g-class/Mercedes-Benz-G-Class-front-600x400.jpg',
+        '/images/mercedes-benz/g-class/Mercedes-Benz-G-Class-side-600x400.jpg',
+        '/images/mercedes-benz/g-class/Mercedes-Benz-G-Class-rear-600x400.jpg',
+        '/images/mercedes-benz/g-class/Mercedes-Benz-G-Class-interior-600x400.jpg',
+        '/images/mercedes-benz/g-class/Mercedes-Benz-G-Class-offroad-600x400.jpg',
+      ],
+      category: 'SUVs',
+      description: `The 2023 Mercedes-Benz G-Class, also known as the G-Wagon, is an off-road legend. Powered by a 4.0-liter V8 engine with 577 horsepower, it goes from 0-60 mph in 4.5 seconds. Its rugged appearance is complemented by luxurious features, including heated leather seats, a 12.3-inch digital display, and a Burmester sound system. It rides on 22-inch all-terrain wheels.`,
+    },
+    {
+      id: 6,
+      name: 'Mercedes-Benz S-Class',
+      year: 2023,
+      price: 499,
+      images: [
+        '/images/mercedes-benz/s-class/Mercedes-Benz-S-Class-front-600x400.jpg',
+        '/images/mercedes-benz/s-class/Mercedes-Benz-S-Class-side-600x400.jpg',
+        '/images/mercedes-benz/s-class/Mercedes-Benz-S-Class-rear-600x400.jpg',
+        '/images/mercedes-benz/s-class/Mercedes-Benz-S-Class-interior-600x400.jpg',
+        '/images/mercedes-benz/s-class/Mercedes-Benz-S-Class-dashboard-600x400.jpg',
+      ],
+      category: 'sedan',
+      description: `The 2023 Mercedes-Benz S-Class is the gold standard in luxury sedans. With a 3.0-liter inline-6 turbo engine producing 429 horsepower, it accelerates from 0-60 mph in 4.8 seconds. Inside, you'll find executive rear seats with massage function, a 12.8-inch OLED touchscreen, and a 4D Burmester sound system. The ride quality is enhanced by its AIRMATIC air suspension.`,
+    },
+    {
+      id: 7,
+      name: 'BMW 7 Series',
+      year: 2023,
+      price: 599,
+      images: [
+        '/images/bmw/7-series/BMW-7-Series-front-600x400.jpg',
+        '/images/bmw/7-series/BMW-7-Series-side-600x400.jpg',
+        '/images/bmw/7-series/BMW-7-Series-rear-600x400.jpg',
+        '/images/bmw/7-series/BMW-7-Series-interior-600x400.jpg',
+        '/images/bmw/7-series/BMW-7-Series-dashboard-600x400.jpg',
+      ],
+      category: 'sedan',
+      description: `The 2023 BMW 7 Series is a full-size luxury sedan that offers unmatched comfort and performance. Powered by a 3.0-liter turbocharged inline-6 engine delivering 375 horsepower, the 7 Series can hit 0-60 mph in just 5.3 seconds. It features heated and ventilated seats, a panoramic moonroof, adaptive air suspension, and a 10.2-inch infotainment display. A perfect combination of technology, luxury, and performance.`,
+    },
+    {
+      id: 8,
+      name: 'Audi A8',
+      year: 2023,
+      price: 550,
+      images: [
+        '/images/audi/a8/Audi-A8-front-600x400.jpg',
+        '/images/audi/a8/Audi-A8-side-600x400.jpg',
+        '/images/audi/a8/Audi-A8-rear-600x400.jpg',
+        '/images/audi/a8/Audi-A8-interior-600x400.jpg',
+        '/images/audi/a8/Audi-A8-dashboard-600x400.jpg',
+      ],
+      category: 'sedan',
+      description: `The Audi A8 offers supreme refinement, advanced tech, and impressive power. With its 3.0-liter V6 engine generating 335 horsepower, it accelerates from 0-60 mph in 5.6 seconds. The luxurious interior features Valcona leather upholstery, a dual-screen MMI touch response system, and adaptive air suspension. It's the flagship sedan of Audi's lineup, combining sophistication with cutting-edge innovation.`,
+    },
+    {
+      id: 9,
+      name: 'Lamborghini Aventador',
+      year: 2023,
+      price: 1999,
+      images: [
+        '/images/lamborghini/aventador/Lamborghini-Aventador-front-600x400.jpg',
+        '/images/lamborghini/aventador/Lamborghini-Aventador-side-600x400.jpg',
+        '/images/lamborghini/aventador/Lamborghini-Aventador-rear-600x400.jpg',
+        '/images/lamborghini/aventador/Lamborghini-Aventador-interior-600x400.jpg',
+        '/images/lamborghini/aventador/Lamborghini-Aventador-engine-600x400.jpg',
+      ],
+      category: 'super',
+      description: `The Lamborghini Aventador is a supercar icon. Featuring a naturally aspirated 6.5-liter V12 engine producing 730 horsepower, the Aventador rockets from 0-60 mph in just 2.8 seconds. Its top speed exceeds 217 mph. Equipped with an all-wheel-drive system, carbon ceramic brakes, and active aerodynamics, this car offers an unmatched driving experience. The interior boasts fine leather, carbon fiber elements, and a state-of-the-art infotainment system.`,
+    },
+    {
+      id: 10,
+      name: 'Ferrari 488',
+      year: 2023,
+      price: 1899,
+      images: [
+        '/images/ferrari/488/Ferrari-488-front-600x400.jpg',
+        '/images/ferrari/488/Ferrari-488-side-600x400.jpg',
+        '/images/ferrari/488/Ferrari-488-rear-600x400.jpg',
+        '/images/ferrari/488/Ferrari-488-interior-600x400.jpg',
+        '/images/ferrari/488/Ferrari-488-engine-600x400.jpg',
+      ],
+      category: 'super',
+      description: `The Ferrari 488 is a track-ready masterpiece designed for the road. Powered by a 3.9-liter twin-turbocharged V8 engine, it produces 661 horsepower and 0-60 mph in 3.0 seconds. The car's body is sculpted for aerodynamic efficiency, and the cabin is minimalist yet luxurious, with Alcantara seats and a high-definition digital instrument cluster. Ferrari's racing DNA is on full display with its lightning-fast gear shifts and race-inspired steering.`,
+    },
+    {
+      id: 11,
+      name: 'Porsche 911 Carrera Cabriolet',
+      year: 2023,
+      price: 799,
+      images: [
+        '/images/porsche/911-carrera-cabriolet/Porsche-911-Carrera-Cabriolet-front-600x400.jpg',
+        '/images/porsche/911-carrera-cabriolet/Porsche-911-Carrera-Cabriolet-side-600x400.jpg',
+        '/images/porsche/911-carrera-cabriolet/Porsche-911-Carrera-Cabriolet-rear-600x400.jpg',
+        '/images/porsche/911-carrera-cabriolet/Porsche-911-Carrera-Cabriolet-interior-600x400.jpg',
+        '/images/porsche/911-carrera-cabriolet/Porsche-911-Carrera-Cabriolet-top-down-600x400.jpg',
+      ],
+      category: 'convertible',
+      description: `The Porsche 911 Carrera Cabriolet is a perfect blend of driving thrills and open-air freedom. Its 3.0-liter twin-turbocharged flat-six engine generates 443 horsepower, propelling it from 0-60 mph in just 3.6 seconds. With the top down, the 911 Carrera Cabriolet offers a thrilling driving experience, with the signature Porsche precision handling and rear-engine balance. Inside, you'll find premium leather, a 10.9-inch touchscreen, and Porsche's advanced infotainment system. The exterior is designed with Porsche's iconic sleek curves and adaptive LED headlights for optimal visibility at night.`,
+    },
+    {
+      id: 12,
+      name: 'Ferrari California',
+      year: 2023,
+      price: 999,
+      images: [
+        '/images/ferrari/california/Ferrari-California-front-600x400.jpg',
+        '/images/ferrari/california/Ferrari-California-side-600x400.jpg',
+        '/images/ferrari/california/Ferrari-California-rear-600x400.jpg',
+        '/images/ferrari/california/Ferrari-California-interior-600x400.jpg',
+        '/images/ferrari/california/Ferrari-California-top-down-600x400.jpg',
+      ],
+      category: 'convertible',
+      description: `The Ferrari California is an iconic grand tourer, blending performance and luxury. Its 3.9-liter twin-turbo V8 produces 553 horsepower and 557 lb-ft of torque, allowing the car to sprint from 0-60 mph in 3.6 seconds. With a retractable hardtop, the California can transition between coupe and convertible in just 14 
+    infotainment system with navigation, Bluetooth, and Apple CarPlay.`,
+  },
   {
-    id: 1,
-    name: "Rolls-Royce Phantom",
-    brand: "Rolls-Royce",
-    type: "Sedan",
-    category: "Luxury",
+    id: 13,
+    name: 'Lamborghini Huracan Spyder',
     year: 2023,
-    price: 1500,
-    threeDaySpecial: 4000,
-    description: "The epitome of luxury motoring, featuring unparalleled comfort and sophistication.",
-    transmission: "8-speed automatic",
-    engine: "6.75L V12",
-    topSpeed: "155 mph",
+    price: 1799,
     images: [
       '/images/lamborghini/huracan-spyder/Lamborghini-Huracan-Spyder-front-600x400.jpg',
       '/images/lamborghini/huracan-spyder/Lamborghini-Huracan-Spyder-side-600x400.jpg',
