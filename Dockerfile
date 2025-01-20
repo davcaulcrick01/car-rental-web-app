@@ -12,7 +12,8 @@ COPY package*.json ./
 
 # Clean install dependencies with verbose logging
 RUN npm cache clean --force && \
-    NEXT_TELEMETRY_DISABLED=1 npm install --legacy-peer-deps --production=false --verbose
+    npm config set legacy-peer-deps true && \
+    NEXT_TELEMETRY_DISABLED=1 npm install --verbose
 
 # Copy all files
 COPY . .
