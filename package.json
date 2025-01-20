@@ -45,10 +45,9 @@
   "devDependencies": {
     "typescript": "^5.2.2",
     "eslint": "^8.0.0",
-    "eslint-config-next": "13.5.4",
-    "@types/react-spring": "^9.0.0"
+    "eslint-config-next": "13.5.4"
   },
-  "resolutions": {
-    "@types/react": "^18.2.24"
+  "overrides": {
+    "react": "^18.2.0"
   }
 }
