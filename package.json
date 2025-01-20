@@ -20,7 +20,6 @@
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tabs": "^1.0.4",
-    "@react-spring/web": "^9.7.3",
     "framer-motion": "^10.16.4",
     "gsap": "^3.12.2",
     "lucide-react": "^0.309.0",
@@ -39,15 +38,12 @@
     "autoprefixer": "^10.4.16",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "@types/react-spring": "^9.0.0"
+    "@react-spring/web": "^9.7.3"
   },
   "devDependencies": {
     "typescript": "^5.2.2",
     "eslint": "^8.0.0",
-    "eslint-config-next": "13.5.4",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18"
+    "eslint-config-next": "13.5.4"
   },
   "optionalDependencies": {
     "@next/swc-linux-x64-musl": "13.5.4"
