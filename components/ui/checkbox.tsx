@@ -1,6 +1,9 @@
 import React from 'react'
 
-interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+/** @see https://www.radix-ui.com/primitives/docs/components/checkbox#custom-apis */
+interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof Checkbox> {
+  // Extended for future custom props
+}
 
 export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className, ...props }, ref) => {

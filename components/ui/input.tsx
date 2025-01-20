@@ -2,8 +2,11 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+/** @see https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts#custom-input */
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  // Extended for future custom props
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
