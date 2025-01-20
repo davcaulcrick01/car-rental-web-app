@@ -12,9 +12,11 @@ import { AnimatedCard, AnimatedSection } from './ui/animated'
 
 interface VehicleShowcaseProps {
   vehicles: Car[];
+  title: string;
+  description?: string;
 }
 
-export default function VehicleShowcase({ vehicles }: VehicleShowcaseProps) {
+export default function VehicleShowcase({ vehicles, title, description }: VehicleShowcaseProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovering, setIsHovering] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -38,29 +40,25 @@ export default function VehicleShowcase({ vehicles }: VehicleShowcaseProps) {
   const visibleVehicles = vehicles.slice(currentIndex, currentIndex + 3)
 
   return (
-    <AnimatedSection 
-      className="relative overflow-hidden py-8"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
-      <motion.div 
-        className="flex gap-6"
-        animate={{ x: `-${currentIndex * 33.33}%` }}
-        transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      >
-        {vehicles.map((vehicle, index) => (
-          <AnimatedCard key={vehicle.id} delay={index * 2}>
-            <div className="flex-shrink-0 w-full md:w-1/3">
-              <div className="bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all duration-300 hover:shadow-2xl">
+    <AnimatedSection>
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold mb-4">{title}</h2>
+          {description && <p className="text-gray-400">{description}</p>}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {vehicles.map((vehicle, index) => (
+            <AnimatedCard key={vehicle.id} delay={index * 0.1}>
+              <div className="bg-gray-900 rounded-lg overflow-hidden">
                 <div className="relative h-64">
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${vehicle.category}/${vehicle.image}`}
+                    src={vehicle.images[0]}
                     alt={vehicle.name}
                     width={600}
                     height={400}
-                    className="rounded-lg shadow-lg"
+                    className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100" />
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold mb-2">{vehicle.name}</h3>
@@ -69,30 +67,13 @@ export default function VehicleShowcase({ vehicles }: VehicleShowcaseProps) {
                     <span className="text-gray-400">{vehicle.category}</span>
                   </div>
                   <Link href={`/booking?car=${vehicle.id}`}>
-                    <Button className="w-full transform transition-transform duration-300 hover:scale-105 hover:bg-blue-600">
-                      Book Now
-                    </Button>
+                    <Button className="w-full">Book Now</Button>
                   </Link>
                 </div>
               </div>
-            </div>
-          </AnimatedCard>
-        ))}
-      </motion.div>
-
-      {/* Navigation Dots */}
-      <div className="flex justify-center mt-6 space-x-2">
-        {Array.from({ length: Math.max(0, vehicles.length - 2) }).map((_, index) => (
-          <button
-            key={index}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              currentIndex === index 
-                ? 'bg-blue-500 scale-110' 
-                : 'bg-gray-600 hover:bg-gray-500'
-            }`}
-            onClick={() => setCurrentIndex(index)}
-          />
-        ))}
+            </AnimatedCard>
+          ))}
+        </div>
       </div>
     </AnimatedSection>
   );
