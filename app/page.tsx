@@ -177,7 +177,10 @@ export default function HomePage() {
   };
 
   // Ensure cars array is properly typed
-  const displayCars = cars as Car[];
+  const displayCars = cars.map(car => ({
+    ...car,
+    category: car.category || 'default', // Ensure category exists
+  })) as Car[];
 
   return (
     <div className="bg-gray-900 text-white min-h-screen font-sans">
