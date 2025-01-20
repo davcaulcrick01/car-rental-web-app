@@ -1,6 +1,10 @@
 declare module '@stripe/stripe-js' {
+  export interface StripeCheckoutOptions {
+    sessionId: string;
+  }
+
   export interface Stripe {
-    // Add any Stripe types you're using
+    redirectToCheckout(options: StripeCheckoutOptions): Promise<{ error?: { message: string } }>;
   }
 
   export function loadStripe(publishableKey: string): Promise<Stripe | null>;
