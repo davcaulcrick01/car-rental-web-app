@@ -8,7 +8,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import cars, { Car } from '@/lib/cars'
 
-export default function BookingContent({ selectedCar }: { selectedCar: Car }) {
+interface BookingContentProps {
+  selectedCar: Car | null;  // Update to allow null
+}
+
+export default function BookingContent({ selectedCar }: BookingContentProps) {
   const searchParams = useSearchParams()
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
@@ -40,15 +44,7 @@ export default function BookingContent({ selectedCar }: { selectedCar: Car }) {
     }
   }
 
-  if (!selectedCar) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <p className="text-center text-gray-400">
-          No vehicle selected. Please select a vehicle from our fleet.
-        </p>
-      </div>
-    )
-  }
+  if (!selectedCar) return null; // Early return if no car selected
 
   return (
     <div className="container mx-auto px-4 py-8">
