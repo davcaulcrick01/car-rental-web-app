@@ -1,7 +1,7 @@
 # --------------------
 # 1) Build stage
 # --------------------
-FROM node:18-alpine AS builder
+FROM --platform=linux/arm64 node:18-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -15,7 +15,7 @@ COPY package*.json ./
 # Clean install dependencies with verbose logging
 RUN npm cache clean --force && \
     NEXT_TELEMETRY_DISABLED=1 npm install --legacy-peer-deps --production=false --verbose && \
-    npm install @next/swc-linux-x64-musl --verbose
+    npm install @next/swc-linux-arm64-musl --verbose
 
 # Copy all files
 COPY . .
@@ -37,7 +37,7 @@ RUN npm run build
 # --------------------
 # 2) Production stage
 # --------------------
-FROM node:18-alpine AS runner
+FROM --platform=linux/arm64 node:18-alpine AS runner
 
 WORKDIR /app
 

@@ -16,6 +16,7 @@ export interface Car {
   logo: string;
   image: string;
   alt: string;
+  features?: string[];
 }
 
 export const cars: Car[] = [
@@ -40,7 +41,8 @@ export const cars: Car[] = [
       "/images/cars/phantom-3.jpg"
     ],
     rating: 5,
-    logo: "/images/logos/rolls-royce.png"
+    logo: "/images/logos/rolls-royce.png",
+    features: ["Leather seats", "Premium sound system", "GPS Navigation"]
   },
   // Add more cars as needed
 ];
