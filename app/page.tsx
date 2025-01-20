@@ -513,7 +513,7 @@ export default function HomePage() {
                   {carGroup.map((car: Car) => (
                     <div key={`${car.id}-${groupIndex}`} className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${car.category}/${car.images[0]}`}
+                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/images/cars/${car.category}/${car.images[0]}`}
                         alt={car.name}
                         width={400}
                         height={300}
@@ -788,7 +788,7 @@ export default function HomePage() {
                     {/* Container with fixed height and overflow hidden to create cropped effect */}
                     <div className="relative w-full h-[450px] overflow-hidden">
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${car.category}/${car.image}`}
+                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/images/cars/${car.category}/${car.image}`}
                         alt={car.alt}
                         width={400}
                         height={600}
