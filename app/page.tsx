@@ -96,6 +96,15 @@ interface CarListItem {
   alt: string;
 }
 
+// Define the type for carousel items if different from Car
+interface CarouselItem {
+  id: number;
+  images: string[];
+  name: string;
+  category: string;
+  price: number;
+}
+
 export default function HomePage() {
   const [isDragging, setIsDragging] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -118,6 +127,15 @@ export default function HomePage() {
     ...car,
     category: car.category || 'default',
   })) as Car[];
+
+  // Convert cars to carousel items if needed
+  const carouselItems: CarouselItem[] = cars.map(car => ({
+    id: car.id,
+    images: car.images,
+    name: car.name,
+    category: car.category,
+    price: car.price
+  }));
 
   // Handle mouse down to initiate dragging
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -901,6 +919,34 @@ export default function HomePage() {
                   </form>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Carousel Section */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {carouselItems.map((car) => (
+                <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
+                  <div className="relative w-full h-[450px] overflow-hidden">
+                    <Image
+                      src={car.images[0]}
+                      alt={car.name}
+                      width={400}
+                      height={600}
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold mb-2">{car.name}</h3>
+                    <div className="flex justify-between items-center">
+                      <span className="text-green-400 text-lg">${car.price}/day</span>
+                      <span className="text-gray-400">{car.category}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
