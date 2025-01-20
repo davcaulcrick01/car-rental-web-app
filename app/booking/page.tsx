@@ -10,14 +10,14 @@ export default function BookingPage() {
 
   return (
     <div>
-      <BookingContent />
+      <BookingContent selectedCar={selectedCar} />
       {selectedCar && (
         <Image
-          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${selectedCar.category}/${selectedCar.image}`}
+          src={selectedCar.images[0]}
           alt={selectedCar.name}
           width={600}
           height={400}
-          className="rounded-lg shadow-lg"
+          className="object-cover"
         />
       )}
     </div>
