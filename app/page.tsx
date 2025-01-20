@@ -51,17 +51,17 @@ const brandLogos = [
 ];
 
 const luxuryCars = [
-  { id: 1, image: "/images/car-gallery/mercedes-gle-coupe.jpg", alt: "Mercedes Luxury Car" },
-  { id: 2, image: "/images/car-gallery/mclaren.jpg", alt: "Mclaren Luxury Car" },
-  { id: 3, image: "/images/car-gallery/rollsroyce-cullinan.jpg", alt: "Cullinan Luxury Car" },
-  { id: 4, image: "/images/car-gallery/lamborghini-centenario.jpg", alt: "Lambo Centenario Car" },
-  { id: 5, image: "/images/car-gallery/rollsroyce-phantom.jpg", alt: "White Luxury Car" },
-  { id: 6, image: "/images/car-gallery/mercedes-G63.jpg", alt: "Silver Luxury Car" },
-  { id: 7, image: "/images/car-gallery/lamborghini-aventador.jpg", alt: "Blue Luxury Car" },
-  { id: 8, image: "/images/car-gallery/lamborghini-huracan.jpg", alt: "Lambo Huracan Car" },
+  { id: 1, image: "/images/car-gallery/mercedes-gle-coupe.jpg", alt: "Mercedes Luxury Car", category: "mercedes-benz" },
+  { id: 2, image: "/images/car-gallery/mclaren.jpg", alt: "Mclaren Luxury Car", category: "mclaren" },
+  { id: 3, image: "/images/car-gallery/rollsroyce-cullinan.jpg", alt: "Cullinan Luxury Car", category: "rolls-royce" },
+  { id: 4, image: "/images/car-gallery/lamborghini-centenario.jpg", alt: "Lambo Centenario Car", category: "lamborghini" },
+  { id: 5, image: "/images/car-gallery/rollsroyce-phantom.jpg", alt: "White Luxury Car", category: "rolls-royce" },
+  { id: 6, image: "/images/car-gallery/mercedes-G63.jpg", alt: "Silver Luxury Car", category: "mercedes-benz" },
+  { id: 7, image: "/images/car-gallery/lamborghini-aventador.jpg", alt: "Blue Luxury Car", category: "lamborghini" },
+  { id: 8, image: "/images/car-gallery/lamborghini-huracan.jpg", alt: "Lambo Huracan Car", category: "lamborghini" },
 ]
 
-const faqItems = [
+const faqItems = [ 
   { question: "Can international drivers rent exotic cars in the USA?", answer: "Yes, international drivers with a valid license can rent exotic cars in the USA." },
   { question: "In what condition am I required to return the vehicle?", answer: "The car should be returned relatively clean and smoke-free. Excessive damage or uncleanliness may result in additional fees." },
   { question: "How does renting a Lamborghini work?", answer: "Select your car, provide insurance and payment. Our staff will walk you through the car's features when you arrive." },
@@ -96,13 +96,9 @@ interface CarListItem {
   alt: string;
 }
 
-// Define the type for carousel items if different from Car
-interface CarouselItem {
-  id: number;
-  images: string[];
-  name: string;
-  category: string;
-  price: number;
+// Define the type for all car items to ensure consistency
+interface CarouselItem extends Car {
+  alt?: string;
 }
 
 export default function HomePage() {
@@ -128,13 +124,10 @@ export default function HomePage() {
     category: car.category || 'default',
   })) as Car[];
 
-  // Convert cars to carousel items if needed
+  // Convert cars to carousel items to ensure type safety
   const carouselItems: CarouselItem[] = cars.map(car => ({
-    id: car.id,
-    images: car.images,
-    name: car.name,
-    category: car.category,
-    price: car.price
+    ...car,
+    alt: car.name // Use car name as alt text if not provided
   }));
 
   // Handle mouse down to initiate dragging
@@ -807,7 +800,7 @@ export default function HomePage() {
                     <div className="relative w-full h-[450px] overflow-hidden">
                       <Image
                         src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/images/cars/${car.category}/${car.image}`}
-                        alt={car.alt}
+                        alt={car.alt || car.name}
                         width={400}
                         height={600}
                         className={`object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-110`}
@@ -932,7 +925,7 @@ export default function HomePage() {
                   <div className="relative w-full h-[450px] overflow-hidden">
                     <Image
                       src={car.images[0]}
-                      alt={car.name}
+                      alt={car.alt || car.name}
                       width={400}
                       height={600}
                       className="object-cover"
