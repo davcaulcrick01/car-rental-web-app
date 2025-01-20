@@ -8,9 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import cars, { Car } from '@/lib/cars'
 
-export default function BookingContent() {
+export default function BookingContent({ selectedCar }: { selectedCar: Car }) {
   const searchParams = useSearchParams()
-  const [selectedCar, setSelectedCar] = useState<Car | null>(null)
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [loading, setLoading] = useState(false)
@@ -21,7 +20,8 @@ export default function BookingContent() {
       const carId = parseInt(carParam, 10)
       const car = cars.find((c) => c.id === carId)
       if (car) {
-        setSelectedCar(car)
+        // This should be set in the component's props
+        // setSelectedCar(car)
       }
     }
   }, [searchParams])
@@ -59,7 +59,7 @@ export default function BookingContent() {
         <div>
           <div className="relative h-64 rounded-lg overflow-hidden mb-4">
             <Image
-              src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${selectedCar.category}/${selectedCar.image}`}
+              src={selectedCar.images[0]}
               alt={selectedCar.name}
               fill
               className="object-cover"
