@@ -18,7 +18,7 @@ import cars from '@/lib/cars'
 import { fleetCategories } from '@/lib/constants'
 import Breadcrumbs from '@/components/Breadcrumbs'
 
-const suvCars = cars.filter(car => car.category === 'SUV')
+const suvCars = cars.filter(car => car.category === 'SUVs')
 
 const brandLogos = [
   { name: "Range Rover", logo: "/images/range-rover/range-rover-logo.png" },
@@ -103,7 +103,7 @@ export default function SUVCarsPage() {
             <Card key={car.id} className="bg-gray-900 border-gray-800">
               <div className="relative h-48">
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/suv/${car.image}`}
+                  src={car.images[0]}
                   alt={car.name}
                   width={600}
                   height={400}
