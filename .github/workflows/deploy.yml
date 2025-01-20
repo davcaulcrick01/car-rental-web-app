@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - development
     tags:
       - 'v*.*.*'
 
@@ -12,6 +11,7 @@ env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: car-rental-app
   IMAGE_TAG: ${{ github.ref_type == 'tag' && github.ref_name || '0.0.1' }}
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
 
 jobs:
   build-and-push:
@@ -54,7 +54,9 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           VERSION: ${{ steps.semver.outputs.version }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION .
+          docker build \
+            --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }} \
+            -t $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
