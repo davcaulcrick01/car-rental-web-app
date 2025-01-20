@@ -1,9 +1,15 @@
 // components/Button.tsx
 "use client";
 
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 
-const Button: FC<{ className?: string; onClick?: () => void }> = ({ className, onClick, children }) => {
+interface ButtonProps {
+  className?: string;
+  onClick?: () => void;
+  children: ReactNode;
+}
+
+const Button: FC<ButtonProps> = ({ className, onClick, children }) => {
   return (
     <button className={className} onClick={onClick}>
       {children}
@@ -11,4 +17,17 @@ const Button: FC<{ className?: string; onClick?: () => void }> = ({ className, o
   );
 };
 
-export default Button;
+interface IconButtonProps extends ButtonProps {
+  icon: ReactNode;
+}
+
+const IconButton: FC<IconButtonProps> = ({ className, onClick, icon, children }) => {
+  return (
+    <button className={`flex items-center gap-2 ${className}`} onClick={onClick}>
+      {icon}
+      {children}
+    </button>
+  );
+};
+
+export { Button, IconButton };

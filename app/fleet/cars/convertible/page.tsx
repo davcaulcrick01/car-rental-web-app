@@ -14,10 +14,10 @@ import {
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import cars from '@/lib/cars'
-import { fleetCategories } from '@/app/fleet/page'
+import { fleetCategories } from '@/lib/constants'
 import Breadcrumbs from '@/components/Breadcrumbs'
 
-const convertibleCars = cars.filter(car => car.category === 'convertible')
+const convertibleCars = cars.filter(car => car.category === 'Convertible')
 
 const brandLogos = [
   { name: "BMW", logo: "/images/bmw/bmw-logo.png" },
@@ -91,7 +91,7 @@ export default function ConvertibleFleetPage() {
           {/* Fleet Categories Navigation */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             {fleetCategories.map((category) => (
-              <Link key={category.name} href={category.path}>
+              <Link key={category.name} href={category.link}>
                 <Button
                   variant={category.name === "Convertibles" ? "default" : "outline"}
                   className={`text-white border-white hover:bg-green-600 hover:text-white transition-colors ${

@@ -81,8 +81,8 @@ const faqItems = [
 ]
 
 // Helper function to chunk array into groups
-function chunkArray(array, size) {
-  const chunked = [];
+function chunkArray<T>(array: T[], size: number): T[][] {
+  const chunked: T[][] = [];
   for (let i = 0; i < array.length; i += size) {
     chunked.push(array.slice(i, i + size));
   }
@@ -92,10 +92,10 @@ function chunkArray(array, size) {
 export default function HomePage() {
   const [isDragging, setIsDragging] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const [hoveredCar, setHoveredCar] = useState(null);
+  const [hoveredCar, setHoveredCar] = useState<number | null>(null);
 
   const categoryTypes = Array.from(new Set(cars.map(car => car.category))).map(category => ({
     name: category,
@@ -103,7 +103,8 @@ export default function HomePage() {
   }));
 
   // Handle mouse down to initiate dragging
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!sliderRef.current) return;
     setIsDragging(true);
     setIsPaused(true);
     setStartX(e.pageX - sliderRef.current.offsetLeft);
@@ -111,8 +112,8 @@ export default function HomePage() {
   };
 
   // Handle mouse move for drag scroll
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging || !sliderRef.current) return;
     const x = e.pageX - sliderRef.current.offsetLeft;
     const walk = (x - startX) * 3;
     sliderRef.current.scrollLeft = scrollLeft - walk;
@@ -126,6 +127,7 @@ export default function HomePage() {
 
   // Scroll left using button
   const handleScrollLeft = () => {
+    if (!sliderRef.current) return;
     sliderRef.current.scrollBy({ left: -400, behavior: "smooth" });
     setIsPaused(true);
     setTimeout(() => setIsPaused(false), 3000);
@@ -133,6 +135,7 @@ export default function HomePage() {
 
   // Scroll right using button
   const handleScrollRight = () => {
+    if (!sliderRef.current) return;
     sliderRef.current.scrollBy({ left: 400, behavior: "smooth" });
     setIsPaused(true);
     setTimeout(() => setIsPaused(false), 3000);
@@ -140,8 +143,10 @@ export default function HomePage() {
 
   // Automated scroll with smooth continuous behavior
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || !sliderRef.current) return;
     const autoScroll = setInterval(() => {
+      if (!sliderRef.current) return;
+      
       if (sliderRef.current.scrollLeft >= sliderRef.current.scrollWidth - sliderRef.current.clientWidth) {
         sliderRef.current.scrollLeft = 0;
       } else {
@@ -415,7 +420,7 @@ export default function HomePage() {
               {/* Scroll Left Button */}
               <button
                 className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-10"
-                onClick={() => sliderRef.current.scrollBy({ left: -300, behavior: 'smooth' })}
+                onClick={() => sliderRef.current?.scrollBy({ left: -300, behavior: 'smooth' })}
               >
                 <ChevronLeft size={28} />
               </button>
@@ -423,7 +428,7 @@ export default function HomePage() {
               {/* Scroll Right Button */}
               <button
                 className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-10"
-                onClick={() => sliderRef.current.scrollBy({ left: 300, behavior: 'smooth' })}
+                onClick={() => sliderRef.current?.scrollBy({ left: 300, behavior: 'smooth' })}
               >
                 <ChevronRight size={28} />
               </button>
@@ -502,7 +507,7 @@ export default function HomePage() {
                       <div className="p-4">
                         <h3 className="text-xl font-bold mb-2">{car.name}</h3>
                         <p className="text-gray-400 mb-4">{car.year} | ${car.price}/day</p>
-                        <Link href={`/booking?car={car.id}`}>
+                        <Link href={`/booking?car=${car.id}`}>
                           <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                             Book Now
                           </Button>
@@ -585,8 +590,6 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
-        {/* Add new sections based on your screenshots */}
 
         {/* Updated FAQ Section */}
         <section className="py-16">

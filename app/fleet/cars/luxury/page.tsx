@@ -14,10 +14,10 @@ import {
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import cars from '@/lib/cars'
-import { fleetCategories } from '@/app/fleet/page'
+import { fleetCategories } from '@/lib/constants'
 import Breadcrumbs from '@/components/Breadcrumbs'
 
-const luxuryCars = cars.filter(car => car.category === 'luxury')
+const luxuryCars = cars.filter(car => car.category === 'Luxury')
 
 const brandLogos = [
   { name: "Mercedes", logo: "/images/mercedes/mercedes-logo.png" },
@@ -91,11 +91,11 @@ export default function LuxuryFleetPage() {
           {/* Fleet Categories Navigation */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             {fleetCategories.map((category) => (
-              <Link key={category.name} href={category.path}>
+              <Link key={category.name} href={category.link}>
                 <Button
-                  variant={category.name === "Luxury Fleet" ? "default" : "outline"}
+                  variant={category.name === "Luxury Cars" ? "default" : "outline"}
                   className={`text-white border-white hover:bg-green-600 hover:text-white transition-colors ${
-                    category.name === "Luxury Fleet" ? 'bg-green-600' : ''
+                    category.name === "Luxury Cars" ? 'bg-green-600' : ''
                   }`}
                 >
                   {category.name}

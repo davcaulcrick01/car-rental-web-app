@@ -1,9 +1,18 @@
 import Link from 'next/link'
+import { ReactNode } from 'react'
 
-export function NavLink({ href, children }) {
+interface NavLinkProps {
+  href: string;
+  children: ReactNode;
+  className?: string;
+}
+
+export function NavLink({ href, children, className = "text-white hover:text-gold transition-colors duration-300" }: NavLinkProps) {
   return (
-    <Link href={href} className="text-white hover:text-gold transition-colors duration-300">
+    <Link href={href} className={className}>
       {children}
     </Link>
-  )
+  );
 }
+
+export default NavLink;

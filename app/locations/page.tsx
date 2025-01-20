@@ -1,7 +1,10 @@
+'use client'
+
 import { Button } from "@/components/ui/button"
 import Image from 'next/image'
-import { LuxuryCarRentalLanding } from '@/components/Layout'
+import Layout from '@/components/Layout'
 import Header from '@/components/Header'
+
 
 const locations = [
   {
@@ -36,7 +39,7 @@ const locations = [
 
 export default function LocationsPage() {
   return (
-    <LuxuryCarRentalLanding>
+    <Layout>
       <div className="bg-black text-white py-20">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-center mb-12">Our Locations</h1>
@@ -58,6 +61,6 @@ export default function LocationsPage() {
           </div>
         </div>
       </div>
-    </LuxuryCarRentalLanding>
+    </Layout>
   )
 }

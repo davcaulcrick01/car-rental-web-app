@@ -14,6 +14,10 @@ import Breadcrumbs from '@/components/Breadcrumbs'
 import cars from '@/lib/cars'
 import { loadStripe } from '@stripe/stripe-js'
 
+if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+  throw new Error('Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY')
+}
+
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
 
 export default function ReservePage() {
@@ -25,6 +29,7 @@ export default function ReservePage() {
   const [selectedCarDetails, setSelectedCarDetails] = useState<any>(null)
   const [totalDays, setTotalDays] = useState(0)
   const [totalPrice, setTotalPrice] = useState(0)
+  const [loading, setLoading] = useState(false)
 
   // Calculate rental duration and price when dates change
   useEffect(() => {
@@ -59,24 +64,22 @@ export default function ReservePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+    setLoading(true)
+
     try {
       const stripe = await stripePromise
-      if (!stripe) throw new Error('Stripe failed to load')
+      if (!stripe) throw new Error('Failed to load Stripe')
 
-      // Create a payment session with your backend
-      const response = await fetch('/api/create-payment-session', {
+      // Create a checkout session
+      const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          carDetails: selectedCarDetails,
-          totalAmount: totalPrice,
+          carId: selectedCar,
           startDate,
           endDate,
-          pickupTime,
-          returnTime,
         }),
       })
 
@@ -88,10 +91,13 @@ export default function ReservePage() {
       })
 
       if (result.error) {
-        console.error(result.error)
+        throw new Error(result.error.message)
       }
     } catch (error) {
-      console.error('Payment failed:', error)
+      console.error('Reservation failed:', error)
+      // Handle error (show error message to user)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -242,8 +248,12 @@ export default function ReservePage() {
               </div>
 
               {/* Payment Buttons */}
-              <Button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white py-3 text-lg font-semibold transition-colors duration-300">
-                Proceed to Payment
+              <Button
+                type="submit"
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-3 text-lg font-semibold transition-colors duration-300"
+                disabled={loading}
+              >
+                {loading ? 'Processing...' : 'Proceed to Payment'}
               </Button>
 
               <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 text-lg font-semibold flex items-center justify-center space-x-2 transition-colors duration-300">
