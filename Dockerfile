@@ -7,14 +7,15 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Install dependencies for better processing
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat python3 make g++
 
 # Copy package files
 COPY package*.json ./
 
 # Clean install dependencies
 RUN npm cache clean --force && \
-    npm install --legacy-peer-deps --production=false
+    npm install --legacy-peer-deps --production=false && \
+    npm install @next/swc-linux-x64-gnu @next/swc-linux-x64-musl
 
 # Copy all files
 COPY . .
