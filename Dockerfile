@@ -15,7 +15,7 @@ COPY package*.json ./
 # Clean install dependencies
 RUN npm cache clean --force && \
     npm install --legacy-peer-deps --production=false && \
-    npm install @next/swc-linux-x64-gnu @next/swc-linux-x64-musl
+    npm install @next/swc-linux-x64-musl
 
 # Copy all files
 COPY . .
@@ -42,7 +42,6 @@ ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/.env.local ./.env.local
 COPY --from=builder /app/node_modules ./node_modules
 
 # Expose port
