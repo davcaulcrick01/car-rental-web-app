@@ -24,7 +24,7 @@ import cars from '@/lib/cars'
 import { fleetCategories } from '@/lib/constants'
 import Breadcrumbs from '@/components/Breadcrumbs'
 
-const sportCars = cars.filter(car => car.category === 'Sport')
+const sportCars = cars.filter(car => car.category === 'sport')
 
 const brandLogos = [
   { name: "Porsche", logo: "/images/porsche/porsche-logo.png" },
@@ -109,7 +109,7 @@ export default function SportCarsPage() {
             <Card key={car.id} className="bg-gray-900 border-gray-800">
               <div className="relative h-48">
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/sport/${car.image}`}
+                  src={car.images[0]}
                   alt={car.name}
                   width={600}
                   height={400}
