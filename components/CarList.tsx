@@ -10,14 +10,15 @@ interface CarListProps {
 
 export default function CarList({ cars }: CarListProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {cars.map((car) => (
         <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
           <div className="relative h-48">
             <Image
               src={car.images[0]}
               alt={car.name}
-              fill
+              width={600}
+              height={400}
               className="object-cover"
             />
           </div>

@@ -108,13 +108,15 @@ export default function ExoticFleetPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {exoticCars.map((car) => (
               <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/exotic/${car.image}`}
-                  alt={car.name}
-                  width={600}
-                  height={400}
-                  className="w-full h-48 object-cover"
-                />
+                <div className="relative h-48">
+                  <Image
+                    src={car.images[0]}
+                    alt={car.name}
+                    width={600}
+                    height={400}
+                    className="object-cover"
+                  />
+                </div>
                 <div className="p-4">
                   <h2 className="text-xl font-bold mb-4">{car.name}</h2>
                   <div className="flex justify-between items-center">
