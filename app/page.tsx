@@ -922,13 +922,13 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {carouselItems.map((car) => (
                 <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
-                  <div className="relative w-full h-[450px] overflow-hidden">
+                  <div className="relative w-full h-[450px] overflow-hidden group">
                     <Image
                       src={car.images[0]}
                       alt={car.alt || car.name}
                       width={400}
                       height={600}
-                      className="object-cover"
+                      className="object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-110"
                     />
                   </div>
                   <div className="p-6">
