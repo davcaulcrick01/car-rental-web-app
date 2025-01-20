@@ -109,10 +109,11 @@ export default function ClassicCarsPage() {
             <Card key={car.id} className="bg-gray-900 border-gray-800">
               <div className="relative h-48">
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/classic/${car.image}`}
+                  src={car.images[0]}
                   alt={car.name}
                   width={600}
                   height={400}
+                  className="object-cover"
                 />
               </div>
               <CardHeader>
