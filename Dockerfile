@@ -14,8 +14,8 @@ COPY package*.json ./
 
 # Clean install dependencies with verbose logging
 RUN npm cache clean --force && \
-    npm install --legacy-peer-deps --production=false --verbose && \
-    npm install @next/swc-linux-x64-musl --verbose
+    npm install --legacy-peer-deps --production=false && \
+    npm install @next/swc-linux-x64-musl
 
 # Copy all files
 COPY . .
@@ -23,7 +23,11 @@ COPY . .
 # Set environment variables
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
+
+# Install ESLint
+RUN npm install -D eslint eslint-config-next
 
 # Build application
 RUN npm run build
