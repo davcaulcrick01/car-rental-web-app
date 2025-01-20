@@ -51,14 +51,14 @@ const brandLogos = [
 ];
 
 const luxuryCars = [
-  { id: 1, image: "/images/car-gallery/mercedes-gle-coupe.jpg", alt: "Mercedes Luxury Car", category: "mercedes-benz" },
-  { id: 2, image: "/images/car-gallery/mclaren.jpg", alt: "Mclaren Luxury Car", category: "mclaren" },
-  { id: 3, image: "/images/car-gallery/rollsroyce-cullinan.jpg", alt: "Cullinan Luxury Car", category: "rolls-royce" },
-  { id: 4, image: "/images/car-gallery/lamborghini-centenario.jpg", alt: "Lambo Centenario Car", category: "lamborghini" },
-  { id: 5, image: "/images/car-gallery/rollsroyce-phantom.jpg", alt: "White Luxury Car", category: "rolls-royce" },
-  { id: 6, image: "/images/car-gallery/mercedes-G63.jpg", alt: "Silver Luxury Car", category: "mercedes-benz" },
-  { id: 7, image: "/images/car-gallery/lamborghini-aventador.jpg", alt: "Blue Luxury Car", category: "lamborghini" },
-  { id: 8, image: "/images/car-gallery/lamborghini-huracan.jpg", alt: "Lambo Huracan Car", category: "lamborghini" },
+  { id: 1, image: "images/car-gallery/mercedes-gle-coupe.jpg", alt: "Mercedes Luxury Car", category: "mercedes-benz" },
+  { id: 2, image: "images/car-gallery/mclaren.jpg", alt: "Mclaren Luxury Car", category: "mclaren" },
+  { id: 3, image: "images/car-gallery/rollsroyce-cullinan.jpg", alt: "Cullinan Luxury Car", category: "rolls-royce" },
+  { id: 4, image: "images/car-gallery/lamborghini-centenario.jpg", alt: "Lambo Centenario Car", category: "lamborghini" },
+  { id: 5, image: "images/car-gallery/rollsroyce-phantom.jpg", alt: "White Luxury Car", category: "rolls-royce" },
+  { id: 6, image: "images/car-gallery/mercedes-G63.jpg", alt: "Silver Luxury Car", category: "mercedes-benz" },
+  { id: 7, image: "images/car-gallery/lamborghini-aventador.jpg", alt: "Blue Luxury Car", category: "lamborghini" },
+  { id: 8, image: "images/car-gallery/lamborghini-huracan.jpg", alt: "Lambo Huracan Car", category: "lamborghini" },
 ]
 
 const faqItems = [ 
@@ -799,13 +799,13 @@ export default function HomePage() {
                     {/* Container with fixed height and overflow hidden to create cropped effect */}
                     <div className="relative w-full h-[450px] overflow-hidden">
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/images/cars/${car.category}/${car.image}`}
-                        alt={car.alt || car.name}
+                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/${car.image}`}
+                        alt={car.alt}
                         width={400}
                         height={600}
                         className={`object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-110`}
                         style={{
-                          objectPosition: 'center', // Ensure the image is centered in the container
+                          objectPosition: 'center',
                         }}
                       />
                     </div>
