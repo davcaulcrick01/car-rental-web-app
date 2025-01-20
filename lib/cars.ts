@@ -4,10 +4,10 @@ export interface Car {
   category: string;
   type: string;
   image: string;
-  images: string[];  // Array of image URLs
+  images: string[];
   alt: string;
   description: string;
-  price: number;  // Made price required
+  price: number;
   features: string[];
   brand: string;
   engine: string;
