@@ -4,11 +4,13 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*.*.*'
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY: car-rental-web-app
-  IMAGE_TAG: ${{ github.sha }}
+  ECR_REPOSITORY: car-rental-app
+  IMAGE_TAG: ${{ github.ref_type == 'tag' && github.ref_name || '0.0.1' }}
 
 jobs:
   build-and-push:
@@ -17,6 +19,23 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get next version
+        id: semver
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            # Get the latest tag
+            latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+            # Increment patch version
+            version=$(echo $latest_tag | awk -F. -v OFS=. '{$NF++;print}' | sed 's/v//')
+            echo "version=$version" >> $GITHUB_OUTPUT
+          else
+            # Use the tag version
+            version=$(echo ${{ github.ref_name }} | sed 's/v//')
+            echo "version=$version" >> $GITHUB_OUTPUT
+          fi
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -32,8 +51,18 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          VERSION: ${{ steps.semver.outputs.version }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          echo "Pushed version: $VERSION"
+
+      - name: Create Git tag
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git tag -a v${{ steps.semver.outputs.version }} -m "Release version ${{ steps.semver.outputs.version }}"
+          git push origin v${{ steps.semver.outputs.version }}

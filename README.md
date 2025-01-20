@@ -62,3 +62,12 @@ To learn more about the technologies used in this project, check out the followi
 ## Deployment
 
 This app can be easily deployed on platforms like Vercel or Netlify. Follow their respective documentation for deploying Next.js applications.
+
+## Tagging  
+# For minor version bump
+git tag -a v0.1.0 -m "Minor version release"
+git push origin v0.1.0
+
+# For major version bump
+git tag -a v1.0.0 -m "Major version release"
+git push origin v1.0.0
