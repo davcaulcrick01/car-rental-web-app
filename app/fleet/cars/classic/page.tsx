@@ -113,7 +113,6 @@ export default function ClassicCarsPage() {
                   alt={car.name}
                   width={600}
                   height={400}
-                  className="object-cover rounded-t-lg"
                 />
               </div>
               <CardHeader>

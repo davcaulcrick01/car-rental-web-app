@@ -12,7 +12,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Check, ChevronLeft, ChevronRight, Instagram, Facebook, Twitter, Star, Award, Zap, MapPin, Phone, Mail } from 'lucide-react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import cars from '@/lib/cars'; // Importing all cars from car.ts
+import cars, { Car } from '@/lib/cars'; // Importing all cars from car.ts
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
@@ -446,7 +446,7 @@ export default function HomePage() {
                     <div className="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl">
                       <div className="relative">
                         <Image
-                          src={`https://car-rental-app-bucket.s3.amazonaws.com/car_images/cars/${type.name}/${type.image}`}
+                          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${type.name}/${type.image}`}
                           alt={type.name}
                           width={200}
                           height={120}
@@ -496,7 +496,7 @@ export default function HomePage() {
                   {carGroup.map((car, carIndex) => (
                     <div key={`${car.id}-${carIndex}`} className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
                       <Image
-                        src={`https://car-rental-app-bucket.s3.amazonaws.com/car_images/cars/${car.category}/${car.images[0]}`}
+                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${car.category}/${car.images[0]}`}
                         alt={car.name}
                         width={400}
                         height={300}
@@ -771,7 +771,7 @@ export default function HomePage() {
                     {/* Container with fixed height and overflow hidden to create cropped effect */}
                     <div className="relative w-full h-[450px] overflow-hidden">
                       <Image
-                        src={`https://car-rental-app-bucket.s3.amazonaws.com/car_images/cars/${car.category}/${car.image}`}
+                        src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${car.category}/${car.image}`}
                         alt={car.alt}
                         width={400}
                         height={600}

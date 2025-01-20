@@ -13,7 +13,7 @@ export default function BookingPage() {
       <BookingContent />
       {selectedCar && (
         <Image
-          src={`https://car-rental-app-bucket.s3.amazonaws.com/car_images/cars/${selectedCar.category}/${selectedCar.image}`}
+          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${selectedCar.category}/${selectedCar.image}`}
           alt={selectedCar.name}
           width={600}
           height={400}

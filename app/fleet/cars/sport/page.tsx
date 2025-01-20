@@ -109,7 +109,7 @@ export default function SportCarsPage() {
             <Card key={car.id} className="bg-gray-900 border-gray-800">
               <div className="relative h-48">
                 <Image
-                  src={`https://car-rental-app-bucket.s3.amazonaws.com/car_images/cars/sport/${car.image}`}
+                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/sport/${car.image}`}
                   alt={car.name}
                   width={600}
                   height={400}
