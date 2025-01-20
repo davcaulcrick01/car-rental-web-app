@@ -24,6 +24,7 @@ env.bak/
 venv.bak/
 pythonenv*
 /custom-code/myenv/
+custom-code/
 
 # next.js
 /.next/
@@ -35,6 +36,7 @@ pythonenv*
 # misc
 .DS_Store
 *.pem
+
 
 # debug
 npm-debug.log*
