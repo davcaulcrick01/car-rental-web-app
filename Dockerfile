@@ -12,8 +12,7 @@ COPY package*.json ./
 
 # Clean install dependencies with verbose logging
 RUN npm cache clean --force && \
-    NEXT_TELEMETRY_DISABLED=1 npm install --legacy-peer-deps --production=false --verbose && \
-    npm install @next/swc-linux-x64-musl --verbose
+    NEXT_TELEMETRY_DISABLED=1 npm install --legacy-peer-deps --production=false --verbose
 
 # Copy all files
 COPY . .
