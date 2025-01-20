@@ -51,6 +51,12 @@ export default function Footer() {
             </div>
           </div>
         </div>
+        <Image 
+          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/logo-white.png`}
+          alt="Car Rental Logo"
+          width={150}
+          height={50}
+        />
       </div>
     </footer>
   );

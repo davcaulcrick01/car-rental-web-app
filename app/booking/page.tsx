@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Layout from '@/components/Layout'
 import BookingContent from './BookingContent'
+import Image from 'next/image'
 
 export default function BookingPage() {
   return (
@@ -21,6 +22,13 @@ export default function BookingPage() {
         </div>
       }>
         <BookingContent />
+        <Image
+          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${selectedCar.category}/${selectedCar.image}`}
+          alt={selectedCar.name}
+          width={600}
+          height={400}
+          className="rounded-lg shadow-lg"
+        />
       </Suspense>
     </Layout>
   )

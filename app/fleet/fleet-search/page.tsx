@@ -104,7 +104,7 @@ export default function FleetSearchPage() {
             <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
               <div className="relative h-48">
                 <Image
-                  src={car.images[0]}
+                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${car.category}/${car.image}`}
                   alt={car.name}
                   fill
                   className="object-cover"

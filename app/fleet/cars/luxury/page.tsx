@@ -109,10 +109,10 @@ export default function LuxuryFleetPage() {
             {luxuryCars.map((car) => (
               <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
                 <Image
-                  src={car.images[0]}
+                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/luxury/${car.image}`}
                   alt={car.name}
-                  width={400}
-                  height={300}
+                  width={600}
+                  height={400}
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4">

@@ -42,9 +42,12 @@ export default function Header() {
     <header className="bg-white shadow-md">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-xl font-bold">
-            Car Rental
-          </Link>
+          <Image 
+            src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/logo.png`}
+            alt="Car Rental Logo"
+            width={150}
+            height={50}
+          />
           <div className="hidden md:flex space-x-4">
             <Link href="/" className="hover:text-gray-600">Home</Link>
             <Link href="/fleet" className="hover:text-gray-600">Fleet</Link>

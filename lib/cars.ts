@@ -14,6 +14,7 @@ export interface Car {
   images: string[];
   rating?: number;
   logo: string;
+  image: string;
 }
 
 const cars: Car[] = [
@@ -36,7 +37,8 @@ const cars: Car[] = [
       "/images/cars/phantom-3.jpg"
     ],
     rating: 5,
-    logo: "/images/logos/rolls-royce.png"
+    logo: "/images/logos/rolls-royce.png",
+    image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/luxury/rolls-royce-phantom.jpg`
   },
   // Add more cars as needed
 ];

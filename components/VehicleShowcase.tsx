@@ -54,10 +54,11 @@ export default function VehicleShowcase({ vehicles }: VehicleShowcaseProps) {
               <div className="bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all duration-300 hover:shadow-2xl">
                 <div className="relative h-64">
                   <Image
-                    src={vehicle.images[0]}
+                    src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${vehicle.category}/${vehicle.image}`}
                     alt={vehicle.name}
-                    fill
-                    className="object-cover transition-transform duration-300 hover:scale-110"
+                    width={600}
+                    height={400}
+                    className="rounded-lg shadow-lg"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100" />
                 </div>
