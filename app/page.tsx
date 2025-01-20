@@ -109,12 +109,15 @@ export default function HomePage() {
     image: cars.find(car => car.category === category)?.images[0] || '/placeholder-image.jpg'
   }));
 
-  const carList: CarListItem[] = cars.map(car => ({
-    id: car.id,
-    category: car.category,
-    image: car.images[0],
-    alt: car.alt
-  }));
+  const displayCars = cars.map(car => ({
+    ...car,
+    category: car.category || 'default',
+  })) as Car[];
+
+  const carList = cars.map(car => ({
+    ...car,
+    category: car.category || 'default',
+  })) as Car[];
 
   // Handle mouse down to initiate dragging
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -175,12 +178,6 @@ export default function HomePage() {
     // Implement follow functionality
     console.log("Follow button clicked");
   };
-
-  // Ensure cars array is properly typed
-  const displayCars = cars.map(car => ({
-    ...car,
-    category: car.category || 'default', // Ensure category exists
-  })) as Car[];
 
   return (
     <div className="bg-gray-900 text-white min-h-screen font-sans">
