@@ -89,6 +89,13 @@ function chunkArray<T>(array: T[], size: number): T[][] {
   return chunked;
 }
 
+interface CarListItem {
+  id: number;
+  category: string;
+  image: string;
+  alt: string;
+}
+
 export default function HomePage() {
   const [isDragging, setIsDragging] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -100,6 +107,13 @@ export default function HomePage() {
   const categoryTypes = Array.from(new Set(cars.map(car => car.category))).map(category => ({
     name: category,
     image: cars.find(car => car.category === category)?.images[0] || '/placeholder-image.jpg'
+  }));
+
+  const carList: CarListItem[] = cars.map(car => ({
+    id: car.id,
+    category: car.category,
+    image: car.images[0],
+    alt: car.alt
   }));
 
   // Handle mouse down to initiate dragging
@@ -161,6 +175,9 @@ export default function HomePage() {
     // Implement follow functionality
     console.log("Follow button clicked");
   };
+
+  // Ensure cars array is properly typed
+  const displayCars = cars as Car[];
 
   return (
     <div className="bg-gray-900 text-white min-h-screen font-sans">
@@ -493,8 +510,8 @@ export default function HomePage() {
             >
               {chunkArray(cars, 6).map((carGroup, groupIndex) => (
                 <div key={groupIndex} className="w-full flex-shrink-0 grid grid-cols-3 gap-4">
-                  {carGroup.map((car, carIndex) => (
-                    <div key={`${car.id}-${carIndex}`} className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                  {carGroup.map((car: Car) => (
+                    <div key={`${car.id}-${groupIndex}`} className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
                       <Image
                         src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${car.category}/${car.images[0]}`}
                         alt={car.name}

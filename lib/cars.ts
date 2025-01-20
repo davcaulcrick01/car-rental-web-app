@@ -1,48 +1,36 @@
 export interface Car {
   id: number;
   name: string;
+  category: string;
+  image: string;
+  images: string[];  // Array of image URLs
+  alt: string;
+  description: string;
+  price: number;
+  features?: string[];
   brand: string;
   type: string;
-  category: string;
-  year: number;
-  price: number;
-  threeDaySpecial: number;
-  description: string;
-  transmission: string;
   engine: string;
-  topSpeed: string;
-  images: string[];
-  rating?: number;
-  logo: string;
-  image: string;
-  alt: string;
-  features?: string[];
+  transmission: string;
+  year: number;
 }
 
-export const cars: Car[] = [
+const cars: Car[] = [
   {
     id: 1,
     name: "Luxury Car 1",
     category: "luxury",
     image: "car1.jpg",
+    images: ["car1.jpg", "car1-interior.jpg", "car1-back.jpg"],
     alt: "Luxury Car 1",
-    brand: "Rolls-Royce",
+    description: "A luxurious vehicle for a premium experience",
+    price: 500,
+    features: ["Leather seats", "Premium sound system", "GPS Navigation"],
+    brand: "Mercedes",
     type: "Sedan",
-    year: 2023,
-    price: 1500,
-    threeDaySpecial: 4000,
-    description: "The epitome of luxury motoring, featuring unparalleled comfort and sophistication.",
-    transmission: "8-speed automatic",
-    engine: "6.75L V12",
-    topSpeed: "155 mph",
-    images: [
-      "/images/cars/phantom-1.jpg",
-      "/images/cars/phantom-2.jpg",
-      "/images/cars/phantom-3.jpg"
-    ],
-    rating: 5,
-    logo: "/images/logos/rolls-royce.png",
-    features: ["Leather seats", "Premium sound system", "GPS Navigation"]
+    engine: "V8 4.0L",
+    transmission: "Automatic",
+    year: 2023
   },
   // Add more cars as needed
 ];

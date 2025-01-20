@@ -59,15 +59,11 @@ export default function BookingContent() {
         <div>
           <div className="relative h-64 rounded-lg overflow-hidden mb-4">
             <Image
-              src={selectedCar.images[0]}
+              src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${selectedCar.category}/${selectedCar.image}`}
               alt={selectedCar.name}
               fill
               className="object-cover"
             />
-          </div>
-          <h2 className="text-2xl font-bold mb-2">{selectedCar.name}</h2>
-          <p className="text-green-400 text-xl mb-4">${selectedCar.price}/day</p>
-          <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
               <span className="text-gray-400">Engine:</span>
               <p>{selectedCar.engine}</p>
