@@ -3,10 +3,9 @@ export interface Car {
   name: string;
   category: string;
   image: string;
-  images: string[];  // Array of image URLs
   alt: string;
-  description: string;
-  price: number;
+  description?: string;
+  price?: number;
   features?: string[];
   brand: string;
   type: string;
@@ -21,7 +20,6 @@ const cars: Car[] = [
     name: "Luxury Car 1",
     category: "luxury",
     image: "car1.jpg",
-    images: ["car1.jpg", "car1-interior.jpg", "car1-back.jpg"],
     alt: "Luxury Car 1",
     description: "A luxurious vehicle for a premium experience",
     price: 500,
