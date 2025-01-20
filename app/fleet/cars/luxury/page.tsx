@@ -109,7 +109,7 @@ export default function LuxuryFleetPage() {
             {luxuryCars.map((car) => (
               <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/luxury/${car.image}`}
+                  src={`https://car-rental-app-bucket.s3.amazonaws.com/car_images/cars/luxury/${car.image}`}
                   alt={car.name}
                   width={600}
                   height={400}

@@ -1,12 +1,18 @@
 'use client'
 
+import { useState } from 'react'
 import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Layout from '@/components/Layout'
 import BookingContent from './BookingContent'
 import Image from 'next/image'
+import { Car } from '@/lib/cars'
 
-export default function BookingPage() {
+interface BookingPageProps {
+  selectedCar: Car;
+}
+
+export default function BookingPage({ selectedCar }: BookingPageProps) {
   return (
     <Layout>
       <Suspense fallback={
@@ -23,7 +29,7 @@ export default function BookingPage() {
       }>
         <BookingContent />
         <Image
-          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/${selectedCar.category}/${selectedCar.image}`}
+          src={`https://car-rental-app-bucket.s3.amazonaws.com/car_images/cars/${selectedCar.category}/${selectedCar.image}`}
           alt={selectedCar.name}
           width={600}
           height={400}

@@ -15,15 +15,18 @@ export interface Car {
   rating?: number;
   logo: string;
   image: string;
+  alt: string;
 }
 
-const cars: Car[] = [
+export const cars: Car[] = [
   {
     id: 1,
-    name: "Rolls-Royce Phantom",
+    name: "Luxury Car 1",
+    category: "luxury",
+    image: "car1.jpg",
+    alt: "Luxury Car 1",
     brand: "Rolls-Royce",
     type: "Sedan",
-    category: "Luxury",
     year: 2023,
     price: 1500,
     threeDaySpecial: 4000,
@@ -37,8 +40,7 @@ const cars: Car[] = [
       "/images/cars/phantom-3.jpg"
     ],
     rating: 5,
-    logo: "/images/logos/rolls-royce.png",
-    image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/cars/luxury/rolls-royce-phantom.jpg`
+    logo: "/images/logos/rolls-royce.png"
   },
   // Add more cars as needed
 ];

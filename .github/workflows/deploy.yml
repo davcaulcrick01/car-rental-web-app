@@ -14,7 +14,7 @@ env:
   ECR_REPOSITORY: car-rental-app
   IMAGE_TAG: ${{ github.ref_type == 'tag' && github.ref_name || '0.0.1' }}
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
-  NEXT_PUBLIC_S3_BUCKET_URL: ${{ secrets.NEXT_PUBLIC_S3_BUCKET_URL }}
+  NEXT_PUBLIC_S3_BUCKET_URL: https://car-rental-app-bucket.s3.amazonaws.com/car_images/
 
 jobs:
   build-and-push:
