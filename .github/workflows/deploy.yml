@@ -7,7 +7,7 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY: car-rental-app
+  ECR_REPOSITORY: car-rental-web-app
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
@@ -37,20 +37,3 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-
-      - name: Trigger EC2 deployment
-        run: |
-          aws ec2 describe-instances \
-            --filters "Name=tag:Environment,Values=Production" "Name=instance-state-name,Values=running" \
-            --query 'Reservations[*].Instances[*].[InstanceId]' \
-            --output text | while read instance; do
-              aws ssm send-command \
-                --instance-ids "$instance" \
-                --document-name "AWS-RunShellScript" \
-                --parameters commands=[\
-                  "aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}",\
-                  "docker pull ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest",\
-                  "docker stop \$(docker ps -q) || true",\
-                  "docker rm \$(docker ps -a -q) || true",\
-                  "docker run -d -p 3000:3000 ${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest"\
-                ] 
