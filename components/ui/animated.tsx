@@ -1,10 +1,23 @@
 'use client'
 
+import { ReactNode, MouseEventHandler } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { useSpring, animated } from '@react-spring/web'
 
-export const AnimatedSection = ({ children, className = '' }) => {
+interface AnimatedSectionProps {
+  children: ReactNode;
+  className?: string;
+  onMouseEnter?: MouseEventHandler;
+  onMouseLeave?: MouseEventHandler;
+}
+
+export const AnimatedSection = ({ 
+  children, 
+  className = '', 
+  onMouseEnter, 
+  onMouseLeave 
+}: AnimatedSectionProps) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
@@ -17,13 +30,20 @@ export const AnimatedSection = ({ children, className = '' }) => {
       animate={inView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
       transition={{ duration: 0.8, ease: 'easeOut' }}
       className={className}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       {children}
     </motion.div>
   )
 }
 
-export const AnimatedCard = ({ children, delay = 0 }) => {
+interface AnimatedCardProps {
+  children: ReactNode;
+  delay?: number;
+}
+
+export const AnimatedCard = ({ children, delay = 0 }: AnimatedCardProps) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
@@ -46,7 +66,12 @@ export const AnimatedCard = ({ children, delay = 0 }) => {
   )
 }
 
-export const AnimatedText = ({ children, className = '' }) => {
+interface AnimatedTextProps {
+  children: ReactNode;
+  className?: string;
+}
+
+export const AnimatedText = ({ children, className = '' }: AnimatedTextProps) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
@@ -65,7 +90,13 @@ export const AnimatedText = ({ children, className = '' }) => {
   )
 }
 
-export const AnimatedImage = ({ src, alt, className = '' }) => {
+interface AnimatedImageProps {
+  src: string;
+  alt: string;
+  className?: string;
+}
+
+export const AnimatedImage = ({ src, alt, className = '' }: AnimatedImageProps) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
@@ -84,7 +115,13 @@ export const AnimatedImage = ({ src, alt, className = '' }) => {
   )
 }
 
-export const AnimatedButton = ({ children, onClick, className = '' }) => {
+interface AnimatedButtonProps {
+  children: ReactNode;
+  onClick: MouseEventHandler;
+  className?: string;
+}
+
+export const AnimatedButton = ({ children, onClick, className = '' }: AnimatedButtonProps) => {
   const springProps = useSpring({
     from: { scale: 1 },
     to: async (next) => {
