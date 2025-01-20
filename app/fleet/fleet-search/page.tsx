@@ -17,6 +17,10 @@ import {
 import Layout from '@/components/Layout';
 import cars, { Car } from '@/lib/cars';
 
+interface SelectChangeEvent {
+  value: string;
+}
+
 export default function FleetSearchPage() {
   const [selectedBrand, setSelectedBrand] = useState<string>('');
   const [selectedType, setSelectedType] = useState<string>('');
@@ -54,7 +58,7 @@ export default function FleetSearchPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <Select
             value={selectedBrand}
-            onValueChange={(value) => {
+            onValueChange={(value: string) => {
               setSelectedBrand(value);
               setSelectedType('');
               handleFilter();
@@ -75,7 +79,7 @@ export default function FleetSearchPage() {
 
           <Select
             value={selectedType}
-            onValueChange={(value) => {
+            onValueChange={(value: string) => {
               setSelectedType(value);
               handleFilter();
             }}
