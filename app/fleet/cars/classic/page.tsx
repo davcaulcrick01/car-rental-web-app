@@ -111,9 +111,8 @@ export default function ClassicCarsPage() {
                 <Image
                   src={car.images[0]}
                   alt={car.name}
-                  width={600}
-                  height={400}
-                  className="object-cover"
+                  fill
+                  className="object-cover rounded-t-lg"
                 />
               </div>
               <CardHeader>

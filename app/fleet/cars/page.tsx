@@ -10,19 +10,20 @@ import Layout from '@/components/Layout'
 import cars, { Car } from '@/lib/cars'
 import { fleetCategories } from '@/lib/constants'
 
-interface Filters {
+interface FilterOptions {
+  brand?: string;
   type?: string;
-  category?: string;
   minPrice?: number;
   maxPrice?: number;
+  category?: string;
 }
 
 export default function FleetCarsPage() {
   const [filteredCars, setFilteredCars] = useState<Car[]>(cars);
-  const [filters, setFilters] = useState<Filters>({});
 
-  const handleFilter = () => {
-    const filtered = cars.filter((car: Car) => 
+  const handleFilter = (filters: FilterOptions) => {
+    const filtered = cars.filter((car) =>
+      (!filters.brand || car.brand === filters.brand) &&
       (!filters.type || car.type === filters.type) &&
       (!filters.category || car.category === filters.category) &&
       (!filters.minPrice || car.price >= filters.minPrice) &&

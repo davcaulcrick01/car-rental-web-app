@@ -1,35 +1,28 @@
-"use client"
+'use client'
 
-import { useState, Suspense } from 'react'
-import Image from 'next/image'
-import { Car } from '@/lib/cars'
+import { Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
+import Layout from '@/components/Layout'
 import BookingContent from './BookingContent'
-import Loading from './loading'
 
-function BookingPage() {
+export default function BookingPage() {
   return (
-    <Suspense fallback={<Loading />}>
-      <BookingPageContent />
-    </Suspense>
-  );
-}
-
-function BookingPageContent() {
-  const [selectedCar, setSelectedCar] = useState<Car | null>(null)
-
-  return (
-    <div>
-      <BookingContent selectedCar={selectedCar} />
-      {selectedCar && (
-        <Image
-          src={selectedCar.images[0]}
-          alt={selectedCar.name}
-          width={600}
-          height={400}
-          className="object-cover"
-        />
-      )}
-    </div>
+    <Layout>
+      <Suspense fallback={
+        <div className="container mx-auto px-4 py-8">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-700 rounded w-1/4 mb-8"></div>
+            <div className="space-y-4">
+              <div className="h-48 bg-gray-700 rounded"></div>
+              <div className="h-24 bg-gray-700 rounded"></div>
+              <div className="h-12 bg-gray-700 rounded w-1/2"></div>
+            </div>
+          </div>
+        </div>
+      }>
+        <BookingContent />
+      </Suspense>
+    </Layout>
   )
 }
 

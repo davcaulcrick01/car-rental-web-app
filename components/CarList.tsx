@@ -17,8 +17,7 @@ export default function CarList({ cars }: CarListProps) {
             <Image
               src={car.images[0]}
               alt={car.name}
-              width={600}
-              height={400}
+              fill
               className="object-cover"
             />
           </div>

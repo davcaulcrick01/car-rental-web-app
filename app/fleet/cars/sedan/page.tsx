@@ -24,7 +24,7 @@ import cars from '@/lib/cars'
 import { fleetCategories } from '@/lib/constants'
 import Breadcrumbs from '@/components/Breadcrumbs'
 
-const sedanCars = cars.filter(car => car.category === 'sedan')
+const sedanCars = cars.filter(car => car.category === 'Sedan')
 
 const brandLogos = [
   { name: "Toyota", logo: "/images/toyota/toyota-logo.png" },
@@ -111,8 +111,7 @@ export default function SedanCarsPage() {
                 <Image
                   src={car.images[0]}
                   alt={car.name}
-                  width={600}
-                  height={400}
+                  fill
                   className="object-cover rounded-t-lg"
                 />
               </div>

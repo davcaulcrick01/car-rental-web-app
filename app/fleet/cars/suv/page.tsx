@@ -18,7 +18,7 @@ import cars from '@/lib/cars'
 import { fleetCategories } from '@/lib/constants'
 import Breadcrumbs from '@/components/Breadcrumbs'
 
-const suvCars = cars.filter(car => car.category === 'SUVs')
+const suvCars = cars.filter(car => car.category === 'SUV')
 
 const brandLogos = [
   { name: "Range Rover", logo: "/images/range-rover/range-rover-logo.png" },
@@ -105,10 +105,23 @@ export default function SUVCarsPage() {
                 <Image
                   src={car.images[0]}
                   alt={car.name}
-                  width={600}
-                  height={400}
-                  className="object-cover rounded-t-lg"
+                  width={400}
+                  height={300}
+                  className="w-full h-48 object-cover"
                 />
+                <div className="p-4">
+                  <h2 className="text-xl font-bold mb-4">{car.name}</h2>
+                  <div className="flex justify-between items-center">
+                    <Button variant="outline" className="text-white border-white hover:bg-green-600 hover:text-white">
+                      Call For Pricing
+                    </Button>
+                    <Link href={`/booking?car=${car.id}`}>
+                      <Button className="bg-green-600 hover:bg-green-700">
+                        Book Now
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
               </div>
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">

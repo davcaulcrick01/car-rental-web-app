@@ -24,7 +24,7 @@ import cars from '@/lib/cars'
 import { fleetCategories } from '@/lib/constants'
 import Breadcrumbs from '@/components/Breadcrumbs'
 
-const sportCars = cars.filter(car => car.category === 'sport')
+const sportCars = cars.filter(car => car.category === 'Sport')
 
 const brandLogos = [
   { name: "Porsche", logo: "/images/porsche/porsche-logo.png" },
@@ -111,8 +111,7 @@ export default function SportCarsPage() {
                 <Image
                   src={car.images[0]}
                   alt={car.name}
-                  width={600}
-                  height={400}
+                  fill
                   className="object-cover rounded-t-lg"
                 />
               </div>

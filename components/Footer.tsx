@@ -49,6 +49,30 @@ export default function Footer() {
             <div className="flex space-x-4">
               {/* Social media icons would go here */}
             </div>
+          
+          {/* Right: Map Section */}
+          <div className="flex justify-center">
+                <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3302.9602561302815!2d-118.38327968478277!3d34.06353682599895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2be18c321320f%3A0xdf6022be4d4116e5!2sRodeo%20Exotic%20Car%20Rentals!5e0!3m2!1sen!2sus!4v1635240197891!5m2!1sen!2sus"
+                width="100%"
+                height="400"
+                allowFullScreen={true}
+                loading="lazy"
+                title="Location Map"
+                className="rounded-lg"
+                ></iframe>
+            </div>
+            
+           {/* Center: Payment Cards Section */}
+           <div className="flex flex-col items-center justify-center space-y-6">
+            <h4 className="text-lg font-semibold text-white mb-2">Payment Cards Accepted</h4>
+            <Image 
+              src="/images/logos/accepted-credit-card.png" 
+              alt="Accepted Payment Cards" 
+              width={400} 
+              height={100}
+              className="mx-auto"
+            />
           </div>
         </div>
         <Image 
