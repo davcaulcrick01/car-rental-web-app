@@ -5,6 +5,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export type ButtonVariant = "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
+export type ButtonSize = "default" | "sm" | "lg" | "icon"
+
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant
+  size?: ButtonSize
+  asChild?: boolean
+}
+
 // lib/cars.ts
 const cars = [
   { id: 1, name: "FORD MUSTANG", year: "1965", price: 299, image: "/images/mustang.jpg", type: "Classic", brand: "Ford" },
