@@ -14,6 +14,12 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   asChild?: boolean
 }
 
+export interface SelectChangeEvent {
+  target: {
+    value: string;
+  };
+}
+
 // lib/cars.ts
 const cars = [
   { id: 1, name: "FORD MUSTANG", year: "1965", price: 299, image: "/images/mustang.jpg", type: "Classic", brand: "Ford" },

@@ -4,7 +4,8 @@ import { cn } from "@/lib/utils"
 
 /** @see https://www.radix-ui.com/primitives/docs/components/checkbox#custom-apis */
 interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
-  // Extended for future custom props
+  className?: string;
+  id?: string;
 }
 
 const Checkbox = React.forwardRef<
