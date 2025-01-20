@@ -7,25 +7,17 @@ const nextConfig = {
   },
   output: 'standalone',
   images: {
-    domains: [process.env.NEXT_PUBLIC_S3_BUCKET_DOMAIN],
+    domains: ['car-rental-app-bucket.s3.amazonaws.com'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**.amazonaws.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: '**.cloudfront.net',
         pathname: '/**',
       }
     ]
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-  },
-  experimental: {
-    appDir: true,
   },
   webpack: (config) => {
     config.resolve.alias = {
