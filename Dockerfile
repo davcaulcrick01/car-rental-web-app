@@ -12,10 +12,10 @@ RUN apk add --no-cache libc6-compat python3 make g++
 # Copy package files
 COPY package*.json ./
 
-# Clean install dependencies
+# Clean install dependencies with verbose logging
 RUN npm cache clean --force && \
-    npm install --legacy-peer-deps --production=false && \
-    npm install @next/swc-linux-x64-musl
+    npm install --legacy-peer-deps --production=false --verbose && \
+    npm install @next/swc-linux-x64-musl --verbose
 
 # Copy all files
 COPY . .
@@ -24,7 +24,7 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
-# Build application with verbose output
+# Build application
 RUN npm run build
 
 # --------------------
