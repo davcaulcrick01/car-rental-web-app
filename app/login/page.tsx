@@ -14,21 +14,12 @@ import Header from '@/components/Header'
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-
-    try {
-      // Add your login logic here
-      console.log('Logging in with:', { email, password })
-      router.push('/dashboard')
-    } catch (err) {
-      setError('Invalid email or password')
-    }
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault()
+    console.log('Dummy login successful')
+    // Simulate login success and redirect to the homepage
+    router.push('/')
   }
 
   const handleDummyOAuthSignIn = (provider: string) => {
@@ -61,19 +52,11 @@ export default function LoginPage() {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            {error && (
-              <div className="mb-4 p-2 bg-red-500/10 border border-red-500 rounded text-red-500 text-sm">
-                {error}
-              </div>
-            )}
-
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="email" className="text-sm font-medium text-gray-300">
-                    Email address
-                  </Label>
-                </div>
+                <Label htmlFor="email" className="block text-sm font-medium text-gray-300">
+                  Email address
+                </Label>
                 <div className="mt-1">
                   <Input
                     id="email"
@@ -81,27 +64,15 @@ export default function LoginPage() {
                     type="email"
                     autoComplete="email"
                     required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                     className="bg-gray-700 text-white"
                   />
                 </div>
               </div>
 
               <div>
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password" className="text-sm font-medium text-gray-300">
-                    Password
-                  </Label>
-                  <div className="text-sm">
-                    <Link
-                      href="/forgot-password"
-                      className="font-medium text-blue-500 hover:text-blue-400"
-                    >
-                      Forgot your password?
-                    </Link>
-                  </div>
-                </div>
+                <Label htmlFor="password" className="block text-sm font-medium text-gray-300">
+                  Password
+                </Label>
                 <div className="mt-1 relative">
                   <Input
                     id="password"
@@ -109,8 +80,6 @@ export default function LoginPage() {
                     type={showPassword ? 'text' : 'password'}
                     autoComplete="current-password"
                     required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
                     className="bg-gray-700 text-white pr-10"
                   />
                   <button
@@ -133,6 +102,12 @@ export default function LoginPage() {
                   <Label htmlFor="remember-me" className="ml-2 block text-sm text-gray-300">
                     Remember me
                   </Label>
+                </div>
+
+                <div className="text-sm">
+                  <a href="#" className="font-medium text-blue-500 hover:text-blue-400">
+                    Forgot your password?
+                  </a>
                 </div>
               </div>
 

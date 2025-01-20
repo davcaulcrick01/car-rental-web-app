@@ -2,387 +2,337 @@
 
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
-import Layout from '@/components/Layout';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import cars, { Car } from '@/lib/cars';
+import cars from '@/lib/cars';
 
 export default function FleetSearchPage() {
-  // Search and filter states
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBrand, setSelectedBrand] = useState('');
-  const [selectedType, setSelectedType] = useState('');
-  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedMake, setSelectedMake] = useState('');
+  const [selectedModel, setSelectedModel] = useState('');
+  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedFuel, setSelectedFuel] = useState('');
   const [selectedTransmission, setSelectedTransmission] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [priceRange, setPriceRange] = useState([0, 5000]);
-  const [filteredCars, setFilteredCars] = useState<Car[]>(cars);
-  const [sortBy, setSortBy] = useState('price-low');
-  const [currentPage, setCurrentPage] = useState(1);
-  const carsPerPage = 9;
+  const [selectedCapacity, setSelectedCapacity] = useState('');
 
-  // Memoized filter options
+  // Get unique brands
   const brands = useMemo(() => 
-    Array.from(new Set(cars.map(car => car.brand)))
-      .filter((brand): brand is string => typeof brand === 'string')
-      .sort(),
+    Array.from(new Set(cars.map((car) => car.brand))).sort(),
     []
   );
 
-  const types = useMemo(() => {
-    const filteredCars = selectedBrand
+  // Get makes based on selected brand
+  const makes = useMemo(() => {
+    const filteredCars = selectedBrand 
       ? cars.filter(car => car.brand === selectedBrand)
       : cars;
-    return Array.from(new Set(filteredCars.map(car => car.type)))
-      .filter((type): type is string => typeof type === 'string')
-      .sort();
+    return Array.from(new Set(filteredCars.map((car) => car.make))).sort();
   }, [selectedBrand]);
 
-  const years = useMemo(() => 
-    Array.from(new Set(cars.map(car => car.year.toString())))
-      .sort((a, b) => parseInt(b) - parseInt(a)),
+  // Get models based on selected brand and make
+  const models = useMemo(() => {
+    let filteredCars = cars;
+    if (selectedBrand) {
+      filteredCars = filteredCars.filter(car => car.brand === selectedBrand);
+    }
+    if (selectedMake) {
+      filteredCars = filteredCars.filter(car => car.make === selectedMake);
+    }
+    return Array.from(new Set(filteredCars.map((car) => car.model))).sort();
+  }, [selectedBrand, selectedMake]);
+
+  // Reset dependent filters when parent filter changes
+  const handleBrandChange = (value: string) => {
+    setSelectedBrand(value);
+    setSelectedMake('');
+    setSelectedModel('');
+  };
+
+  const handleMakeChange = (value: string) => {
+    setSelectedMake(value);
+    setSelectedModel('');
+  };
+
+  // Rest of the filters remain the same
+  const classes = useMemo(() => 
+    Array.from(new Set(cars.map((car) => car.class))).sort(),
     []
   );
-
+  const fuels = useMemo(() => 
+    Array.from(new Set(cars.map((car) => car.fuel))).sort(),
+    []
+  );
   const transmissions = useMemo(() => 
-    Array.from(new Set(cars.map(car => car.transmission)))
-      .filter((trans): trans is string => typeof trans === 'string')
-      .sort(),
+    Array.from(new Set(cars.map((car) => car.transmission))).sort(),
     []
   );
-
-  const categories = useMemo(() => 
-    Array.from(new Set(cars.map(car => car.category)))
-      .filter((cat): cat is string => typeof cat === 'string')
-      .sort(),
+  const capacities = useMemo(() => 
+    Array.from(new Set(cars.map((car) => car.capacity))).sort(),
     []
   );
 
   // Filter cars based on all criteria
-  const handleFilter = () => {
-    let filtered = cars.filter((car) => {
-      const matchesSearch = car.name.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesBrand = !selectedBrand || car.brand === selectedBrand;
-      const matchesType = !selectedType || car.type === selectedType;
-      const matchesYear = !selectedYear || car.year.toString() === selectedYear;
-      const matchesTransmission = !selectedTransmission || car.transmission === selectedTransmission;
-      const matchesCategory = !selectedCategory || car.category === selectedCategory;
-      const matchesPrice = car.price >= priceRange[0] && car.price <= priceRange[1];
-      
-      return matchesSearch && matchesBrand && matchesType && matchesYear && 
-             matchesTransmission && matchesCategory && matchesPrice;
-    });
+  const filteredCars = cars.filter((car) => {
+    const matchesSearchTerm = car.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesBrand = selectedBrand ? car.brand === selectedBrand : true;
+    const matchesMake = selectedMake ? car.make === selectedMake : true;
+    const matchesModel = selectedModel ? car.model === selectedModel : true;
+    const matchesClass = selectedClass ? car.class === selectedClass : true;
+    const matchesFuel = selectedFuel ? car.fuel === selectedFuel : true;
+    const matchesTransmission = selectedTransmission ? car.transmission === selectedTransmission : true;
+    const matchesCapacity = selectedCapacity ? car.capacity === Number(selectedCapacity) : true;
 
-    // Sort filtered cars
-    filtered = sortCars(filtered, sortBy);
-    setFilteredCars(filtered);
-    setCurrentPage(1); // Reset to first page when filtering
-  };
-
-  // Sort cars based on selected criteria
-  const sortCars = (carsToSort: Car[], sortCriteria: string) => {
-    return [...carsToSort].sort((a, b) => {
-      switch (sortCriteria) {
-        case 'price-low':
-          return a.price - b.price;
-        case 'price-high':
-          return b.price - a.price;
-        case 'year-new':
-          return b.year - a.year;
-        case 'year-old':
-          return a.year - b.year;
-        case 'name-asc':
-          return a.name.localeCompare(b.name);
-        case 'name-desc':
-          return b.name.localeCompare(a.name);
-        default:
-          return 0;
-      }
-    });
-  };
-
-  // Reset all filters
-  const resetFilters = () => {
-    setSearchTerm('');
-    setSelectedBrand('');
-    setSelectedType('');
-    setSelectedYear('');
-    setSelectedTransmission('');
-    setSelectedCategory('');
-    setPriceRange([0, 5000]);
-    setSortBy('price-low');
-    setCurrentPage(1);
-    setFilteredCars(cars);
-  };
-
-  // Pagination
-  const indexOfLastCar = currentPage * carsPerPage;
-  const indexOfFirstCar = indexOfLastCar - carsPerPage;
-  const currentCars = filteredCars.slice(indexOfFirstCar, indexOfLastCar);
-  const totalPages = Math.ceil(filteredCars.length / carsPerPage);
-
-  // Update filters when any criteria changes
-  useEffect(() => {
-    handleFilter();
-  }, [searchTerm, selectedBrand, selectedType, selectedYear, selectedTransmission, 
-      selectedCategory, priceRange, sortBy]);
-
-  // Update the price range handler to handle the correct type
-  const handlePriceRangeChange = (value: number[]) => {
-    setPriceRange(value);
-  };
+    return (
+      matchesSearchTerm &&
+      matchesBrand &&
+      matchesMake &&
+      matchesModel &&
+      matchesClass &&
+      matchesFuel &&
+      matchesTransmission &&
+      matchesCapacity
+    );
+  });
 
   return (
     <div className="bg-black text-white min-h-screen">
       <Header />
+
       <main className="pt-24 pb-12">
         <div className="container mx-auto px-4">
-          <Link href="/fleet" className="inline-flex items-center text-green-600 hover:text-green-500 mb-8">
+          <Link
+            href="/fleet"
+            className="inline-flex items-center text-green-600 hover:text-green-500 mb-8"
+          >
             <ChevronLeft className="mr-2" /> Back to Fleet
           </Link>
 
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-4xl font-bold">Search Our Fleet</h1>
-            <div className="flex items-center gap-4">
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-[200px]">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="price-low">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high">Price: High to Low</SelectItem>
-                  <SelectItem value="year-new">Year: Newest First</SelectItem>
-                  <SelectItem value="year-old">Year: Oldest First</SelectItem>
-                  <SelectItem value="name-asc">Name: A to Z</SelectItem>
-                  <SelectItem value="name-desc">Name: Z to A</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button onClick={resetFilters} variant="outline" className="gap-2">
-                <X className="h-4 w-4" /> Reset Filters
-              </Button>
-            </div>
-          </div>
+          <h1 className="text-4xl font-bold mb-8">Search Our Fleet</h1>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="flex flex-col md:flex-row gap-8">
             {/* Sidebar Filters */}
-            <div className="lg:col-span-1">
-              <div className="bg-gray-900 rounded-lg p-6 sticky top-24">
-                <div className="space-y-6">
-                  {/* Search Input */}
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Search</label>
-                    <div className="relative">
-                      <Input
-                        type="text"
-                        placeholder="Search cars..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10"
-                      />
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    </div>
-                  </div>
+            <div className="md:w-1/4">
+              <div className="bg-gray-900 p-4 rounded-lg sticky top-24">
+                <h2 className="text-xl font-bold mb-4">Filters</h2>
+                {/* Search Input */}
+                <Input
+                  type="text"
+                  placeholder="Search cars..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="mb-4"
+                />
 
-                  {/* Brand Filter */}
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Brand</label>
-                    <Select value={selectedBrand} onValueChange={setSelectedBrand}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Brand" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="">All Brands</SelectItem>
-                        {brands.map((brand) => (
-                          <SelectItem key={brand} value={brand}>{brand}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Type Filter */}
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Type</label>
-                    <Select value={selectedType} onValueChange={setSelectedType}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="">All Types</SelectItem>
-                        {types.map((type) => (
-                          <SelectItem key={type} value={type}>{type}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Year Filter */}
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Year</label>
-                    <Select value={selectedYear} onValueChange={setSelectedYear}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Year" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="">All Years</SelectItem>
-                        {years.map((year) => (
-                          <SelectItem key={year} value={year}>{year}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Price Range Filter */}
-                  <div>
-                    <label className="text-sm font-medium mb-4 block">
-                      Price Range: ${priceRange[0]} - ${priceRange[1]}
-                    </label>
-                    <Slider
-                      min={0}
-                      max={5000}
-                      step={100}
-                      value={priceRange}
-                      onValueChange={handlePriceRangeChange}
-                    />
-                  </div>
-
-                  {/* Category Filter */}
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Category</label>
-                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="">All Categories</SelectItem>
-                        {categories.map((category) => (
-                          <SelectItem key={category} value={category}>{category}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Transmission Filter */}
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Transmission</label>
-                    <Select value={selectedTransmission} onValueChange={setSelectedTransmission}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Transmission" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="">All Transmissions</SelectItem>
-                        {transmissions.map((transmission) => (
-                          <SelectItem key={transmission} value={transmission}>{transmission}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                {/* Brand Filter */}
+                <div className="mb-4">
+                  <label className="block font-semibold mb-2" htmlFor="brand-select">
+                    Brand
+                  </label>
+                  <select
+                    id="brand-select"
+                    value={selectedBrand}
+                    onChange={(e) => handleBrandChange(e.target.value)}
+                    className="bg-black border border-gray-700 text-white p-2 rounded w-full"
+                  >
+                    <option value="">All Brands</option>
+                    {brands.map((brand) => (
+                      <option key={brand} value={brand}>
+                        {brand}
+                      </option>
+                    ))}
+                  </select>
                 </div>
+
+                {/* Make Filter */}
+                <div className="mb-4">
+                  <label className="block font-semibold mb-2" htmlFor="make-select">
+                    Make
+                  </label>
+                  <select
+                    id="make-select"
+                    value={selectedMake}
+                    onChange={(e) => handleMakeChange(e.target.value)}
+                    className="bg-black border border-gray-700 text-white p-2 rounded w-full"
+                  >
+                    <option value="">All Makes</option>
+                    {makes.map((make) => (
+                      <option key={make} value={make}>
+                        {make}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Model Filter */}
+                <div className="mb-4">
+                  <label className="block font-semibold mb-2" htmlFor="model-select">
+                    Model
+                  </label>
+                  <select
+                    id="model-select"
+                    value={selectedModel}
+                    onChange={(e) => setSelectedModel(e.target.value)}
+                    className="bg-black border border-gray-700 text-white p-2 rounded w-full"
+                  >
+                    <option value="">All Models</option>
+                    {models.map((model) => (
+                      <option key={model} value={model}>
+                        {model}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Class Filter */}
+                <div className="mb-4">
+                  <label className="block font-semibold mb-2" htmlFor="class-select">
+                    Class
+                  </label>
+                  <select
+                    id="class-select"
+                    value={selectedClass}
+                    onChange={(e) => setSelectedClass(e.target.value)}
+                    className="bg-black border border-gray-700 text-white p-2 rounded w-full"
+                  >
+                    <option value="">All Classes</option>
+                    {classes.map((carClass) => (
+                      <option key={carClass} value={carClass}>
+                        {carClass}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Fuel Type Filter */}
+                <div className="mb-4">
+                  <label className="block font-semibold mb-2" htmlFor="fuel-select">
+                    Fuel Type
+                  </label>
+                  <select
+                    id="fuel-select"
+                    value={selectedFuel}
+                    onChange={(e) => setSelectedFuel(e.target.value)}
+                    className="bg-black border border-gray-700 text-white p-2 rounded w-full"
+                  >
+                    <option value="">All Fuel Types</option>
+                    {fuels.map((fuel) => (
+                      <option key={fuel} value={fuel}>
+                        {fuel}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Transmission Filter */}
+                <div className="mb-4">
+                  <label className="block font-semibold mb-2" htmlFor="transmission-select">
+                    Transmission
+                  </label>
+                  <select
+                    id="transmission-select"
+                    value={selectedTransmission}
+                    onChange={(e) => setSelectedTransmission(e.target.value)}
+                    className="bg-black border border-gray-700 text-white p-2 rounded w-full"
+                  >
+                    <option value="">All Transmissions</option>
+                    {transmissions.map((transmission) => (
+                      <option key={transmission} value={transmission}>
+                        {transmission}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Capacity Filter */}
+                <div className="mb-4">
+                  <label className="block font-semibold mb-2" htmlFor="capacity-select">
+                    Capacity
+                  </label>
+                  <select
+                    id="capacity-select"
+                    value={selectedCapacity}
+                    onChange={(e) => setSelectedCapacity(e.target.value)}
+                    className="bg-black border border-gray-700 text-white p-2 rounded w-full"
+                  >
+                    <option value="">All Capacities</option>
+                    {capacities.map((capacity) => (
+                      <option key={capacity} value={capacity}>
+                        {capacity} Passengers
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Reset Filters Button */}
+                <Button
+                  onClick={() => {
+                    setSelectedBrand('');
+                    setSelectedMake('');
+                    setSelectedModel('');
+                    setSelectedClass('');
+                    setSelectedFuel('');
+                    setSelectedTransmission('');
+                    setSelectedCapacity('');
+                    setSearchTerm('');
+                  }}
+                  className="w-full bg-red-600 hover:bg-red-700 text-white"
+                >
+                  Reset Filters
+                </Button>
               </div>
             </div>
 
-            {/* Results Grid */}
-            <div className="lg:col-span-3">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {currentCars.map((car) => (
-                  <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
-                    <div className="relative h-48">
-                      <Image
-                        src={car.images[0]}
-                        alt={car.name}
-                        width={600}
-                        height={400}
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold mb-2">{car.name}</h3>
-                      <div className="flex justify-between items-center mb-4">
-                        <span className="text-green-400 text-lg">${car.price}/day</span>
-                        <span className="text-gray-400">{car.category}</span>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                        <div>
-                          <span className="text-gray-400">Brand:</span>
-                          <p>{car.brand}</p>
-                        </div>
-                        <div>
-                          <span className="text-gray-400">Type:</span>
-                          <p>{car.type}</p>
-                        </div>
-                        <div>
-                          <span className="text-gray-400">Year:</span>
-                          <p>{car.year}</p>
-                        </div>
-                        <div>
-                          <span className="text-gray-400">Transmission:</span>
-                          <p>{car.transmission}</p>
-                        </div>
-                      </div>
-                      <Link href={`/booking?car=${car.id}`}>
-                        <Button className="w-full">
-                          Book Now
-                          <ChevronRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex justify-center gap-2 mt-8">
-                  <Button
-                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                    variant="outline"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <Button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      variant={currentPage === page ? "default" : "outline"}
+            {/* Main Content */}
+            <div className="md:w-3/4">
+              {filteredCars.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredCars.map((car) => (
+                    <div
+                      key={car.id}
+                      className="bg-gray-900 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300"
                     >
-                      {page}
-                    </Button>
+                      <Image
+                        src={car.image}
+                        alt={car.name}
+                        width={400}
+                        height={300}
+                        className="w-full h-48 object-cover"
+                      />
+                      <div className="p-4">
+                        <h2 className="text-xl font-bold mb-2">{car.name}</h2>
+                        <div className="flex flex-wrap gap-2 text-sm text-gray-400 mb-4">
+                          <span>{car.brand}</span>
+                          <span>{car.make}</span>
+                          <span>{car.model}</span>
+                          <span>{car.class}</span>
+                          <span>{car.fuel}</span>
+                          <span>{car.transmission}</span>
+                          <span>{car.capacity} Passengers</span>
+                        </div>
+                        <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
+                          Call for Pricing
+                        </Button>
+                      </div>
+                    </div>
                   ))}
-                  <Button
-                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                    variant="outline"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
                 </div>
-              )}
-
-              {filteredCars.length === 0 && (
-                <div className="text-center py-12">
-                  <p className="text-gray-400 text-lg">
-                    No cars match your search criteria. Please try different filters.
-                  </p>
+              ) : (
+                <div className="text-center mt-16">
+                  <p className="text-xl">No cars match your search criteria.</p>
                 </div>
               )}
             </div>
           </div>
         </div>
       </main>
+
       <Footer />
     </div>
   );

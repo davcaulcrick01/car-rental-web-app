@@ -14,10 +14,10 @@ import {
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import cars from '@/lib/cars'
-import { fleetCategories } from '@/lib/constants'
+import { fleetCategories } from '@/app/fleet/page'
 import Breadcrumbs from '@/components/Breadcrumbs'
 
-const luxuryCars = cars.filter(car => car.category === 'Luxury')
+const luxuryCars = cars.filter(car => car.category === 'luxury')
 
 const brandLogos = [
   { name: "Mercedes", logo: "/images/mercedes/mercedes-logo.png" },
@@ -91,11 +91,11 @@ export default function LuxuryFleetPage() {
           {/* Fleet Categories Navigation */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             {fleetCategories.map((category) => (
-              <Link key={category.name} href={category.link}>
+              <Link key={category.name} href={category.path}>
                 <Button
-                  variant={category.name === "Luxury Cars" ? "default" : "outline"}
+                  variant={category.name === "Luxury Fleet" ? "default" : "outline"}
                   className={`text-white border-white hover:bg-green-600 hover:text-white transition-colors ${
-                    category.name === "Luxury Cars" ? 'bg-green-600' : ''
+                    category.name === "Luxury Fleet" ? 'bg-green-600' : ''
                   }`}
                 >
                   {category.name}
@@ -108,15 +108,13 @@ export default function LuxuryFleetPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {luxuryCars.map((car) => (
               <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
-                <div className="relative h-48">
-                  <Image
-                    src={car.images[0]}
-                    alt={car.name}
-                    width={600}
-                    height={400}
-                    className="object-cover"
-                  />
-                </div>
+                <Image
+                  src={car.images[0]}
+                  alt={car.name}
+                  width={400}
+                  height={300}
+                  className="w-full h-48 object-cover"
+                />
                 <div className="p-4">
                   <h2 className="text-xl font-bold mb-4">{car.name}</h2>
                   <div className="flex justify-between items-center">

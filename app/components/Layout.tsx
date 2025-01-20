@@ -1,6 +1,5 @@
 import Header from '../../components/Header'
 import Footer from './Footer'
-import React from "react"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,4 +12,3 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     </div>
   )
 }
-

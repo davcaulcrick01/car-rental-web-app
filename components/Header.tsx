@@ -39,23 +39,93 @@ export default function Header() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
   return (
-    <header className="bg-white shadow-md">
-      <nav className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          <Image 
-            src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/logo.png`}
-            alt="Car Rental Logo"
-            width={150}
-            height={50}
+    <header className="bg-black bg-opacity-90 py-4 fixed w-full z-50">
+      <div className="container mx-auto flex items-center justify-between px-4">
+        {/* Left: Logo */}
+        <div className="flex-shrink-0 mr-8">
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/images/logos/GreyZone-Exotics-01.png"
+              alt="GreyZone Exotics Logo"
+              width={100}
+              height={50}
+              className="mr-2"
+            />
+            <span className="text-xl font-bold text-white">GreyZone Exotics</span>
+          </Link>
+        </div>
+
+        {/* Middle: Navigation (Desktop) */}
+        <nav className="hidden lg:flex items-center space-x-6">
+          <NavItem href="/" label="Home" />
+          <DropdownNavItem
+            label="Fleet"
+            items={fleetCategories}
+            isActive={activeDropdown === 'fleet'}
+            setActiveDropdown={setActiveDropdown}
+            mainLink="/fleet"
           />
-          <div className="hidden md:flex space-x-4">
-            <Link href="/" className="hover:text-gray-600">Home</Link>
-            <Link href="/fleet" className="hover:text-gray-600">Fleet</Link>
-            <Link href="/about" className="hover:text-gray-600">About</Link>
-            <Link href="/contact" className="hover:text-gray-600">Contact</Link>
+          <DropdownNavItem
+            label="Services"
+            items={serviceCategories}
+            isActive={activeDropdown === 'services'}
+            setActiveDropdown={setActiveDropdown}
+            mainLink="/services"
+          />
+          <DropdownNavItem
+            label="About Us"
+            items={aboutUsCategories}
+            isActive={activeDropdown === 'about'}
+            setActiveDropdown={setActiveDropdown}
+            mainLink="/about"
+          />
+          <NavItem href="/faq" label="FAQ" />
+          <NavItem href="/requirements" label="Requirements" />
+          <NavItem href="/reserve" label="Reserve Now" />
+          <NavItem href="/contact" label="Contact Us" />
+        </nav>
+
+        {/* Right: Call to Action buttons (Desktop) */}
+        <div className="hidden lg:flex items-center space-x-2">
+          <Button className="bg-green-600 hover:bg-green-700 text-white text-sm px-2 py-1">Call Now</Button>
+          <Link href="/login">
+            <Button variant="outline" className="text-white border-white hover:bg-white hover:text-black text-sm px-2 py-1">Login</Button>
+          </Link>
+          <Link href="/signup">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-2 py-1">Sign Up</Button>
+          </Link>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button className="lg:hidden text-white" onClick={toggleMenu}>
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="lg:hidden bg-black bg-opacity-90 py-4">
+          <nav className="flex flex-col items-center space-y-4">
+            <NavItem href="/" label="Home" />
+            <MobileDropdownNavItem label="Fleet" items={fleetCategories} mainLink="/fleet" />
+            <MobileDropdownNavItem label="Services" items={serviceCategories} mainLink="/services" />
+            <MobileDropdownNavItem label="About Us" items={aboutUsCategories} mainLink="/about" />
+            <NavItem href="/faq" label="FAQ" />
+            <NavItem href="/requirements" label="Requirements" />
+            <NavItem href="/reserve" label="Reserve Now" />
+            <NavItem href="/contact" label="Contact Us" />
+          </nav>
+          <div className="flex flex-col items-center space-y-4 mt-4">
+            <Button className="bg-green-600 hover:bg-green-700 text-white w-full max-w-xs">Call Now</Button>
+            <Link href="/login" className="w-full max-w-xs">
+              <Button variant="outline" className="text-white border-white hover:bg-white hover:text-black w-full">Login</Button>
+            </Link>
+            <Link href="/signup" className="w-full max-w-xs">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full">Sign Up</Button>
+            </Link>
           </div>
         </div>
-      </nav>
+      )}
     </header>
   )
 }

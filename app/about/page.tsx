@@ -56,11 +56,10 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="relative h-[60vh] flex items-center justify-center">
         <Image
-          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/about-hero.jpg`}
-          alt="About Us"
-          width={1200}
-          height={600}
-          className="object-cover"
+          src="/images/about-hero.jpg"
+          alt="Luxury Cars"
+          fill
+          className="object-cover brightness-50"
         />
         <div className="relative z-10 text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">Redefining Luxury</h1>
