@@ -1,11 +1,20 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import Image from 'next/image'
 import { Car } from '@/lib/cars'
 import BookingContent from './BookingContent'
+import Loading from './loading'
 
-export default function BookingPage() {
+function BookingPage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <BookingPageContent />
+    </Suspense>
+  );
+}
+
+function BookingPageContent() {
   const [selectedCar, setSelectedCar] = useState<Car | null>(null)
 
   return (
@@ -23,3 +32,5 @@ export default function BookingPage() {
     </div>
   )
 }
+
+export default BookingPage;
