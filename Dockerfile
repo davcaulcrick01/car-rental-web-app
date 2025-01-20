@@ -1,7 +1,5 @@
-# --------------------
-# 1) Build stage
-# --------------------
-FROM --platform=linux/arm64 node:18-alpine AS builder
+# Build stage
+FROM --platform=$BUILDPLATFORM node:18-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -15,7 +13,7 @@ COPY package*.json ./
 # Clean install dependencies with verbose logging
 RUN npm cache clean --force && \
     NEXT_TELEMETRY_DISABLED=1 npm install --legacy-peer-deps --production=false --verbose && \
-    npm install @next/swc-linux-arm64-musl --verbose
+    npm install @next/swc-linux-x64-musl --verbose
 
 # Copy all files
 COPY . .
@@ -23,10 +21,10 @@ COPY . .
 # Set environment variables
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
 ARG NEXT_PUBLIC_S3_BUCKET_URL
-ARG NEXT_PUBLIC_S3_BUCKET_DOMAIN
 ENV NEXT_PUBLIC_S3_BUCKET_URL=${NEXT_PUBLIC_S3_BUCKET_URL}
-ENV NEXT_PUBLIC_S3_BUCKET_DOMAIN=${NEXT_PUBLIC_S3_BUCKET_DOMAIN}
 
 # Install ESLint
 RUN npm install -D eslint eslint-config-next
@@ -34,18 +32,16 @@ RUN npm install -D eslint eslint-config-next
 # Build application
 RUN npm run build
 
-# --------------------
-# 2) Production stage
-# --------------------
-FROM --platform=linux/arm64 node:18-alpine AS runner
+# Production stage
+FROM --platform=$TARGETPLATFORM node:18-alpine AS runner
 
 WORKDIR /app
 
 # Set environment variables
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
 ENV NEXT_PUBLIC_S3_BUCKET_URL=${NEXT_PUBLIC_S3_BUCKET_URL}
-ENV NEXT_PUBLIC_S3_BUCKET_DOMAIN=${NEXT_PUBLIC_S3_BUCKET_DOMAIN}
 
 # Copy necessary files
 COPY --from=builder /app/public ./public
