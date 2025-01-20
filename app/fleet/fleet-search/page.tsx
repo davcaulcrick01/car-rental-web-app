@@ -141,6 +141,11 @@ export default function FleetSearchPage() {
   }, [searchTerm, selectedBrand, selectedType, selectedYear, selectedTransmission, 
       selectedCategory, priceRange, sortBy]);
 
+  // Update the price range handler to handle the correct type
+  const handlePriceRangeChange = (value: number[]) => {
+    setPriceRange(value);
+  };
+
   return (
     <div className="bg-black text-white min-h-screen">
       <Header />
@@ -250,7 +255,7 @@ export default function FleetSearchPage() {
                       max={5000}
                       step={100}
                       value={priceRange}
-                      onChange={setPriceRange}
+                      onValueChange={handlePriceRangeChange}
                     />
                   </div>
 
