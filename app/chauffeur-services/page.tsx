@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,9 +8,11 @@ import { Shield, Star, Clock, Car, MapPin, Users, Award, ChevronRight, Check } f
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/Breadcrumbs';
+
+// Dynamically import components that might cause hydration issues
+const Header = dynamic(() => import('@/components/Header'), { ssr: false });
+const Footer = dynamic(() => import('@/components/Footer'), { ssr: false });
 
 const services = [
   {
@@ -81,6 +84,7 @@ export default function ChauffeurServicesPage() {
                         fill
                         className="object-cover"
                         priority
+                        unoptimized
                       />
                     </div>
                     <CardHeader className="flex items-center">
