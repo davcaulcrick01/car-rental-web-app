@@ -18,47 +18,47 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 // Car brands logos with their respective fleet categories
 const carBrands = [
-  { id: 1, name: "BMW", logo: "/images/cars/bmw/bmw-x6.png", link: "/fleet/cars/suv" },
-  { id: 2, name: "Tesla", logo: "/images/cars/tesla/tesla-cybertruck.png", link: "/fleet/cars/suv" },
-  { id: 3, name: "Mercedes", logo: "/images/cars/mercedes-benz/mercedes-gclass.png", link: "/fleet/cars/suv" },
-  { id: 4, name: "Audi", logo: "/images/cars/audi/audi.png", link: "/fleet/cars/sedan" },
-  { id: 5, name: "Porsche", logo: "/images/cars/porsche/porsche-911.png", link: "/fleet/cars/exotic" },
-  { id: 6, name: "Range Rover", logo: "/images/cars/range-rover/range-rover.png", link: "/fleet/cars/suv" },
-  { id: 7, name: "McLaren", logo: "/images/cars/mclaren/mclaren.png", link: "/fleet/cars/exotic" },
-  { id: 8, name: "Lamborghini", logo: "/images/cars/lamborghini/lamborghini.png", link: "/fleet/cars/exotic" },
-  { id: 9, name: "Ferrari", logo: "/images/cars/ferrari/ferrari.png", link: "/fleet/cars/exotic" },
-  { id: 10, name: "Bentley", logo: "/images/cars/bentley/bentley.png", link: "/fleet/cars/luxury" },
-  { id: 11, name: "Rolls-Royce", logo: "/images/cars/rolls-royce/rolls-royce.png", link: "/fleet/cars/luxury" },
-  { id: 13, name: "Maserati", logo: "/images/cars/maserati/maserati.png", link: "/fleet/cars/exotic" },
+  { id: 1, name: "BMW", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/bmw/bmw-x6.png`, link: "/fleet/cars/suv" },
+  { id: 2, name: "Tesla", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/tesla/tesla-cybertruck.png`, link: "/fleet/cars/suv" },
+  { id: 3, name: "Mercedes", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/mercedes-benz/mercedes-gclass.png`, link: "/fleet/cars/suv" },
+  { id: 4, name: "Audi", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/audi/audi.png`, link: "/fleet/cars/sedan" },
+  { id: 5, name: "Porsche", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/porsche/porsche-911.png`, link: "/fleet/cars/exotic" },
+  { id: 6, name: "Range Rover", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/range-rover/range-rover.png`, link: "/fleet/cars/suv" },
+  { id: 7, name: "McLaren", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/mclaren/mclaren.png`, link: "/fleet/cars/exotic" },
+  { id: 8, name: "Lamborghini", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/lamborghini/lamborghini.png`, link: "/fleet/cars/exotic" },
+  { id: 9, name: "Ferrari", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/ferrari/ferrari.png`, link: "/fleet/cars/exotic" },
+  { id: 10, name: "Bentley", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/bentley/bentley.png`, link: "/fleet/cars/luxury" },
+  { id: 11, name: "Rolls-Royce", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/rolls-royce/rolls-royce.png`, link: "/fleet/cars/luxury" },
+  { id: 13, name: "Maserati", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/maserati/maserati.png`, link: "/fleet/cars/exotic" },
 ];
 
 const brandLogos = [
-  { name: "Mercedes", logo: "/images/cars/mercedes-benz/mercedes-logo.webp" },
-  { name: "BMW", logo: "/images/cars/bmw/bmw-logo.png" },
-  { name: "McLaren", logo: "/images/cars/mclaren/mclaren-logo.png" },
-  { name: "Lamborghini", logo: "/images/cars/lamborghini/lamborghini-logo.png" },
-  { name: "Porsche", logo: "/images/cars/porsche/porsche-logo.png" },
-  { name: "Rolls Royce", logo: "/images/cars/rolls-royce/rolls-royce-logo.png" },
-  { name: "Jeep", logo: "/images/cars/jeep/jeep-logo.png" },
-  { name: "SRT", logo: "/images/cars/srt/srt-logo.png" },
-  { name: "Cadillac", logo: "/images/cars/cadillac/cadillac-logo.png" },
-  { name: "Bentley", logo: "/images/cars/bentley/bentley-logo.png" },
-  { name: "Range Rover", logo: "/images/cars/range-rover/range-rover-logo.png" },
-  { name: "Corvette", logo: "/images/cars/chevrolet/corvette/corvette-logo.png" },
-  { name: "RAM", logo: "/images/cars/ram/ram-logo.png" },
-  { name: "Maserati", logo: "/images/cars/maserati/maserati-logo.png" },
-  { name: "Tesla", logo: "/images/cars/tesla/tesla-logo.png" },
+  { name: "Mercedes", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/mercedes-benz/mercedes-logo.webp` },
+  { name: "BMW", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/bmw/bmw-logo.png` },
+  { name: "McLaren", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/mclaren/mclaren-logo.png` },
+  { name: "Lamborghini", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/lamborghini/lamborghini-logo.png` },
+  { name: "Porsche", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/porsche/porsche-logo.png` },
+  { name: "Rolls Royce", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/rolls-royce/rolls-royce-logo.png` },
+  { name: "Jeep", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/jeep/jeep-logo.png` },
+  { name: "SRT", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/srt/srt-logo.png` },
+  { name: "Cadillac", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/cadillac/cadillac-logo.png` },
+  { name: "Bentley", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/bentley/bentley-logo.png` },
+  { name: "Range Rover", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/range-rover/range-rover-logo.png` },
+  { name: "Corvette", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/chevrolet/corvette/corvette-logo.png` },
+  { name: "RAM", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/ram/ram-logo.png` },
+  { name: "Maserati", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/maserati/maserati-logo.png` },
+  { name: "Tesla", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/tesla/tesla-logo.png` },
 ];
 
 const luxuryCars = [
-  { id: 1, image: "/images/car-gallery/mercedes-gle-coupe.jpg", alt: "Mercedes Luxury Car" },
-  { id: 2, image: "/images/car-gallery/mclaren.jpg", alt: "Mclaren Luxury Car" },
-  { id: 3, image: "/images/car-gallery/rollsroyce-cullinan.jpg", alt: "Cullinan Luxury Car" },
-  { id: 4, image: "/images/car-gallery/lamborghini-centenario.jpg", alt: "Lambo Centenario Car" },
-  { id: 5, image: "/images/car-gallery/rollsroyce-phantom.jpg", alt: "White Luxury Car" },
-  { id: 6, image: "/images/car-gallery/mercedes-G63.jpg", alt: "Silver Luxury Car" },
-  { id: 7, image: "/images/car-gallery/lamborghini-aventador.jpg", alt: "Blue Luxury Car" },
-  { id: 8, image: "/images/car-gallery/lamborghini-huracan.jpg", alt: "Lambo Huracan Car" },
+  { id: 1, image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/car-gallery/mercedes-gle-coupe.jpg`, alt: "Mercedes Luxury Car" },
+  { id: 2, image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/car-gallery/mclaren.jpg`, alt: "Mclaren Luxury Car" },
+  { id: 3, image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/car-gallery/rollsroyce-cullinan.jpg`, alt: "Cullinan Luxury Car" },
+  { id: 4, image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/car-gallery/lamborghini-centenario.jpg`, alt: "Lambo Centenario Car" },
+  { id: 5, image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/car-gallery/rollsroyce-phantom.jpg`, alt: "White Luxury Car" },
+  { id: 6, image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/car-gallery/mercedes-G63.jpg`, alt: "Silver Luxury Car" },
+  { id: 7, image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/car-gallery/lamborghini-aventador.jpg`, alt: "Blue Luxury Car" },
+  { id: 8, image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/car-gallery/lamborghini-huracan.jpg`, alt: "Lambo Huracan Car" },
 ]
 
 const faqItems = [
@@ -350,7 +350,7 @@ export default function HomePage() {
               {/* First Image with Hover Effect */}
               <div className="relative group w-full h-[500px] overflow-hidden">
                 <Image 
-                  src="/images/cars/lamborghini/lambo-interior.jpg" 
+                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/lamborghini/lambo-interior.jpg`}
                   alt="Interior View of Lamborghini" 
                   className="rounded-lg object-cover transform transition-transform duration-500 group-hover:scale-110" 
                   fill
@@ -365,7 +365,7 @@ export default function HomePage() {
               {/* Second Image with Hover Effect */}
               <div className="relative group w-full h-[500px] overflow-hidden">
                 <Image 
-                  src="/images/cars/lamborghini/lambo-car.jpeg" 
+                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars/lamborghini/lambo-car.jpeg`}
                   alt="Exterior Lamborghini" 
                   className="rounded-lg object-cover transform transition-transform duration-500 group-hover:scale-110" 
                   fill
@@ -645,19 +645,19 @@ export default function HomePage() {
             <h2 className="text-4xl font-bold text-center mb-8">EXPERIENCE DALLAS</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
-                <Image src="/images/logos/dallas-travel.avif" alt="Dallas Experience" width={300} height={300} className="mx-auto mb-" />
+                <Image src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/logos/dallas-travel.avif`} alt="Dallas Experience" width={300} height={300} className="mx-auto mb-" />
                 <h3 className="text-xl font-semibold">Dallas Experience</h3>
               </div>
               <div className="text-center">
-                <Image src="/images/logos/hourly-drives.jpg" alt="DFW Drives" width={300} height={300} className="mx-auto mb-4" />
+                <Image src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/logos/hourly-drives.jpg`} alt="DFW Drives" width={300} height={300} className="mx-auto mb-4" />
                 <h3 className="text-xl font-semibold">Dallas Fort Worth Drives</h3>
               </div>
               <div className="text-center">
-                <Image src="/images/logos/24-hour-service.avif" alt="24 Hour Rentals" width={300} height={300} className="mx-auto mb-4" />
+                <Image src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/logos/24-hour-service.avif`} alt="24 Hour Rentals" width={300} height={300} className="mx-auto mb-4" />
                 <h3 className="text-xl font-semibold">24 Hour Rentals</h3>
               </div>
               <div className="text-center">
-                <Image src="/images/logos/hot-deals.jpg" alt="Hot Deals" width={900} height={900} className="mx-auto mb-4" />
+                <Image src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/logos/hot-deals.jpg`} alt="Hot Deals" width={900} height={900} className="mx-auto mb-4" />
                 <h3 className="text-xl font-semibold">Hot Deals</h3>
               </div>
             </div>
