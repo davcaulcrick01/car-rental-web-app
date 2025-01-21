@@ -46,10 +46,9 @@ export default function ChauffeurServicesPage() {
   const [activeTab, setActiveTab] = useState('overview');
 
   return (
-    <>
-      <Header /> {/* Header */}
-      <div className="bg-gray-900 text-white min-h-screen pt-20">
-        {/* Breadcrumbs */}
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <main className="flex-grow bg-gray-900 text-white pt-20">
         <Breadcrumbs
           items={[
             { label: 'Home', link: '/' },
@@ -64,15 +63,13 @@ export default function ChauffeurServicesPage() {
             Experience the epitome of luxury and convenience with our professional chauffeur services.
           </p>
 
-          {/* Tabs for additional details */}
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="mb-8 flex justify-center">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="benefits">Benefits</TabsTrigger>
               <TabsTrigger value="pricing">Pricing</TabsTrigger>
             </TabsList>
 
-            {/* Overview Tab */}
             <TabsContent value="overview">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {services.map((service) => (
@@ -81,8 +78,9 @@ export default function ChauffeurServicesPage() {
                       <Image
                         src={service.image}
                         alt={service.name}
-                        layout="fill"
-                        objectFit="cover"
+                        fill
+                        className="object-cover"
+                        priority
                       />
                     </div>
                     <CardHeader className="flex items-center">
@@ -91,19 +89,18 @@ export default function ChauffeurServicesPage() {
                     </CardHeader>
                     <CardContent>
                       <p className="text-gray-400">{service.description}</p>
-                      <Link href="/contact">
-                        <Button className="mt-4 w-full bg-blue-600 hover:bg-blue-700">Book Now</Button>
-                      </Link>
+                      <Button asChild className="mt-4 w-full bg-blue-600 hover:bg-blue-700">
+                        <Link href="/contact">Book Now</Link>
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
               </div>
             </TabsContent>
 
-            {/* Benefits Tab */}
             <TabsContent value="benefits">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card>
+                <Card className="bg-gray-800">
                   <CardHeader className="flex items-center">
                     <Shield className="mr-2 text-green-500" size={24} />
                     <CardTitle>Safety</CardTitle>
@@ -112,7 +109,7 @@ export default function ChauffeurServicesPage() {
                     <p>Our drivers are professionally trained to ensure your safety at all times.</p>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="bg-gray-800">
                   <CardHeader className="flex items-center">
                     <Clock className="mr-2 text-yellow-500" size={24} />
                     <CardTitle>Timeliness</CardTitle>
@@ -121,7 +118,7 @@ export default function ChauffeurServicesPage() {
                     <p>Punctual pickups and drop-offs ensure you never miss an important moment.</p>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="bg-gray-800">
                   <CardHeader className="flex items-center">
                     <Users className="mr-2 text-purple-500" size={24} />
                     <CardTitle>Group Travel</CardTitle>
@@ -133,20 +130,18 @@ export default function ChauffeurServicesPage() {
               </div>
             </TabsContent>
 
-            {/* Pricing Tab */}
             <TabsContent value="pricing">
               <div className="text-center space-y-6">
                 <p className="text-gray-400">Contact us for a personalized quote for your chauffeur service needs.</p>
-                <Link href="/contact">
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">Get a Quote</Button>
-                </Link>
+                <Button asChild className="bg-blue-600 hover:bg-blue-700">
+                  <Link href="/contact">Get a Quote</Link>
+                </Button>
               </div>
             </TabsContent>
           </Tabs>
         </div>
-      </div>
-
-      <Footer /> {/* Footer */}
-    </>
+      </main>
+      <Footer />
+    </div>
   );
 }
