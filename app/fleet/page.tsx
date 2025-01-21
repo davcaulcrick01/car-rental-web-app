@@ -26,55 +26,55 @@ export const fleetCategories = [
 ]
 
 const featuredCars = [
-  { id: 1, name: "AUDI R8", image: "/images/audi/audi-r8-spyder-white-1.jpg" },
-  { id: 2, name: "FERARRI 488", image: "/images/ferrari/ferarri-488-white-1.jpg" },
-  { id: 3, name: "MERCEDES BENZ GLE53", image: "/images/mercedes/mercedes-gle53-black-1.webp" },
-  { id: 4, name: "LAMBORGHINI URUS", image: "/images/lamborghini/lamborghini-urus-yellow-1.webp" },
-  { id: 5, name: "ROLLS ROYCE GHOST", image: "/images/rolls-royce/rolls-royce-ghost-white-1.jpg" },
-  { id: 6, name: "MERCEDES BENZ G63", image: "/images/mercedes/mercedes-G63-black-1.webp" },
+  { id: 1, name: "AUDI R8", image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/audi/audi-r8-spyder-white-1.jpg`},
+  { id: 2, name: "FERARRI 488", image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/ferrari/ferarri-488-white-1.jpg` }, 
+  { id: 3, name: "MERCEDES BENZ GLE53", image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/mercedes/mercedes-gle53-black-1.webp` },
+  { id: 4, name: "LAMBORGHINI URUS", image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/lamborghini/lamborghini-urus-yellow-1.webp` },
+  { id: 5, name: "ROLLS ROYCE GHOST", image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/rolls-royce/rolls-royce-ghost-white-1.jpg` },
+  { id: 6, name: "MERCEDES BENZ G63", image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/mercedes/mercedes-G63-black-1.webp` },
 ]
 
 const experienceCategories = [
-  { name: "DALLAS EXPERIENCE", image: "/images/dallas-travel.avif" },
-  { name: "HOURLY DRIVES", image: "/images/hourly-drives.jpg" },
-  { name: "24 HOUR RENTALS", image: "/images/24-hour-service.avif" },
-  { name: "HOT DEALS", image: "/images/hot-deals.jpg" },
+  { name: "DALLAS EXPERIENCE", image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/dallas-travel.avif` },
+  { name: "HOURLY DRIVES", image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/hourly-drives.jpg` },
+  { name: "24 HOUR RENTALS", image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/24-hour-service.avif` },
+  { name: "HOT DEALS", image: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/hot-deals.jpg` },
 ]
 
 const brandLogos = [
-  { name: "Mercedes", logo: "/images/mercedes/mercedes-logo.png" },
-  { name: "BMW", logo: "/images/bmw/bmw-logo.png" },
-  { name: "McLaren", logo: "/images/mclaren/mclaren-logo.png" },
-  { name: "Lamborghini", logo: "/images/lamborghini/lamborghini-logo.png" },
-  { name: "Porsche", logo: "/images/porsche/porsche-logo.png" },
-  { name: "Rolls Royce", logo: "/images/rolls-royce/rolls-royce-logo.png" },
-  { name: "Jeep", logo: "/images/jeep/jeep-logo.png" },
-  { name: "SRT", logo: "/images/srt/srt-logo.png" },
-  { name: "Cadillac", logo: "/images/cadillac/cadillac-logo.png" },
-  { name: "Bentley", logo: "/images/bentley/bentley-logo.png" },
-  { name: "Range Rover", logo: "/images/range-rover/range-rover-logo.png" },
-  { name: "Corvette", logo: "/images/corvette/corvette-logo.png" },
-  { name: "RAM", logo: "/images/ram/ram-logo.png" },
-  { name: "Maserati", logo: "/images/maserati/maserati-logo.png" },
-  { name: "Tesla", logo: "/images/tesla/tesla-logo.png" },
-  { name: "Bentley", logo: "/images/bentley/bentley-logo.png" },
+  { name: "Mercedes", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/mercedes/mercedes-logo.png` },
+  { name: "BMW", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/bmw/bmw-logo.png` },
+  { name: "McLaren", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/mclaren/mclaren-logo.png` },
+  { name: "Lamborghini", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/lamborghini/lamborghini-logo.png` },
+  { name: "Porsche", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/porsche/porsche-logo.png` },
+  { name: "Rolls Royce", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/rolls-royce/rolls-royce-logo.png` },
+  { name: "Jeep", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/jeep/jeep-logo.png` },
+  { name: "SRT", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/srt/srt-logo.png` },
+  { name: "Cadillac", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cadillac/cadillac-logo.png` },
+  { name: "Bentley", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/bentley/bentley-logo.png` },
+  { name: "Range Rover", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/range-rover/range-rover-logo.png` },
+  { name: "Corvette", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/corvette/corvette-logo.png` },
+  { name: "RAM", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/ram/ram-logo.png` },
+  { name: "Maserati", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/maserati/maserati-logo.png` },
+  { name: "Tesla", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/tesla/tesla-logo.png` },
+  { name: "Bentley", logo: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/bentley/bentley-logo.png` },
 ]
 
 const youtubeVideos = [
-  { title: "Lamborghini Urus", thumbnail: "/images/lamborghini-urus-thumb.jpg" },
-  { title: "Mercedes Benz G550", thumbnail: "/images/mercedes-g550-thumb.jpg" },
-  { title: "Rolls Royce Wraith Black", thumbnail: "/images/rolls-royce-wraith-thumb.jpg" },
+  { title: "Lamborghini Urus", thumbnail: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/lamborghini-urus-thumb.jpg` },
+  { title: "Mercedes Benz G550", thumbnail: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/mercedes-g550-thumb.jpg` },
+  { title: "Rolls Royce Wraith Black", thumbnail: `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/rolls-royce-wraith-thumb.jpg` },
 ]
 
 const carGallery = [
-  "/images/car-gallery-1.jpg",
-  "/images/car-gallery-2.jpg",
-  "/images/car-gallery-3.jpg",
-  "/images/car-gallery-4.jpg",
-  "/images/car-gallery-5.jpg",
-  "/images/car-gallery-6.jpg",
-  "/images/car-gallery-7.jpg",
-  "/images/car-gallery-8.jpg",
+  "/images/lamborghini-aventador.jpg",
+  "/images/lamborghini-centenario.jpg",
+  "/images/lamborghini-huracan.jpg",
+  "/images/mclaren.jpg",
+  "/images/mercedes-G63.jpg",
+  "/images/mercedes-gle-coupe.jpg",
+  "/images/rollsroyce-cullinan.jpg",
+  "/images/rollsroyce-phantom.jpg",
 ]
 
 const faqItems = [
