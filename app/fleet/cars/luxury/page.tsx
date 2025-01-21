@@ -17,53 +17,62 @@ import cars from '@/lib/cars'
 import { fleetCategories } from '@/app/fleet/page'
 import Breadcrumbs from '@/components/Breadcrumbs'
 
+// Base path for image URLs
+const BASE_PATH = `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars`
+
+// Filter luxury cars from the car list
 const luxuryCars = cars.filter(car => car.category === 'luxury')
 
+// Brand logos for luxury cars
 const brandLogos = [
-  { name: "Mercedes", logo: "/images/mercedes/mercedes-logo.png" },
-  { name: "BMW", logo: "/images/bmw/bmw-logo.png" },
-  { name: "Rolls Royce", logo: "/images/rolls-royce/rolls-royce-logo.png" },
-  { name: "Bentley", logo: "/images/bentley/bentley-logo.png" },
-  { name: "Maserati", logo: "/images/maserati/maserati-logo.png" },
+  { name: "Mercedes", logo: `${BASE_PATH}/mercedes/mercedes-logo.png` },
+  { name: "BMW", logo: `${BASE_PATH}/bmw/bmw-logo.png` },
+  { name: "Rolls Royce", logo: `${BASE_PATH}/rolls-royce/rolls-royce-logo.png` },
+  { name: "Bentley", logo: `${BASE_PATH}/bentley/bentley-logo.png` },
+  { name: "Maserati", logo: `${BASE_PATH}/maserati/maserati-logo.png` },
 ]
 
+// FAQs for the luxury fleet page
 const faqItems = [
   {
     question: "What makes a car 'luxury'?",
-    answer: "Luxury cars are characterized by their high-end features, superior comfort, advanced technology, and exceptional performance. They often come from prestigious brands and offer a premium driving experience."
+    answer: "Luxury cars are characterized by their high-end features, superior comfort, advanced technology, and exceptional performance. They often come from prestigious brands and offer a premium driving experience.",
   },
   {
     question: "Are there any special requirements for renting a luxury car?",
-    answer: "Yes, luxury car rentals often have stricter requirements. These may include a higher minimum age (usually 25+), a clean driving record, full coverage insurance, and a larger security deposit."
+    answer: "Yes, luxury car rentals often have stricter requirements. These may include a higher minimum age (usually 25+), a clean driving record, full coverage insurance, and a larger security deposit.",
   },
   {
     question: "Can I rent a luxury car for a special event?",
-    answer: "Absolutely! Many customers rent luxury cars for weddings, anniversaries, proms, or business events. We offer special packages for such occasions."
+    answer: "Absolutely! Many customers rent luxury cars for weddings, anniversaries, proms, or business events. We offer special packages for such occasions.",
   },
 ]
 
+// Experience categories for luxury cars
 const experienceCategories = [
-  { name: "DALLAS EXPERIENCE", image: "/images/dallas-travel.avif" },
-  { name: "HOURLY DRIVES", image: "/images/hourly-drives.jpg" },
-  { name: "24 HOUR RENTALS", image: "/images/24-hour-service.avif" },
-  { name: "HOT DEALS", image: "/images/hot-deals.jpg" },
+  { name: "Dallas Experience", image: `${BASE_PATH}/experiences/dallas-travel.avif` },
+  { name: "Hourly Drives", image: `${BASE_PATH}/experiences/hourly-drives.jpg` },
+  { name: "24 Hour Rentals", image: `${BASE_PATH}/experiences/24-hour-service.avif` },
+  { name: "Hot Deals", image: `${BASE_PATH}/experiences/hot-deals.jpg` },
 ]
 
+// YouTube video thumbnails for luxury cars
 const youtubeVideos = [
-  { title: "Lamborghini Urus", thumbnail: "/images/lamborghini-urus-thumb.jpg" },
-  { title: "Mercedes Benz G550", thumbnail: "/images/mercedes-g550-thumb.jpg" },
-  { title: "Rolls Royce Wraith Black", thumbnail: "/images/rolls-royce-wraith-thumb.jpg" },
+  { title: "Lamborghini Urus", thumbnail: `${BASE_PATH}/youtube/lamborghini-urus-thumb.jpg` },
+  { title: "Mercedes Benz G550", thumbnail: `${BASE_PATH}/youtube/mercedes-g550-thumb.jpg` },
+  { title: "Rolls Royce Wraith Black", thumbnail: `${BASE_PATH}/youtube/rolls-royce-wraith-thumb.jpg` },
 ]
 
+// Car gallery images for luxury cars
 const carGallery = [
-  "/images/car-gallery-1.jpg",
-  "/images/car-gallery-2.jpg",
-  "/images/car-gallery-3.jpg",
-  "/images/car-gallery-4.jpg",
-  "/images/car-gallery-5.jpg",
-  "/images/car-gallery-6.jpg",
-  "/images/car-gallery-7.jpg",
-  "/images/car-gallery-8.jpg",
+  `${BASE_PATH}/gallery/car-gallery-1.jpg`,
+  `${BASE_PATH}/gallery/car-gallery-2.jpg`,
+  `${BASE_PATH}/gallery/car-gallery-3.jpg`,
+  `${BASE_PATH}/gallery/car-gallery-4.jpg`,
+  `${BASE_PATH}/gallery/car-gallery-5.jpg`,
+  `${BASE_PATH}/gallery/car-gallery-6.jpg`,
+  `${BASE_PATH}/gallery/car-gallery-7.jpg`,
+  `${BASE_PATH}/gallery/car-gallery-8.jpg`,
 ]
 
 export default function LuxuryFleetPage() {
@@ -144,7 +153,6 @@ export default function LuxuryFleetPage() {
           {/* Brands Section */}
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-center">LUXURY BRANDS</h2>
-            <p className="text-center mb-8">Explore our collection of premium luxury brands:</p>
             <div className="grid grid-cols-3 md:grid-cols-5 gap-8">
               {brandLogos.map((brand) => (
                 <div key={brand.name} className="flex justify-center">
@@ -167,27 +175,6 @@ export default function LuxuryFleetPage() {
             <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg">
               Reserve Your Luxury Car
             </Button>
-          </section>
-
-          {/* Experience Los Angeles Section */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">EXPERIENCE LOS ANGELES</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {experienceCategories.map((category) => (
-                <div key={category.name} className="relative group cursor-pointer">
-                  <Image
-                    src={category.image}
-                    alt={category.name}
-                    width={300}
-                    height={200}
-                    className="w-full h-40 object-cover rounded-lg"
-                  />
-                  <div className="absolute inset-0 bg-green-600 bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <h3 className="text-xl font-bold text-white">{category.name}</h3>
-                  </div>
-                </div>
-              ))}
-            </div>
           </section>
 
           {/* YouTube Channel Section */}

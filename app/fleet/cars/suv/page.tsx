@@ -17,53 +17,62 @@ import cars from '@/lib/cars'
 import { fleetCategories } from '@/app/fleet/page'
 import Breadcrumbs from '@/components/Breadcrumbs'
 
+// Base path for image URLs
+const BASE_PATH = `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars`
+
+// Filter SUVs from the car list
 const suvCars = cars.filter(car => car.category === 'SUVs')
 
+// Brand logos for SUVs
 const brandLogos = [
-  { name: "Range Rover", logo: "/images/range-rover/range-rover-logo.png" },
-  { name: "Mercedes", logo: "/images/mercedes/mercedes-logo.png" },
-  { name: "BMW", logo: "/images/bmw/bmw-logo.png" },
-  { name: "Cadillac", logo: "/images/cadillac/cadillac-logo.png" },
-  { name: "Porsche", logo: "/images/porsche/porsche-logo.png" },
+  { name: "Range Rover", logo: `${BASE_PATH}/range-rover/range-rover-logo.png` },
+  { name: "Mercedes", logo: `${BASE_PATH}/mercedes/mercedes-logo.png` },
+  { name: "BMW", logo: `${BASE_PATH}/bmw/bmw-logo.png` },
+  { name: "Cadillac", logo: `${BASE_PATH}/cadillac/cadillac-logo.png` },
+  { name: "Porsche", logo: `${BASE_PATH}/porsche/porsche-logo.png` },
 ]
 
+// FAQs for the SUV fleet page
 const faqItems = [
   {
     question: "What are the advantages of renting an SUV?",
-    answer: "SUVs offer spacious interiors, higher ground clearance, and often come with advanced safety features. They're ideal for family trips, outdoor adventures, or when you need extra cargo space."
+    answer: "SUVs offer spacious interiors, higher ground clearance, and often come with advanced safety features. They're ideal for family trips, outdoor adventures, or when you need extra cargo space.",
   },
   {
     question: "Are luxury SUVs available for rent?",
-    answer: "Yes, we offer a range of luxury SUVs from premium brands. These vehicles combine the practicality of an SUV with high-end features and comfort."
+    answer: "Yes, we offer a range of luxury SUVs from premium brands. These vehicles combine the practicality of an SUV with high-end features and comfort.",
   },
   {
     question: "Can I rent an SUV for off-road adventures?",
-    answer: "While many of our SUVs are capable of light off-road driving, we recommend discussing your specific plans with our team to ensure you get the right vehicle for your needs."
+    answer: "While many of our SUVs are capable of light off-road driving, we recommend discussing your specific plans with our team to ensure you get the right vehicle for your needs.",
   },
 ]
 
+// Experience categories for SUVs
 const experienceCategories = [
-  { name: "CITY EXPLORATION", image: "/images/city-exploration.jpg" },
-  { name: "ROAD TRIPS", image: "/images/road-trips.jpg" },
-  { name: "FAMILY VACATIONS", image: "/images/family-vacations.jpg" },
-  { name: "OUTDOOR ADVENTURES", image: "/images/outdoor-adventures.jpg" },
+  { name: "City Exploration", image: `${BASE_PATH}/experiences/city-exploration.jpg` },
+  { name: "Road Trips", image: `${BASE_PATH}/experiences/road-trips.jpg` },
+  { name: "Family Vacations", image: `${BASE_PATH}/experiences/family-vacations.jpg` },
+  { name: "Outdoor Adventures", image: `${BASE_PATH}/experiences/outdoor-adventures.jpg` },
 ]
 
+// YouTube video thumbnails for SUVs
 const youtubeVideos = [
-  { title: "Range Rover Sport Review", thumbnail: "/images/range-rover-sport-thumb.jpg" },
-  { title: "Mercedes GLS vs BMW X7", thumbnail: "/images/gls-x7-comparison-thumb.jpg" },
-  { title: "Top 5 Luxury SUVs of 2023", thumbnail: "/images/top-5-luxury-suvs-thumb.jpg" },
+  { title: "Range Rover Sport Review", thumbnail: `${BASE_PATH}/youtube/range-rover-sport-thumb.jpg` },
+  { title: "Mercedes GLS vs BMW X7", thumbnail: `${BASE_PATH}/youtube/gls-x7-comparison-thumb.jpg` },
+  { title: "Top 5 Luxury SUVs of 2023", thumbnail: `${BASE_PATH}/youtube/top-5-luxury-suvs-thumb.jpg` },
 ]
 
+// Car gallery images for SUVs
 const carGallery = [
-  "/images/suv-gallery-1.jpg",
-  "/images/suv-gallery-2.jpg",
-  "/images/suv-gallery-3.jpg",
-  "/images/suv-gallery-4.jpg",
-  "/images/suv-gallery-5.jpg",
-  "/images/suv-gallery-6.jpg",
-  "/images/suv-gallery-7.jpg",
-  "/images/suv-gallery-8.jpg",
+  `${BASE_PATH}/gallery/suv-gallery-1.jpg`,
+  `${BASE_PATH}/gallery/suv-gallery-2.jpg`,
+  `${BASE_PATH}/gallery/suv-gallery-3.jpg`,
+  `${BASE_PATH}/gallery/suv-gallery-4.jpg`,
+  `${BASE_PATH}/gallery/suv-gallery-5.jpg`,
+  `${BASE_PATH}/gallery/suv-gallery-6.jpg`,
+  `${BASE_PATH}/gallery/suv-gallery-7.jpg`,
+  `${BASE_PATH}/gallery/suv-gallery-8.jpg`,
 ]
 
 export default function SUVFleetPage() {
@@ -144,7 +153,6 @@ export default function SUVFleetPage() {
           {/* Brands Section */}
           <section className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-center">FEATURED SUV BRANDS</h2>
-            <p className="text-center mb-8">Explore our collection of premium SUV brands:</p>
             <div className="grid grid-cols-3 md:grid-cols-5 gap-8">
               {brandLogos.map((brand) => (
                 <div key={brand.name} className="flex justify-center">

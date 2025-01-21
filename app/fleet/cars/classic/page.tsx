@@ -1,150 +1,179 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { ChevronRight, Play } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ChevronRight, Play } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import cars from '@/lib/cars'
-import { fleetCategories } from '@/app/fleet/page'
-import Breadcrumbs from '@/components/Breadcrumbs'
+} from '@/components/ui/accordion';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import cars from '@/lib/cars';
+import { fleetCategories } from '@/app/fleet/page';
 
-const classicCars = cars.filter(car => car.category === 'classic')
+// Base bucket path for images
+const BASE_PATH = `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars`;
 
+// Filter for classic cars
+const classicCars = cars.filter((car) => car.category === 'classic');
+
+// Brand logos for classic cars
 const brandLogos = [
-  { name: "Ford", logo: "/images/ford/ford-logo.png" },
-  { name: "Chevrolet", logo: "/images/chevrolet/chevrolet-logo.png" },
-  { name: "Cadillac", logo: "/images/cadillac/cadillac-logo.png" },
-  { name: "Pontiac", logo: "/images/pontiac/pontiac-logo.png" },
-  { name: "Oldsmobile", logo: "/images/oldsmobile/oldsmobile-logo.png" },
-]
+  { name: 'Ford', logo: `${BASE_PATH}/ford/ford-logo.png` },
+  { name: 'Chevrolet', logo: `${BASE_PATH}/chevrolet/chevrolet-logo.png` },
+  { name: 'Cadillac', logo: `${BASE_PATH}/cadillac/cadillac-logo.png` },
+  { name: 'Pontiac', logo: `${BASE_PATH}/pontiac/pontiac-logo.png` },
+  { name: 'Porsche', logo: `${BASE_PATH}/porsche/porsche-logo.png` },
+];
 
+// FAQs for the classic car page
 const faqItems = [
   {
     question: "What defines a 'classic car'?",
-    answer: "Classic cars are typically vehicles that are at least 20 years old and of historical interest. They often represent a bygone era of automotive design and engineering, and are prized for their nostalgic value and craftsmanship."
+    answer: "Classic cars are vehicles at least 20 years old with historical significance or unique craftsmanship.",
   },
   {
     question: "Are there special requirements for renting a classic car?",
-    answer: "Yes, renting a classic car often comes with additional requirements. These may include a higher minimum age (usually 25+), a clean driving record, full coverage insurance, and a larger security deposit. Some rentals may also require a demonstration of experience with manual transmissions."
+    answer: "Renting a classic car often requires a higher minimum age, clean driving record, and full coverage insurance.",
   },
   {
     question: "Can I rent a classic car for a special event?",
-    answer: "Absolutely! Many customers rent classic cars for weddings, anniversaries, proms, or photo shoots. We offer special packages for such occasions and can help you choose the perfect classic car to make your event truly memorable."
+    answer: "Absolutely! Many customers rent classic cars for weddings, anniversaries, or photo shoots. We offer event packages.",
   },
-]
+];
 
-const experienceCategories = [
-  { name: "VINTAGE DRIVES", image: "/images/vintage-drives.jpg" },
-  { name: "CLASSIC CAR SHOWS", image: "/images/classic-car-shows.jpg" },
-  { name: "RETRO ROAD TRIPS", image: "/images/retro-road-trips.jpg" },
-  { name: "NOSTALGIC TOURS", image: "/images/nostalgic-tours.jpg" },
-]
-
-const youtubeVideos = [
-  { title: "1957 Chevrolet Bel Air", thumbnail: "/images/57-chevy-thumb.jpg" },
-  { title: "1965 Ford Mustang", thumbnail: "/images/65-mustang-thumb.jpg" },
-  { title: "1959 Cadillac Eldorado", thumbnail: "/images/59-cadillac-thumb.jpg" },
-]
-
+// Car gallery images
 const carGallery = [
-  "/images/classic-gallery-1.jpg",
-  "/images/classic-gallery-2.jpg",
-  "/images/classic-gallery-3.jpg",
-  "/images/classic-gallery-4.jpg",
-  "/images/classic-gallery-5.jpg",
-  "/images/classic-gallery-6.jpg",
-  "/images/classic-gallery-7.jpg",
-  "/images/classic-gallery-8.jpg",
-]
+  `${BASE_PATH}/gallery/classic-gallery-1.jpg`,
+  `${BASE_PATH}/gallery/classic-gallery-2.jpg`,
+  `${BASE_PATH}/gallery/classic-gallery-3.jpg`,
+  `${BASE_PATH}/gallery/classic-gallery-4.jpg`,
+];
+
+// Experience categories
+const experienceCategories = [
+  { name: 'Vintage Drives', image: `${BASE_PATH}/experiences/vintage-drives.jpg` },
+  { name: 'Classic Car Shows', image: `${BASE_PATH}/experiences/classic-car-shows.jpg` },
+  { name: 'Retro Road Trips', image: `${BASE_PATH}/experiences/retro-road-trips.jpg` },
+  { name: 'Nostalgic Tours', image: `${BASE_PATH}/experiences/nostalgic-tours.jpg` },
+];
+
+// Navigation Menu for Fleet Categories
+const CategoryNavigation = () => (
+  <div className="flex flex-wrap justify-center gap-4 mb-12">
+    {fleetCategories.map((category) => (
+      <Link key={category.name} href={category.path}>
+        <Button
+          variant={category.name === 'Classic Cars' ? 'default' : 'outline'}
+          className={`text-white border-white hover:bg-green-600 hover:text-white transition-colors ${
+            category.name === 'Classic Cars' ? 'bg-green-600' : ''
+          }`}
+        >
+          {category.name}
+        </Button>
+      </Link>
+    ))}
+  </div>
+);
 
 export default function ClassicCarsPage() {
+  const [currentCarIndex, setCurrentCarIndex] = useState(0);
+
+  const handleNextCar = () => {
+    setCurrentCarIndex((prevIndex) => (prevIndex + 1) % classicCars.length);
+  };
+
   return (
     <div className="bg-black text-white min-h-screen">
       <Header />
+
       <main className="pt-24 pb-12">
         <div className="container mx-auto px-4">
-          <Breadcrumbs items={[
-            { label: 'Home', href: '/' },
-            { label: 'Fleet', href: '/fleet' },
-            { label: 'Classic Cars', href: '/fleet/cars/classic' },
-          ]} />
-          <h1 className="text-4xl font-bold mb-8 mt-4 text-center">Classic Cars</h1>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Fleet', href: '/fleet' },
+              { label: 'Classic Cars', href: '/fleet/cars/classic' },
+            ]}
+          />
 
-          {/* Search Cars Button */}
-          <div className="text-center mb-8">
-            <Link href="/fleet/fleet-search">
-              <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg">
-                Search Cars
-              </Button>
-            </Link>
-          </div>
+          {/* Page Header */}
+          <h1 className="text-4xl font-bold text-center my-8">Classic Cars</h1>
 
-          {/* Fleet Categories Navigation */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {fleetCategories.map((category) => (
-              <Link key={category.name} href={category.path}>
-                <Button
-                  variant={category.name === "Classic Cars" ? "default" : "outline"}
-                  className={`text-white border-white hover:bg-green-600 hover:text-white transition-colors ${
-                    category.name === "Classic Cars" ? 'bg-green-600' : ''
-                  }`}
-                >
-                  {category.name}
-                </Button>
-              </Link>
-            ))}
-          </div>
+          {/* Navigation to Other Categories */}
+          <CategoryNavigation />
 
-          {/* Classic Cars */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {classicCars.map((car) => (
-              <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
-                <Image
-                  src={car.images[0]}
-                  alt={car.name}
-                  width={400}
-                  height={300}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-4">
-                  <h2 className="text-xl font-bold mb-4">{car.name}</h2>
-                  <div className="flex justify-between items-center">
-                    <Button variant="outline" className="text-white border-white hover:bg-green-600 hover:text-white">
-                      Call For Pricing
-                    </Button>
-                    <Link href={`/booking?car=${car.id}`}>
-                      <Button className="bg-green-600 hover:bg-green-700">
-                        Book Now
-                      </Button>
-                    </Link>
-                  </div>
+          {/* Featured Classic Car */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-center">Featured Classic Car</h2>
+            <div className="relative bg-gray-900 rounded-lg overflow-hidden">
+              <Image
+                src={classicCars[currentCarIndex]?.images[0]}
+                alt={classicCars[currentCarIndex]?.name}
+                width={800}
+                height={400}
+                className="w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-between px-4">
+                <div className="text-white">
+                  <h3 className="text-2xl font-bold">{classicCars[currentCarIndex]?.name}</h3>
+                  <p>{classicCars[currentCarIndex]?.description}</p>
                 </div>
+                <Button
+                  onClick={handleNextCar}
+                  className="bg-green-600 hover:bg-green-700 text-white flex items-center space-x-2"
+                >
+                  <span>Next Car</span>
+                  <ChevronRight />
+                </Button>
               </div>
-            ))}
-          </div>
-
-          {/* Classic Car Experience Section */}
-          <section className="mb-16 text-center">
-            <h2 className="text-3xl font-bold mb-4">EXPERIENCE TIMELESS ELEGANCE</h2>
-            <p className="mb-4">Step back in time with our collection of meticulously maintained classic cars.</p>
-            <p className="mb-4">From iconic American muscle to elegant European classics, our fleet represents the golden age of automotive design.</p>
-            <p className="mb-4">Whether it's for a special occasion or a nostalgic cruise, our classic cars promise an unforgettable journey through automotive history.</p>
-            <p>Experience the charm, style, and character of a bygone era with GreyZone Classics.</p>
+            </div>
           </section>
 
-          {/* Brands Section */}
+          {/* Classic Cars Grid */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">CLASSIC BRANDS</h2>
-            <p className="text-center mb-8">Explore our collection of iconic classic car brands:</p>
+            <h2 className="text-3xl font-bold mb-8 text-center">Our Classic Cars</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {classicCars.map((car) => (
+                <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
+                  <Image
+                    src={car.images[0]}
+                    alt={car.name}
+                    width={400}
+                    height={300}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4">
+                    <h2 className="text-xl font-bold mb-2">{car.name}</h2>
+                    <div className="flex justify-between items-center">
+                      <Button
+                        variant="outline"
+                        className="text-white border-white hover:bg-green-600 hover:text-white"
+                      >
+                        Call For Pricing
+                      </Button>
+                      <Link href={`/booking?car=${car.id}`}>
+                        <Button className="bg-green-600 hover:bg-green-700">
+                          Book Now
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Other Sections (Brands, Gallery, Experiences, FAQ) */}
+          {/* Classic Car Brands */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-center">Classic Car Brands</h2>
             <div className="grid grid-cols-3 md:grid-cols-5 gap-8">
               {brandLogos.map((brand) => (
                 <div key={brand.name} className="flex justify-center">
@@ -160,18 +189,9 @@ export default function ClassicCarsPage() {
             </div>
           </section>
 
-          {/* Call to Action */}
-          <section className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">RELIVE THE GOLDEN AGE OF AUTOMOBILES</h2>
-            <p className="mb-8">Experience the nostalgia and craftsmanship of classic cars. Book your vintage ride today and cruise through history in style.</p>
-            <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg">
-              Reserve Your Classic Car
-            </Button>
-          </section>
-
-          {/* Experience Categories Section */}
+          {/* Experience Categories */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">CLASSIC CAR EXPERIENCES</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center">Classic Car Experiences</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {experienceCategories.map((category) => (
                 <div key={category.name} className="relative group cursor-pointer">
@@ -190,48 +210,10 @@ export default function ClassicCarsPage() {
             </div>
           </section>
 
-          {/* YouTube Channel Section */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">SUBSCRIBE TO OUR CLASSIC CAR CHANNEL!</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {youtubeVideos.map((video, index) => (
-                <div key={index} className="relative aspect-video bg-gray-800 rounded-lg overflow-hidden">
-                  <Image
-                    src={video.thumbnail}
-                    alt={video.title}
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Button className="bg-red-600 hover:bg-red-700 text-white rounded-full p-4">
-                      <Play size={32} />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Car Gallery */}
-          <section className="mb-16">
-            <div className="grid grid-cols-4 md:grid-cols-8 gap-1">
-              {carGallery.map((image, index) => (
-                <Image
-                  key={index}
-                  src={image}
-                  alt={`Classic Car ${index + 1}`}
-                  width={200}
-                  height={150}
-                  className="w-full h-24 object-cover cursor-pointer hover:opacity-75 transition-opacity"
-                />
-              ))}
-            </div>
-          </section>
-
           {/* FAQ Section */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">FREQUENTLY ASKED QUESTIONS</h2>
-            <Accordion type="single" collapsible className="w-full">
+            <h2 className="text-3xl font-bold mb-8 text-center">FAQs</h2>
+            <Accordion type="multiple" className="space-y-4">
               {faqItems.map((item, index) => (
                 <AccordionItem key={index} value={`item-${index}`}>
                   <AccordionTrigger>{item.question}</AccordionTrigger>
@@ -245,5 +227,5 @@ export default function ClassicCarsPage() {
 
       <Footer />
     </div>
-  )
+  );
 }

@@ -1,189 +1,176 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { ChevronRight, Play } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ChevronRight, Play } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import cars from '@/lib/cars'
-import { fleetCategories } from '@/app/fleet/page'
-import Breadcrumbs from '@/components/Breadcrumbs'
+} from "@/components/ui/accordion";
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import cars from '@/lib/cars';
+import { fleetCategories } from '@/app/fleet/page';
 
-const sportCars = cars.filter(car => car.category === 'sport')
+// Base bucket path for images
+const BASE_PATH = `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars`;
 
+// Filter for sport cars
+const sportCars = cars.filter((car) => car.category === 'sport');
+
+// Brand logos for sport cars
 const brandLogos = [
-  { name: "Porsche", logo: "/images/porsche/porsche-logo.png" },
-  { name: "BMW M", logo: "/images/bmw/bmw-m-logo.png" },
-  { name: "Mercedes-AMG", logo: "/images/mercedes/mercedes-amg-logo.png" },
-  { name: "Audi Sport", logo: "/images/audi/audi-sport-logo.png" },
-  { name: "Nissan NISMO", logo: "/images/nissan/nissan-nismo-logo.png" },
-]
+  { name: "Porsche", logo: `${BASE_PATH}/porsche/porsche-logo.png` },
+  { name: "BMW M", logo: `${BASE_PATH}/bmw/bmw-m-logo.png` },
+  { name: "Mercedes-AMG", logo: `${BASE_PATH}/mercedes/mercedes-amg-logo.png` },
+  { name: "Audi Sport", logo: `${BASE_PATH}/audi/audi-sport-logo.png` },
+  { name: "Nissan NISMO", logo: `${BASE_PATH}/nissan/nissan-nismo-logo.png` },
+];
 
+// FAQs for the sport car page
 const faqItems = [
   {
     question: "What defines a 'sport' car?",
-    answer: "Sport cars are designed for performance driving. They typically feature powerful engines, responsive handling, and aerodynamic designs. While they may not be as extreme as supercars, they offer an exciting driving experience with a balance of everyday usability."
+    answer: "Sport cars are designed for performance driving. They feature powerful engines, responsive handling, and aerodynamic designs.",
   },
   {
     question: "Are there special requirements for renting a sport car?",
-    answer: "Renting a sport car often comes with some additional requirements. These may include a minimum age (usually 25+), a clean driving record, and full coverage insurance. Some high-performance models might require previous experience with similar vehicles."
+    answer: "Yes, renting a sport car may include age restrictions (25+), clean driving records, and full insurance. Some cars require prior experience.",
   },
   {
     question: "Can I rent a sport car for a track day?",
-    answer: "Many of our sport cars are suitable for track days, but this depends on the specific model and our current policies. Please contact us directly to discuss track day rentals, as additional insurance or agreements may be required."
+    answer: "Yes, many sport cars are available for track days. Contact us to discuss policies, additional insurance, or agreements.",
   },
-]
+];
 
+// Experience categories
 const experienceCategories = [
-  { name: "MOUNTAIN DRIVES", image: "/images/mountain-drives.jpg" },
-  { name: "TRACK EXPERIENCES", image: "/images/track-experiences.jpg" },
-  { name: "CITY CRUISES", image: "/images/city-cruises.jpg" },
-  { name: "WEEKEND GETAWAYS", image: "/images/weekend-getaways.jpg" },
-]
+  { name: 'Mountain Drives', image: `${BASE_PATH}/experiences/mountain-drives.jpg` },
+  { name: 'Track Experiences', image: `${BASE_PATH}/experiences/track-experiences.jpg` },
+  { name: 'City Cruises', image: `${BASE_PATH}/experiences/city-cruises.jpg` },
+  { name: 'Weekend Getaways', image: `${BASE_PATH}/experiences/weekend-getaways.jpg` },
+];
 
+// YouTube videos
 const youtubeVideos = [
-  { title: "Porsche 911 GT3 Review", thumbnail: "/images/porsche-911-gt3-thumb.jpg" },
-  { name: "BMW M4 vs Mercedes-AMG C63", thumbnail: "/images/bmw-m4-vs-amg-c63-thumb.jpg" },
-  { name: "Audi RS6 Avant Test Drive", thumbnail: "/images/audi-rs6-avant-thumb.jpg" },
-]
+  { title: "Porsche 911 GT3 Review", thumbnail: `${BASE_PATH}/youtube/porsche-911-gt3-thumb.jpg` },
+  { title: "BMW M4 vs Mercedes-AMG C63", thumbnail: `${BASE_PATH}/youtube/bmw-m4-vs-amg-c63-thumb.jpg` },
+  { title: "Audi RS6 Avant Test Drive", thumbnail: `${BASE_PATH}/youtube/audi-rs6-avant-thumb.jpg` },
+];
 
+// Car gallery images
 const carGallery = [
-  "/images/sport-gallery-1.jpg",
-  "/images/sport-gallery-2.jpg",
-  "/images/sport-gallery-3.jpg",
-  "/images/sport-gallery-4.jpg",
-  "/images/sport-gallery-5.jpg",
-  "/images/sport-gallery-6.jpg",
-  "/images/sport-gallery-7.jpg",
-  "/images/sport-gallery-8.jpg",
-]
+  `${BASE_PATH}/gallery/sport-gallery-1.jpg`,
+  `${BASE_PATH}/gallery/sport-gallery-2.jpg`,
+  `${BASE_PATH}/gallery/sport-gallery-3.jpg`,
+  `${BASE_PATH}/gallery/sport-gallery-4.jpg`,
+];
+
+// Navigation Menu for Fleet Categories
+const CategoryNavigation = () => (
+  <div className="flex flex-wrap justify-center gap-4 mb-12">
+    {fleetCategories.map((category) => (
+      <Link key={category.name} href={category.path}>
+        <Button
+          variant={category.name === 'Sport Cars' ? 'default' : 'outline'}
+          className={`text-white border-white hover:bg-green-600 hover:text-white transition-colors ${
+            category.name === 'Sport Cars' ? 'bg-green-600' : ''
+          }`}
+        >
+          {category.name}
+        </Button>
+      </Link>
+    ))}
+  </div>
+);
 
 export default function SportCarFleetPage() {
+  const [currentCarIndex, setCurrentCarIndex] = useState(0);
+
+  const handleNextCar = () => {
+    setCurrentCarIndex((prevIndex) => (prevIndex + 1) % sportCars.length);
+  };
+
   return (
     <div className="bg-black text-white min-h-screen">
       <Header />
+
       <main className="pt-24 pb-12">
         <div className="container mx-auto px-4">
-          <Breadcrumbs items={[
-            { label: 'Home', href: '/' },
-            { label: 'Fleet', href: '/fleet' },
-            { label: 'Sport Cars', href: '/fleet/cars/sport' },
-          ]} />
-          <h1 className="text-4xl font-bold mb-8 mt-4 text-center">Sport Car Fleet</h1>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Fleet', href: '/fleet' },
+              { label: 'Sport Cars', href: '/fleet/cars/sport' },
+            ]}
+          />
 
-          {/* Search Cars Button */}
-          <div className="text-center mb-8">
-            <Link href="/fleet/fleet-search">
-              <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg">
-                Search Cars
-              </Button>
-            </Link>
-          </div>
+          {/* Page Header */}
+          <h1 className="text-4xl font-bold text-center my-8">Sport Car Fleet</h1>
 
-          {/* Fleet Categories Navigation */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {fleetCategories.map((category) => (
-              <Link key={category.name} href={category.path}>
-                <Button
-                  variant={category.name === "Sport Cars" ? "default" : "outline"}
-                  className={`text-white border-white hover:bg-green-600 hover:text-white transition-colors ${
-                    category.name === "Sport Cars" ? 'bg-green-600' : ''
-                  }`}
-                >
-                  {category.name}
-                </Button>
-              </Link>
-            ))}
-          </div>
+          {/* Navigation to Other Categories */}
+          <CategoryNavigation />
 
-          {/* Sport Cars */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {sportCars.map((car) => (
-              <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
-                <Image
-                  src={car.images[0]}
-                  alt={car.name}
-                  width={400}
-                  height={300}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-4">
-                  <h2 className="text-xl font-bold mb-4">{car.name}</h2>
-                  <div className="flex justify-between items-center">
-                    <Button variant="outline" className="text-white border-white hover:bg-green-600 hover:text-white">
-                      Call For Pricing
-                    </Button>
-                    <Link href={`/booking?car=${car.id}`}>
-                      <Button className="bg-green-600 hover:bg-green-700">
-                        Book Now
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Sport Car Experience Section */}
-          <section className="mb-16 text-center">
-            <h2 className="text-3xl font-bold mb-4">EXPERIENCE THRILLING PERFORMANCE</h2>
-            <p className="mb-4">Discover the perfect balance of power and agility with our sport car fleet.</p>
-            <p className="mb-4">From nimble hot hatches to track-focused coupes, our collection features the best in automotive engineering.</p>
-            <p className="mb-4">Whether you're carving up mountain roads or hitting the track, our sport cars promise an exhilarating drive.</p>
-            <p>Experience the thrill of precision handling and responsive power with GreyZone Exotics.</p>
-          </section>
-
-          {/* Brands Section */}
+          {/* Featured Sport Car */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">SPORT CAR BRANDS</h2>
-            <p className="text-center mb-8">Explore our collection of high-performance sport car brands:</p>
-            <div className="grid grid-cols-3 md:grid-cols-5 gap-8">
-              {brandLogos.map((brand) => (
-                <div key={brand.name} className="flex justify-center">
-                  <Image
-                    src={brand.logo}
-                    alt={`${brand.name} logo`}
-                    width={100}
-                    height={100}
-                    className="object-contain"
-                  />
+            <h2 className="text-3xl font-bold mb-8 text-center">Featured Sport Car</h2>
+            <div className="relative bg-gray-900 rounded-lg overflow-hidden">
+              <Image
+                src={sportCars[currentCarIndex]?.images[0]}
+                alt={sportCars[currentCarIndex]?.name}
+                width={800}
+                height={400}
+                className="w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-between px-4">
+                <div className="text-white">
+                  <h3 className="text-2xl font-bold">{sportCars[currentCarIndex]?.name}</h3>
+                  <p>{sportCars[currentCarIndex]?.description}</p>
                 </div>
-              ))}
+                <Button
+                  onClick={handleNextCar}
+                  className="bg-green-600 hover:bg-green-700 text-white flex items-center space-x-2"
+                >
+                  <span>Next Car</span>
+                  <ChevronRight />
+                </Button>
+              </div>
             </div>
           </section>
 
-          {/* Call to Action */}
-          <section className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">UNLEASH YOUR INNER DRIVER</h2>
-            <p className="mb-8">Experience the thrill of high-performance driving. Book your sport car today and elevate your driving experience to new heights.</p>
-            <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg">
-              Reserve Your Sport Car
-            </Button>
-          </section>
-
-          {/* Experience Categories Section */}
+          {/* Sport Cars Grid */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">SPORT CAR EXPERIENCES</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {experienceCategories.map((category) => (
-                <div key={category.name} className="relative group cursor-pointer">
+            <h2 className="text-3xl font-bold mb-8 text-center">Our Sport Cars</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {sportCars.map((car) => (
+                <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
                   <Image
-                    src={category.image}
-                    alt={category.name}
-                    width={300}
-                    height={200}
-                    className="w-full h-40 object-cover rounded-lg"
+                    src={car.images[0]}
+                    alt={car.name}
+                    width={400}
+                    height={300}
+                    className="w-full h-48 object-cover"
                   />
-                  <div className="absolute inset-0 bg-green-600 bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <h3 className="text-xl font-bold text-white">{category.name}</h3>
+                  <div className="p-4">
+                    <h2 className="text-xl font-bold mb-2">{car.name}</h2>
+                    <div className="flex justify-between items-center">
+                      <Button
+                        variant="outline"
+                        className="text-white border-white hover:bg-green-600 hover:text-white"
+                      >
+                        Call For Pricing
+                      </Button>
+                      <Link href={`/booking?car=${car.id}`}>
+                        <Button className="bg-green-600 hover:bg-green-700">
+                          Book Now
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -192,7 +179,7 @@ export default function SportCarFleetPage() {
 
           {/* YouTube Channel Section */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">SUBSCRIBE TO OUR SPORT CAR CHANNEL!</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center">Subscribe to Our Sport Car Channel!</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {youtubeVideos.map((video, index) => (
                 <div key={index} className="relative aspect-video bg-gray-800 rounded-lg overflow-hidden">
@@ -212,26 +199,10 @@ export default function SportCarFleetPage() {
             </div>
           </section>
 
-          {/* Car Gallery */}
-          <section className="mb-16">
-            <div className="grid grid-cols-4 md:grid-cols-8 gap-1">
-              {carGallery.map((image, index) => (
-                <Image
-                  key={index}
-                  src={image}
-                  alt={`Sport Car ${index + 1}`}
-                  width={200}
-                  height={150}
-                  className="w-full h-24 object-cover cursor-pointer hover:opacity-75 transition-opacity"
-                />
-              ))}
-            </div>
-          </section>
-
           {/* FAQ Section */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">FREQUENTLY ASKED QUESTIONS</h2>
-            <Accordion type="single" collapsible className="w-full">
+            <h2 className="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
+            <Accordion type="multiple" className="space-y-4">
               {faqItems.map((item, index) => (
                 <AccordionItem key={index} value={`item-${index}`}>
                   <AccordionTrigger>{item.question}</AccordionTrigger>
@@ -240,10 +211,26 @@ export default function SportCarFleetPage() {
               ))}
             </Accordion>
           </section>
+
+          {/* Car Gallery */}
+          <section className="mb-16">
+            <div className="grid grid-cols-4 gap-4">
+              {carGallery.map((image, index) => (
+                <Image
+                  key={index}
+                  src={image}
+                  alt={`Sport Car ${index + 1}`}
+                  width={200}
+                  height={150}
+                  className="w-full h-40 object-cover rounded-lg hover:opacity-75 transition-opacity"
+                />
+              ))}
+            </div>
+          </section>
         </div>
       </main>
 
       <Footer />
     </div>
-  )
+  );
 }

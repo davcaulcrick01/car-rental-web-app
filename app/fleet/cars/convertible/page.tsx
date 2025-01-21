@@ -1,150 +1,179 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { ChevronRight, Play } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ChevronRight, Play } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import cars from '@/lib/cars'
-import { fleetCategories } from '@/app/fleet/page'
-import Breadcrumbs from '@/components/Breadcrumbs'
+} from '@/components/ui/accordion';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import cars from '@/lib/cars';
+import { fleetCategories } from '@/app/fleet/page';
 
-const convertibleCars = cars.filter(car => car.category === 'convertible')
+// Base bucket path for images
+const BASE_PATH = `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/cars`;
 
+// Filter for convertible cars
+const convertibleCars = cars.filter((car) => car.category === 'convertible');
+
+// Brand logos for convertible cars
 const brandLogos = [
-  { name: "BMW", logo: "/images/bmw/bmw-logo.png" },
-  { name: "Mercedes", logo: "/images/mercedes/mercedes-logo.png" },
-  { name: "Porsche", logo: "/images/porsche/porsche-logo.png" },
-  { name: "Audi", logo: "/images/audi/audi-logo.png" },
-  { name: "Chevrolet", logo: "/images/chevrolet/chevrolet-logo.png" },
-]
+  { name: 'BMW', logo: `${BASE_PATH}/bmw/bmw-logo.png` },
+  { name: 'Mercedes', logo: `${BASE_PATH}/mercedes/mercedes-logo.png` },
+  { name: 'Porsche', logo: `${BASE_PATH}/porsche/porsche-logo.png` },
+  { name: 'Audi', logo: `${BASE_PATH}/audi/audi-logo.png` },
+  { name: 'Chevrolet', logo: `${BASE_PATH}/chevrolet/chevrolet-logo.png` },
+];
 
+// FAQs for the convertible car page
 const faqItems = [
   {
     question: "What's special about convertible cars?",
-    answer: "Convertible cars offer an open-air driving experience, allowing you to enjoy the sunshine and breeze. They're perfect for scenic drives and adding a touch of excitement to your journey."
+    answer: "Convertible cars offer an open-air driving experience, allowing you to enjoy the sunshine and breeze.",
   },
   {
     question: "Can I rent a convertible in winter?",
-    answer: "Yes, you can rent a convertible year-round. Many modern convertibles have excellent heating systems and some even have features like neck warmers for comfortable top-down driving in cooler weather."
+    answer: "Yes! Many modern convertibles have excellent heating systems and features for comfortable top-down driving.",
   },
   {
     question: "Are convertibles safe?",
-    answer: "Modern convertibles are designed with safety in mind. They often include reinforced windshield frames, pop-up roll bars, and other safety features to protect passengers in the event of a rollover."
+    answer: "Modern convertibles include safety features such as reinforced frames and pop-up roll bars.",
   },
-]
+];
 
-const experienceCategories = [
-  { name: "COASTAL DRIVES", image: "/images/coastal-drives.jpg" },
-  { name: "CITY CRUISING", image: "/images/city-cruising.jpg" },
-  { name: "SUNSET TOURS", image: "/images/sunset-tours.jpg" },
-  { name: "WEEKEND GETAWAYS", image: "/images/weekend-getaways.jpg" },
-]
-
-const youtubeVideos = [
-  { title: "Top 5 Convertibles of 2023", thumbnail: "/images/top-5-convertibles-thumb.jpg" },
-  { title: "Convertible vs Coupe: Which to Choose?", thumbnail: "/images/convertible-vs-coupe-thumb.jpg" },
-  { title: "The Ultimate Convertible Road Trip", thumbnail: "/images/convertible-road-trip-thumb.jpg" },
-]
-
+// Car gallery images
 const carGallery = [
-  "/images/convertible-gallery-1.jpg",
-  "/images/convertible-gallery-2.jpg",
-  "/images/convertible-gallery-3.jpg",
-  "/images/convertible-gallery-4.jpg",
-  "/images/convertible-gallery-5.jpg",
-  "/images/convertible-gallery-6.jpg",
-  "/images/convertible-gallery-7.jpg",
-  "/images/convertible-gallery-8.jpg",
-]
+  `${BASE_PATH}/gallery/convertible-gallery-1.jpg`,
+  `${BASE_PATH}/gallery/convertible-gallery-2.jpg`,
+  `${BASE_PATH}/gallery/convertible-gallery-3.jpg`,
+  `${BASE_PATH}/gallery/convertible-gallery-4.jpg`,
+];
+
+// Experience categories
+const experienceCategories = [
+  { name: 'Coastal Drives', image: `${BASE_PATH}/experiences/coastal-drives.jpg` },
+  { name: 'City Cruising', image: `${BASE_PATH}/experiences/city-cruising.jpg` },
+  { name: 'Sunset Tours', image: `${BASE_PATH}/experiences/sunset-tours.jpg` },
+  { name: 'Weekend Getaways', image: `${BASE_PATH}/experiences/weekend-getaways.jpg` },
+];
+
+// Navigation Menu for Fleet Categories
+const CategoryNavigation = () => (
+  <div className="flex flex-wrap justify-center gap-4 mb-12">
+    {fleetCategories.map((category) => (
+      <Link key={category.name} href={category.path}>
+        <Button
+          variant={category.name === 'Convertibles' ? 'default' : 'outline'}
+          className={`text-white border-white hover:bg-green-600 hover:text-white transition-colors ${
+            category.name === 'Convertibles' ? 'bg-green-600' : ''
+          }`}
+        >
+          {category.name}
+        </Button>
+      </Link>
+    ))}
+  </div>
+);
 
 export default function ConvertibleFleetPage() {
+  const [currentCarIndex, setCurrentCarIndex] = useState(0);
+
+  const handleNextCar = () => {
+    setCurrentCarIndex((prevIndex) => (prevIndex + 1) % convertibleCars.length);
+  };
+
   return (
     <div className="bg-black text-white min-h-screen">
       <Header />
+
       <main className="pt-24 pb-12">
         <div className="container mx-auto px-4">
-          <Breadcrumbs items={[
-            { label: 'Home', href: '/' },
-            { label: 'Fleet', href: '/fleet' },
-            { label: 'Convertibles', href: '/fleet/cars/convertible' },
-          ]} />
-          <h1 className="text-4xl font-bold mb-8 mt-4 text-center">Convertible Fleet</h1>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Fleet', href: '/fleet' },
+              { label: 'Convertibles', href: '/fleet/cars/convertible' },
+            ]}
+          />
 
-          {/* Search Cars Button */}
-          <div className="text-center mb-8">
-            <Link href="/fleet/fleet-search">
-              <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg">
-                Search Cars
-              </Button>
-            </Link>
-          </div>
+          {/* Page Header */}
+          <h1 className="text-4xl font-bold text-center my-8">Convertibles</h1>
 
-          {/* Fleet Categories Navigation */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {fleetCategories.map((category) => (
-              <Link key={category.name} href={category.path}>
-                <Button
-                  variant={category.name === "Convertibles" ? "default" : "outline"}
-                  className={`text-white border-white hover:bg-green-600 hover:text-white transition-colors ${
-                    category.name === "Convertibles" ? 'bg-green-600' : ''
-                  }`}
-                >
-                  {category.name}
-                </Button>
-              </Link>
-            ))}
-          </div>
+          {/* Navigation to Other Categories */}
+          <CategoryNavigation />
 
-          {/* Convertible Cars */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {convertibleCars.map((car) => (
-              <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
-                <Image
-                  src={car.images[0]}
-                  alt={car.name}
-                  width={400}
-                  height={300}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-4">
-                  <h2 className="text-xl font-bold mb-4">{car.name}</h2>
-                  <div className="flex justify-between items-center">
-                    <Button variant="outline" className="text-white border-white hover:bg-green-600 hover:text-white">
-                      Call For Pricing
-                    </Button>
-                    <Link href={`/booking?car=${car.id}`}>
-                      <Button className="bg-green-600 hover:bg-green-700">
-                        Book Now
-                      </Button>
-                    </Link>
-                  </div>
+          {/* Featured Convertible */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-center">Featured Convertible</h2>
+            <div className="relative bg-gray-900 rounded-lg overflow-hidden">
+              <Image
+                src={convertibleCars[currentCarIndex]?.images[0]}
+                alt={convertibleCars[currentCarIndex]?.name}
+                width={800}
+                height={400}
+                className="w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-between px-4">
+                <div className="text-white">
+                  <h3 className="text-2xl font-bold">{convertibleCars[currentCarIndex]?.name}</h3>
+                  <p>{convertibleCars[currentCarIndex]?.description}</p>
                 </div>
+                <Button
+                  onClick={handleNextCar}
+                  className="bg-green-600 hover:bg-green-700 text-white flex items-center space-x-2"
+                >
+                  <span>Next Car</span>
+                  <ChevronRight />
+                </Button>
               </div>
-            ))}
-          </div>
-
-          {/* Convertible Experience Section */}
-          <section className="mb-16 text-center">
-            <h2 className="text-3xl font-bold mb-4">EXPERIENCE OPEN-AIR FREEDOM</h2>
-            <p className="mb-4">Feel the wind in your hair and the sun on your face with our convertible fleet.</p>
-            <p className="mb-4">From sporty roadsters to luxurious drop-tops, our collection offers the perfect vehicle for your open-air adventure.</p>
-            <p className="mb-4">Whether it's a coastal drive or a city cruise, our convertibles promise an exhilarating and unforgettable journey.</p>
-            <p>Experience the thrill of top-down driving with GreyZone Exotics.</p>
+            </div>
           </section>
 
-          {/* Brands Section */}
+          {/* Convertible Cars Grid */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">CONVERTIBLE BRANDS</h2>
-            <p className="text-center mb-8">Explore our collection of premium convertible brands:</p>
+            <h2 className="text-3xl font-bold mb-8 text-center">Our Convertibles</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {convertibleCars.map((car) => (
+                <div key={car.id} className="bg-gray-900 rounded-lg overflow-hidden">
+                  <Image
+                    src={car.images[0]}
+                    alt={car.name}
+                    width={400}
+                    height={300}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4">
+                    <h2 className="text-xl font-bold mb-2">{car.name}</h2>
+                    <div className="flex justify-between items-center">
+                      <Button
+                        variant="outline"
+                        className="text-white border-white hover:bg-green-600 hover:text-white"
+                      >
+                        Call For Pricing
+                      </Button>
+                      <Link href={`/booking?car=${car.id}`}>
+                        <Button className="bg-green-600 hover:bg-green-700">
+                          Book Now
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Other Sections (Brands, Experiences, Gallery, FAQ) */}
+          {/* Convertible Brands */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-center">Convertible Brands</h2>
             <div className="grid grid-cols-3 md:grid-cols-5 gap-8">
               {brandLogos.map((brand) => (
                 <div key={brand.name} className="flex justify-center">
@@ -160,18 +189,9 @@ export default function ConvertibleFleetPage() {
             </div>
           </section>
 
-          {/* Call to Action */}
-          <section className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">EMBRACE THE OPEN ROAD WITH OUR CONVERTIBLE FLEET</h2>
-            <p className="mb-8">Experience the freedom of the open air. Book your convertible today and make every drive an adventure.</p>
-            <Button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg">
-              Reserve Your Convertible
-            </Button>
-          </section>
-
-          {/* Experience Categories Section */}
+          {/* Experience Categories */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">CONVERTIBLE EXPERIENCES</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center">Convertible Experiences</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {experienceCategories.map((category) => (
                 <div key={category.name} className="relative group cursor-pointer">
@@ -190,48 +210,10 @@ export default function ConvertibleFleetPage() {
             </div>
           </section>
 
-          {/* YouTube Channel Section */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">SUBSCRIBE TO OUR CONVERTIBLE CHANNEL!</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {youtubeVideos.map((video, index) => (
-                <div key={index} className="relative aspect-video bg-gray-800 rounded-lg overflow-hidden">
-                  <Image
-                    src={video.thumbnail}
-                    alt={video.title}
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Button className="bg-red-600 hover:bg-red-700 text-white rounded-full p-4">
-                      <Play size={32} />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Car Gallery */}
-          <section className="mb-16">
-            <div className="grid grid-cols-4 md:grid-cols-8 gap-1">
-              {carGallery.map((image, index) => (
-                <Image
-                  key={index}
-                  src={image}
-                  alt={`Convertible ${index + 1}`}
-                  width={200}
-                  height={150}
-                  className="w-full h-24 object-cover cursor-pointer hover:opacity-75 transition-opacity"
-                />
-              ))}
-            </div>
-          </section>
-
           {/* FAQ Section */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">FREQUENTLY ASKED QUESTIONS</h2>
-            <Accordion type="single" collapsible className="w-full">
+            <h2 className="text-3xl font-bold mb-8 text-center">FAQs</h2>
+            <Accordion type="multiple" className="space-y-4">
               {faqItems.map((item, index) => (
                 <AccordionItem key={index} value={`item-${index}`}>
                   <AccordionTrigger>{item.question}</AccordionTrigger>
@@ -245,5 +227,5 @@ export default function ConvertibleFleetPage() {
 
       <Footer />
     </div>
-  )
+  );
 }
