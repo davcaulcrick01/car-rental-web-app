@@ -43,7 +43,7 @@ export default function Header() {
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <Image 
-            src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/images/logo.png`}
+            src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}images/GreyZone-Exotics-01.png`}
             alt="Car Rental Logo"
             width={150}
             height={50}

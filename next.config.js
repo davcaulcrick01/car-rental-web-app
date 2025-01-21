@@ -7,11 +7,15 @@ const nextConfig = {
   },
   output: 'standalone',
   images: {
-    domains: ['car-rental-app-bucket.s3.amazonaws.com'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**.amazonaws.com',
+        hostname: '*.s3.amazonaws.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.amazonaws.com',
         pathname: '/**',
       }
     ]
