@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-// Removed LuxuryCarRentalLanding import
-// import { LuxuryCarRentalLanding } from "@/components/Layout";
+// Use default import for the layout component
+import LuxuryCarRentalLanding from "@/components/Layout";
 import Header from "@/components/Header";
 
 // Safely handle the environment variable
@@ -19,13 +19,32 @@ const locations = [
     phone: "+1 (469) 743-1824",
     image: `${BASE_PATH}/los-angeles.jpg`,
   },
-  // ... other locations
+  {
+    id: 2,
+    city: "Dallas",
+    address: "Downtown Dallas",
+    phone: "+1 (469) 743-1824",
+    image: `${BASE_PATH}/new-york.jpg`,
+  },
+  {
+    id: 3,
+    city: "Mckinney Airport",
+    address: "Mckinney Airport",
+    phone: "+1 (469) 743-1824",
+    image: `${BASE_PATH}/miami.jpg`,
+  },
+  {
+    id: 4,
+    city: "Reunion Tower",
+    address: "Reunion Tower Dallas",
+    phone: "+1 (702) 555-3456",
+    image: `${BASE_PATH}/las-vegas.jpg`,
+  },
 ];
 
 export default function LocationsPage() {
   return (
-    <> 
-      {/* Removed LuxuryCarRentalLanding wrapper */}
+    <LuxuryCarRentalLanding>
       <Header />
       <div className="bg-black text-white py-20">
         <div className="container mx-auto px-4">
@@ -61,7 +80,6 @@ export default function LocationsPage() {
           </div>
         </div>
       </div>
-      {/* End of removed LuxuryCarRentalLanding wrapper */}
-    </>
+    </LuxuryCarRentalLanding>
   );
 }
