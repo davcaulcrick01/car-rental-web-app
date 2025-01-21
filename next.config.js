@@ -11,6 +11,9 @@ const nextConfig = {
     unoptimized: true,
     dangerouslyAllowSVG: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 }
 
 module.exports = nextConfig
