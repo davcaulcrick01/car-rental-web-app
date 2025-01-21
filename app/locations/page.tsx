@@ -2,13 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-// Verify if LuxuryCarRentalLanding is a named or default export in your Layout component.
-// If it's a default export, adjust the import accordingly.
-import { LuxuryCarRentalLanding } from "@/components/Layout";
+// Use default import for the layout component
+import LuxuryCarRentalLanding from "@/components/Layout";
 import Header from "@/components/Header";
 
-// Safely handle the environment variable to avoid undefined values.
-// You can replace the fallback URL with a valid default or an empty string.
+// Safely handle the environment variable
 const S3_BUCKET_URL = process.env.NEXT_PUBLIC_S3_BUCKET_URL || "";
 const BASE_PATH = `${S3_BUCKET_URL}/car_images/images/locations`;
 
@@ -47,7 +45,7 @@ const locations = [
 export default function LocationsPage() {
   return (
     <LuxuryCarRentalLanding>
-      <Header /> {/* Using the Header component */}
+      <Header />
       <div className="bg-black text-white py-20">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-center mb-12">
@@ -68,7 +66,9 @@ export default function LocationsPage() {
                   className="w-full h-64 object-cover"
                 />
                 <div className="p-6">
-                  <h3 className="text-2xl font-bold mb-4">{location.city}</h3>
+                  <h3 className="text-2xl font-bold mb-4">
+                    {location.city}
+                  </h3>
                   <p className="text-gray-400 mb-2">{location.address}</p>
                   <p className="text-gray-400 mb-6">{location.phone}</p>
                   <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white text-sm uppercase font-semibold px-4 py-2 rounded-full transition duration-300 ease-in-out">
