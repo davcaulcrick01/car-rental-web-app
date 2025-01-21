@@ -2,11 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+// Verify if LuxuryCarRentalLanding is a named or default export in your Layout component.
+// If it's a default export, adjust the import accordingly.
 import { LuxuryCarRentalLanding } from "@/components/Layout";
 import Header from "@/components/Header";
 
-// Base path for images
-const BASE_PATH = `${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/locations`;
+// Safely handle the environment variable to avoid undefined values.
+// You can replace the fallback URL with a valid default or an empty string.
+const S3_BUCKET_URL = process.env.NEXT_PUBLIC_S3_BUCKET_URL || "";
+const BASE_PATH = `${S3_BUCKET_URL}/car_images/images/locations`;
 
 // Location data with dynamic image paths
 const locations = [
