@@ -54,4 +54,16 @@ export const fleetCategories: FleetCategory[] = [
     image: "/images/fleet/exotic.jpg",
     link: "/fleet/cars/exotic"
   }
+]
+
+export const brandLogos = [
+  // ... your brandLogos array
+]
+
+export const youtubeVideos = [
+  // ... your youtubeVideos array
+]
+
+export const carGallery = [
+  // ... your carGallery array
 ] 
