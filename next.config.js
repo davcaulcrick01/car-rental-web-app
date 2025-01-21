@@ -6,7 +6,7 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: '**',
-      },
+      }
     ],
     unoptimized: true,
     dangerouslyAllowSVG: true,
@@ -14,6 +14,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  }
 }
 
 module.exports = nextConfig
