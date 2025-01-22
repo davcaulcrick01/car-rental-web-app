@@ -1,42 +1,45 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { ChevronLeft, ChevronRight, Check, AlertTriangle, Star, Calendar as CalendarIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, Check, AlertTriangle, Star, Calendar as CalendarIcon, ArrowLeft } from "lucide-react";
 import { format, addMonths } from 'date-fns';
-import cars from '@/lib/cars'; // Importing car data from car.ts
-import Header from "@/components/Header"; // Import the Header
-import Footer from "@/components/Footer"; // Import the Footer
+import { DateRange } from 'react-day-picker';
+import cars, { Car } from '@/lib/cars'; // Import Car type
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default function BookingPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const [selectedCar, setSelectedCar] = useState(null);
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [dateRange, setDateRange] = useState<{ from: Date | null; to: Date | null }>({
-    from: null,
-    to: null,
-  });
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [calendarVisible, setCalendarVisible] = useState(false);
 
-  // Get car by ID from the URL search params
   useEffect(() => {
-    const carId = parseInt(searchParams.get('car'), 10);
-    const car = cars.find((c) => c.id === carId);
-    if (car) {
-      setSelectedCar(car);
+    const carIdParam = searchParams.get('car');
+    if (carIdParam) {
+      const carId = parseInt(carIdParam, 10);
+      const car = cars.find((c) => c.id === carId);
+      if (car) {
+        setSelectedCar(car);
+      }
     }
   }, [searchParams]);
 
   const handleNextImage = () => {
+    if (!selectedCar) return;
     setCurrentImageIndex((prevIndex) =>
       prevIndex === selectedCar.images.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   const handlePrevImage = () => {
+    if (!selectedCar) return;
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? selectedCar.images.length - 1 : prevIndex - 1
     );
@@ -52,9 +55,21 @@ export default function BookingPage() {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      <Header /> {/* Add Header at the top */}
+      <Header />
       
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 pt-36">
+        {/* Back Navigation */}
+        <div className="mb-6">
+          <Button 
+            variant="ghost" 
+            className="text-white hover:text-gray-300 flex items-center gap-2"
+            onClick={() => router.back()}
+          >
+            <ArrowLeft size={20} />
+            Back to Fleet
+          </Button>
+        </div>
+
         <h2 className="text-4xl font-bold mb-8 text-center">{selectedCar.name} Booking Experience</h2>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -136,13 +151,13 @@ export default function BookingPage() {
                     <Calendar
                       mode="range"
                       selected={dateRange}
-                      onSelect={setDateRange}
+                      onSelect={(range: DateRange | undefined) => setDateRange(range)}
                       className="rounded-md border-0"
                     />
                     <Calendar
                       mode="range"
                       selected={dateRange}
-                      onSelect={setDateRange}
+                      onSelect={(range: DateRange | undefined) => setDateRange(range)}
                       month={addMonths(new Date(), 1)}
                       className="rounded-md border-0"
                     />
@@ -154,7 +169,7 @@ export default function BookingPage() {
                   <CalendarIcon className="mr-2" size={20} />
                   Selected Dates
                 </h4>
-                {dateRange.from && dateRange.to ? (
+                {dateRange?.from && dateRange?.to ? (
                   <div className="space-y-2">
                     <p className="text-white">
                       From: <span className="font-semibold">{format(dateRange.from, 'MMMM d, yyyy')}</span>
@@ -220,7 +235,7 @@ export default function BookingPage() {
         </div>
       </main>
 
-      <Footer /> {/* Add Footer at the bottom */}
+      <Footer />
     </div>
   );
 }
