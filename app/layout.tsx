@@ -1,6 +1,12 @@
+import { Inter } from 'next/font/google'
 import './globals.css'
-import PerformanceOptimizer from '@/components/PerformanceOptimizer'
-import Image from 'next/image'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata = {
+  title: 'LuxuryCars - Premium Car Rental',
+  description: 'Experience luxury on wheels with our premium car rental service.',
+}
 
 export default function RootLayout({
   children,
@@ -9,14 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link 
-          rel="icon" 
-          href={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/public/favicon.ico`}
-        />
-      </head>
-      <body>
-        <PerformanceOptimizer />
+      <body className={inter.className}>
         {children}
       </body>
     </html>

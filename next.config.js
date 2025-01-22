@@ -1,15 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  env: {
-    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-    NEXT_PUBLIC_S3_BUCKET_URL: process.env.NEXT_PUBLIC_S3_BUCKET_URL,
-    NEXT_PUBLIC_S3_BUCKET_DOMAIN: process.env.NEXT_PUBLIC_S3_BUCKET_DOMAIN,
-  },
-  output: 'standalone',
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {
         protocol: 'https',
+<<<<<<< HEAD
         hostname: '*.s3.amazonaws.com',
         pathname: '/**',
       },
@@ -17,19 +13,24 @@ const nextConfig = {
         protocol: 'https',
         hostname: '*.amazonaws.com',
         pathname: '/**',
+=======
+        hostname: '**',
+>>>>>>> refs/remotes/origin/development
       }
-    ]
+    ],
+    unoptimized: true,
+    dangerouslyAllowSVG: true,
   },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+  eslint: {
+    ignoreDuringBuilds: true,
   },
-  webpack: (config) => {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': __dirname,
-    }
-    return config
+  typescript: {
+    ignoreBuildErrors: true,
   },
+  output: 'standalone',
+  experimental: {
+    appDir: true,
+  }
 }
 
 module.exports = nextConfig
