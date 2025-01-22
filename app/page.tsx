@@ -421,7 +421,12 @@ export default function HomePage() {
               {/* Scroll Left Button */}
               <button
                 className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-10"
-                onClick={() => sliderRef.current?.scrollBy({ left: -300, behavior: 'smooth' })}
+                onClick={() => {
+                  const container = sliderRef.current;
+                  if (container) {
+                    container.scrollBy({ left: -300, behavior: 'smooth' });
+                  }
+                }}
               >
                 <ChevronLeft size={28} />
               </button>
@@ -429,23 +434,46 @@ export default function HomePage() {
               {/* Scroll Right Button */}
               <button
                 className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-10"
-                onClick={() => sliderRef.current?.scrollBy({ left: 300, behavior: 'smooth' })}
+                onClick={() => {
+                  const container = sliderRef.current;
+                  if (container) {
+                    container.scrollBy({ left: 300, behavior: 'smooth' });
+                  }
+                }}
               >
                 <ChevronRight size={28} />
               </button>
 
               {/* Scrollable List */}
               <div
-                className="flex overflow-x-auto space-x-8 py-4 scrollbar-hide"
+                className="flex overflow-x-auto space-x-8 py-4 scrollbar-hide scroll-smooth"
                 ref={sliderRef}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUpOrLeave}
-                onMouseLeave={handleMouseUpOrLeave}
+                onMouseDown={(e) => {
+                  if (!sliderRef.current) return;
+                  setIsDragging(true);
+                  setStartX(e.pageX - sliderRef.current.offsetLeft);
+                  setScrollLeft(sliderRef.current.scrollLeft);
+                }}
+                onMouseMove={(e) => {
+                  if (!isDragging || !sliderRef.current) return;
+                  e.preventDefault();
+                  const x = e.pageX - sliderRef.current.offsetLeft;
+                  const walk = (x - startX) * 2;
+                  sliderRef.current.scrollLeft = scrollLeft - walk;
+                }}
+                onMouseUp={() => setIsDragging(false)}
+                onMouseLeave={() => setIsDragging(false)}
                 style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
               >
                 {categoryTypes.map((type, index) => (
-                  <div key={index} className="flex-shrink-0 w-56 transition-transform duration-300 transform hover:scale-105">
+                  <div 
+                    key={index} 
+                    className="flex-shrink-0 w-56 transition-transform duration-300 transform hover:scale-105"
+                    style={{
+                      animation: `slide ${categoryTypes.length * 3}s linear infinite`,
+                      animationDelay: `${index * (3 / categoryTypes.length)}s`
+                    }}
+                  >
                     <div className="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl">
                       <div className="relative">
                         <Image
@@ -463,6 +491,26 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+
+          <style jsx>{`
+            @keyframes slide {
+              0% {
+                transform: translateX(0);
+              }
+              100% {
+                transform: translateX(-100%);
+              }
+            }
+            
+            .scrollbar-hide::-webkit-scrollbar {
+              display: none;
+            }
+            
+            .scrollbar-hide {
+              -ms-overflow-style: none;
+              scrollbar-width: none;
+            }
+          `}</style>
         </section>
 
         {/* Slider Section - Our Exclusive Collection */}

@@ -1,10 +1,14 @@
 // components/CarFilter.tsx
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 
-export default function CarFilter({ onFilter }) {
+interface FilterProps {
+  onFilter: (filters: {brand: string, type: string}) => void;
+}
+
+export default function CarFilter({ onFilter }: FilterProps) {
   const [filters, setFilters] = useState({ brand: '', type: '' });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
     onFilter({ ...filters, [name]: value });

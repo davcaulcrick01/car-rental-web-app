@@ -163,7 +163,7 @@ export default function Footer() {
 
         <div className="mt-8 pt-8 border-t border-gray-800 text-center">
           <Image 
-            src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/images/logos/GreyZone-Exotics-01.png`}
+            src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/logos/GreyZone-Exotics-01.png`}
             alt="Car Rental Logo"
             width={150}
             height={50}

@@ -45,7 +45,7 @@ export default function Header() {
         <div className="flex-shrink-0 mr-8">
           <Link href="/" className="flex items-center">
             <Image
-              src="/images/logos/GreyZone-Exotics-01.png"
+              src= {`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/logos/GreyZone-Exotics-01.png` }
               alt="GreyZone Exotics Logo"
               width={100}
               height={50}
