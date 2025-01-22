@@ -1,0 +1,57 @@
+car-rental-app/
+├── .env.local                 # Environment variables
+├── prisma/
+│   └── schema.prisma         # Prisma schema
+├── src/
+│   ├── app/
+│   │   ├── api/              # API routes
+│   │   │   ├── auth/
+│   │   │   │   ├── login/
+│   │   │   │   │   └── route.ts
+│   │   │   │   ├── signup/
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── logout/
+│   │   │   │       └── route.ts
+│   │   │   └── test-db/
+│   │   │       └── route.ts
+│   │   ├── (auth)/          # Auth pages group
+│   │   │   ├── login/
+│   │   │   │   └── page.tsx
+│   │   │   └── signup/
+│   │   │       └── page.tsx
+│   │   ├── (protected)/     # Protected routes group
+│   │   │   ├── dashboard/
+│   │   │   │   └── page.tsx
+│   │   │   └── admin/
+│   │   │       └── page.tsx
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/
+│   │   ├── auth/
+│   │   │   ├── LoginForm.tsx
+│   │   │   └── SignupForm.tsx
+│   │   ├── ui/
+│   │   │   ├── Button.tsx
+│   │   │   └── Input.tsx
+│   │   ├── layout/
+│   │   │   ├── Header.tsx
+│   │   │   └── Footer.tsx
+│   │   └── database/
+│   │       ├── DatabaseStatus.tsx
+│   │       └── DatabaseErrorBoundary.tsx
+│   ├── lib/
+│   │   ├── db.ts            # Database connection
+│   │   ├── auth.ts          # Auth utilities
+│   │   └── utils.ts         # General utilities
+│   ├── types/
+│   │   └── index.ts         # TypeScript types
+│   ├── hooks/
+│   │   ├── useAuth.ts
+│   │   └── useDatabase.ts
+│   ├── middleware.ts        # Next.js middleware
+│   └── styles/
+│       └── globals.css
+├── public/
+│   └── images/
+├── package.json
+└── next.config.js
