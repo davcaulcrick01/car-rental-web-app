@@ -145,7 +145,7 @@ function DropdownNavItem({ label, items, isActive, setActiveDropdown, mainLink }
   setActiveDropdown: (dropdown: string | null) => void;
   mainLink: string;
 }) {
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) {

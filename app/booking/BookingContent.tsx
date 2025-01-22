@@ -6,11 +6,11 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import Footer from '@/components/Footer'; // Import the Footer component
+import Footer from '@/components/Footer';
 import cars, { Car } from '@/lib/cars';
 
 interface BookingContentProps {
-  selectedCar?: Car | null; // Allow passing the selected car as a prop (optional)
+  selectedCar?: Car | null;
 }
 
 export default function BookingContent({ selectedCar: initialSelectedCar }: BookingContentProps) {
@@ -21,7 +21,6 @@ export default function BookingContent({ selectedCar: initialSelectedCar }: Book
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // If no car is passed as a prop, fetch from the URL search params
     if (!initialSelectedCar) {
       const carParam = searchParams.get('car');
       if (carParam) {
@@ -39,7 +38,6 @@ export default function BookingContent({ selectedCar: initialSelectedCar }: Book
     setLoading(true);
 
     try {
-      // Add booking logic here
       console.log('Booking:', { selectedCar, startDate, endDate });
     } catch (error) {
       console.error('Booking failed:', error);
@@ -92,26 +90,30 @@ export default function BookingContent({ selectedCar: initialSelectedCar }: Book
           {/* Booking Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <Label htmlFor="startDate">Start Date</Label>
+              <div className="block mb-2">
+                <div className="text-sm font-medium">Start Date</div>
+              </div>
               <Input
                 id="startDate"
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                min={new Date().toISOString().split('T')[0]} // Prevent past dates
+                min={new Date().toISOString().split('T')[0]}
                 required
                 className="bg-gray-800 border-gray-700 text-white"
               />
             </div>
 
             <div>
-              <Label htmlFor="endDate">End Date</Label>
+              <div className="block mb-2">
+                <div className="text-sm font-medium">End Date</div>
+              </div>
               <Input
                 id="endDate"
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                min={startDate || new Date().toISOString().split('T')[0]} // Prevent end date before start date
+                min={startDate || new Date().toISOString().split('T')[0]}
                 required
                 className="bg-gray-800 border-gray-700 text-white"
               />

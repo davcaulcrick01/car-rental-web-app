@@ -1,6 +1,5 @@
 'use client';
 
-import { dynamic as dynamicImport } from 'next/dynamic';
 import { useState, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,17 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Breadcrumbs from '@/components/Breadcrumbs';
-
-// Dynamically import components with loading fallbacks
-const Header = dynamicImport(() => import('@/components/Header'), {
-  loading: () => <div className="h-20 bg-gray-900" />,
-  ssr: false
-});
-
-const Footer = dynamicImport(() => import('@/components/Footer'), {
-  loading: () => <div className="h-20 bg-gray-900" />,
-  ssr: false
-});
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 const services = [
   {
@@ -173,6 +163,4 @@ export default function ChauffeurServicesPage() {
   );
 }
 
-// Force static generation
-export const dynamic = 'force-static';
 export const revalidate = 3600; // Revalidate every hour

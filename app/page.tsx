@@ -81,7 +81,7 @@ const faqItems = [
 ]
 
 // Helper function to chunk array into groups
-function chunkArray(array, size) {
+function chunkArray(array: any[], size: number) {
   const chunked = [];
   for (let i = 0; i < array.length; i += size) {
     chunked.push(array.slice(i, i + size));
@@ -92,10 +92,10 @@ function chunkArray(array, size) {
 export default function HomePage() {
   const [isDragging, setIsDragging] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const [hoveredCar, setHoveredCar] = useState(null);
+  const [hoveredCar, setHoveredCar] = useState<number | null>(null);
 
   const categoryTypes = Array.from(new Set(cars.map(car => car.category))).map(category => ({
     name: category,
@@ -103,16 +103,18 @@ export default function HomePage() {
   }));
 
   // Handle mouse down to initiate dragging
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setIsPaused(true);
-    setStartX(e.pageX - sliderRef.current.offsetLeft);
-    setScrollLeft(sliderRef.current.scrollLeft);
+    if (sliderRef.current) {
+      setStartX(e.pageX - sliderRef.current.offsetLeft);
+      setScrollLeft(sliderRef.current.scrollLeft);
+    }
   };
 
   // Handle mouse move for drag scroll
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !sliderRef.current) return;
     const x = e.pageX - sliderRef.current.offsetLeft;
     const walk = (x - startX) * 3;
     sliderRef.current.scrollLeft = scrollLeft - walk;
@@ -126,25 +128,29 @@ export default function HomePage() {
 
   // Scroll left using button
   const handleScrollLeft = () => {
-    sliderRef.current.scrollBy({ left: -400, behavior: "smooth" });
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: -400, behavior: "smooth" });
+    }
     setIsPaused(true);
     setTimeout(() => setIsPaused(false), 3000);
   };
 
   // Scroll right using button
   const handleScrollRight = () => {
-    sliderRef.current.scrollBy({ left: 400, behavior: "smooth" });
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: 400, behavior: "smooth" });
+    }
     setIsPaused(true);
     setTimeout(() => setIsPaused(false), 3000);
   };
 
   // Automated scroll with smooth continuous behavior
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || !sliderRef.current) return;
     const autoScroll = setInterval(() => {
-      if (sliderRef.current.scrollLeft >= sliderRef.current.scrollWidth - sliderRef.current.clientWidth) {
+      if (sliderRef.current && sliderRef.current.scrollLeft >= sliderRef.current.scrollWidth - sliderRef.current.clientWidth) {
         sliderRef.current.scrollLeft = 0;
-      } else {
+      } else if (sliderRef.current) {
         sliderRef.current.scrollBy({ left: 5, behavior: "smooth" });
       }
     }, 10);
@@ -186,7 +192,7 @@ export default function HomePage() {
               <form action="/fleet/fleet-search" method="GET" className="flex flex-wrap items-center space-x-4">
                 {/* Location Input with Shadcn Components */}
                 <div className="flex-1">
-                  <Label htmlFor="location">Where</Label>
+                  <div className="text-gray-700">Where</div>
                   <Input
                     id="location"
                     type="text"
@@ -205,12 +211,12 @@ export default function HomePage() {
                 {/* Date/Time Pickers */}
                 <div className="flex items-center space-x-4">
                   <div>
-                    <Label htmlFor="fromDate">From</Label>
+                    <div className="text-gray-700">From</div>
                     <Input id="fromDate" type="date" className="w-full" required />
                   </div>
 
                   <div>
-                    <Label htmlFor="fromTime">Time</Label>
+                    <div className="text-gray-700">Time</div>
                     <select id="fromTime" className="w-full p-2 border border-gray-300 rounded-lg">
                     <option value="00:00">12:00 AM</option>
                     <option value="00:30">12:30 AM</option>
@@ -266,12 +272,12 @@ export default function HomePage() {
 
                 <div className="flex items-center space-x-4">
                   <div>
-                    <Label htmlFor="untilDate">Until</Label>
+                    <div className="text-gray-700">Until</div>
                     <Input id="untilDate" type="date" className="w-full" required />
                   </div>
 
                   <div>
-                    <Label htmlFor="untilTime">Time</Label>
+                    <div className="text-gray-700">Time</div>
                     <select id="untilTime" className="w-full p-2 border border-gray-300 rounded-lg">
                     <option value="00:00">12:00 AM</option>
                     <option value="00:30">12:30 AM</option>
@@ -415,7 +421,7 @@ export default function HomePage() {
               {/* Scroll Left Button */}
               <button
                 className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-10"
-                onClick={() => sliderRef.current.scrollBy({ left: -300, behavior: 'smooth' })}
+                onClick={() => sliderRef.current?.scrollBy({ left: -300, behavior: 'smooth' })}
               >
                 <ChevronLeft size={28} />
               </button>
@@ -423,7 +429,7 @@ export default function HomePage() {
               {/* Scroll Right Button */}
               <button
                 className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 z-10"
-                onClick={() => sliderRef.current.scrollBy({ left: 300, behavior: 'smooth' })}
+                onClick={() => sliderRef.current?.scrollBy({ left: 300, behavior: 'smooth' })}
               >
                 <ChevronRight size={28} />
               </button>
