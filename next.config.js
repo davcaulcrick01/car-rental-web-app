@@ -5,7 +5,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'car-rental-app-bucket.s3.us-east-1.amazonaws.com',
       }
     ],
     unoptimized: true,
