@@ -39,16 +39,6 @@ export default function Header() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
   return (
-<<<<<<< HEAD
-    <header className="bg-white shadow-md">
-      <nav className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          <Image 
-            src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}images/GreyZone-Exotics-01.png`}
-            alt="Car Rental Logo"
-            width={150}
-            height={50}
-=======
     <header className="bg-black bg-opacity-90 py-4 fixed w-full z-50">
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Left: Logo */}
@@ -74,7 +64,6 @@ export default function Header() {
             isActive={activeDropdown === 'fleet'}
             setActiveDropdown={setActiveDropdown}
             mainLink="/fleet"
->>>>>>> refs/remotes/origin/development
           />
           <DropdownNavItem
             label="Services"

@@ -5,17 +5,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-<<<<<<< HEAD
-        hostname: '*.s3.amazonaws.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: '*.amazonaws.com',
-        pathname: '/**',
-=======
         hostname: '**',
->>>>>>> refs/remotes/origin/development
       }
     ],
     unoptimized: true,

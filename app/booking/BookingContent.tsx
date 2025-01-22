@@ -9,6 +9,9 @@ import { Label } from '@/components/ui/label';
 import Footer from '@/components/Footer';
 import cars, { Car } from '@/lib/cars';
 
+// Add padding to push content below fixed header
+const headerHeight = 'pt-32'; // 8rem padding top
+
 interface BookingContentProps {
   selectedCar?: Car | null;
 }

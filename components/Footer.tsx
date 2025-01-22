@@ -1,17 +1,22 @@
 "use client"
+
 import { useState } from 'react'
-import Link from 'next/link';
-import Image from 'next/image';
-import React from 'react';
-import { Instagram, Facebook, Twitter } from 'lucide-react';
+import Link from 'next/link'
+import Image from 'next/image'
+import React from 'react'
+import { Instagram, Facebook, Twitter } from 'lucide-react'
 import cars from '@/lib/cars'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectLabel } from "@/components/ui/select"
+
+interface CarsByCategory {
+  [key: string]: any[]
+}
 
 export default function Footer() {
   const [selectedCar, setSelectedCar] = useState('')
 
   // Group cars by category
-  const carsByCategory = cars.reduce((acc, car) => {
+  const carsByCategory: CarsByCategory = cars.reduce((acc: CarsByCategory, car) => {
     const category = car.category.toLowerCase()
     if (!acc[category]) {
       acc[category] = []
@@ -107,44 +112,44 @@ export default function Footer() {
             </div>
           </div>
           
-            {/* Get in Touch Section */}
-            <div className="bg-gray-800 p-6 rounded-lg">
-              <h4 className="text-xl font-bold mb-2">Visit Our Showroom</h4>
-              <p className="text-gray-400 mb-4">
-                Experience luxury firsthand at our state-of-the-art showroom. Our knowledgeable staff is ready to assist you in finding the perfect vehicle for your needs.
-              </p>
-              <div className="mb-4">
-                <h5 className="text-lg font-semibold">Address</h5>
-                <p className="text-gray-400">1401 Kirkdale Drive, Melissa, TX 75454</p>
-              </div>
-              <div className="mb-4">
-                <h5 className="text-lg font-semibold">Hours</h5>
-                <p className="text-gray-400">Monday - Friday: 9AM - 7PM</p>
-                <p className="text-gray-400">Saturday: 10AM - 6PM</p>
-                <p className="text-gray-400">Sunday: Closed</p>
-              </div>
-              <div>
-                <h5 className="text-lg font-semibold">Contact</h5>
-                <p className="text-gray-400">Phone: (469) 743-1824</p>
-                <p className="text-gray-400">Email: <a href="mailto:info@greyzoneexotics.com" className="text-blue-500 hover:text-blue-400">info@greyzoneexotics.com</a></p>
-              </div>
+          {/* Get in Touch Section */}
+          <div className="bg-gray-800 p-6 rounded-lg">
+            <h4 className="text-xl font-bold mb-2">Visit Our Showroom</h4>
+            <p className="text-gray-400 mb-4">
+              Experience luxury firsthand at our state-of-the-art showroom. Our knowledgeable staff is ready to assist you in finding the perfect vehicle for your needs.
+            </p>
+            <div className="mb-4">
+              <h5 className="text-lg font-semibold">Address</h5>
+              <p className="text-gray-400">1401 Kirkdale Drive, Melissa, TX 75454</p>
             </div>
+            <div className="mb-4">
+              <h5 className="text-lg font-semibold">Hours</h5>
+              <p className="text-gray-400">Monday - Friday: 9AM - 7PM</p>
+              <p className="text-gray-400">Saturday: 10AM - 6PM</p>
+              <p className="text-gray-400">Sunday: Closed</p>
+            </div>
+            <div>
+              <h5 className="text-lg font-semibold">Contact</h5>
+              <p className="text-gray-400">Phone: (469) 743-1824</p>
+              <p className="text-gray-400">Email: <a href="mailto:info@greyzoneexotics.com" className="text-blue-500 hover:text-blue-400">info@greyzoneexotics.com</a></p>
+            </div>
+          </div>
           
           {/* Right: Map Section */}
           <div className="flex justify-center">
-                <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3302.9602561302815!2d-118.38327968478277!3d34.06353682599895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2be18c321320f%3A0xdf6022be4d4116e5!2sRodeo%20Exotic%20Car%20Rentals!5e0!3m2!1sen!2sus!4v1635240197891!5m2!1sen!2sus"
-                width="100%"
-                height="400"
-                allowFullScreen=""
-                loading="lazy"
-                title="Location Map"
-                className="rounded-lg"
-                ></iframe>
-            </div>
-            
-           {/* Center: Payment Cards Section */}
-           <div className="flex flex-col items-center justify-center space-y-6">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3302.9602561302815!2d-118.38327968478277!3d34.06353682599895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2be18c321320f%3A0xdf6022be4d4116e5!2sRodeo%20Exotic%20Car%20Rentals!5e0!3m2!1sen!2sus!4v1635240197891!5m2!1sen!2sus"
+              width="100%"
+              height="400"
+              allowFullScreen={true}
+              loading="lazy"
+              title="Location Map"
+              className="rounded-lg"
+            />
+          </div>
+          
+          {/* Center: Payment Cards Section */}
+          <div className="flex flex-col items-center justify-center space-y-6">
             <h4 className="text-lg font-semibold text-white mb-2">Payment Cards Accepted</h4>
             <Image 
               src="/images/logos/accepted-credit-card.png" 
@@ -155,22 +160,19 @@ export default function Footer() {
             />
           </div>
         </div>
-<<<<<<< HEAD
-        <Image 
-          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/images/logos/GreyZone-Exotics-01.png`}
-          alt="Car Rental Logo"
-          width={150}
-          height={50}
-        />
-=======
-      </div>
-      {/* Footer Bottom Section */}
-      <div className="mt-8 pt-8 border-t border-gray-800 text-center">
-        <p className="text-gray-400">
-          &copy; {new Date().getFullYear()} GreyZone Exotics. All rights reserved.
-        </p>
->>>>>>> refs/remotes/origin/development
+
+        <div className="mt-8 pt-8 border-t border-gray-800 text-center">
+          <Image 
+            src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/images/logos/GreyZone-Exotics-01.png`}
+            alt="Car Rental Logo"
+            width={150}
+            height={50}
+          />
+          <p className="text-gray-400 mt-4">
+            &copy; {new Date().getFullYear()} GreyZone Exotics. All rights reserved.
+          </p>
+        </div>
       </div>
     </footer>
-  );
+  )
 }
