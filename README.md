@@ -71,3 +71,15 @@ git push origin v0.1.0
 # For major version bump
 git tag -a v1.0.0 -m "Major version release"
 git push origin v1.0.0
+
+
+## logging in to the databse 
+psql -h 3.216.211.135 -p 5432 -d <database_name> -U <username>
+postgresql://<username>:<password>@<endpoint>:5432/<database_name>
+
+sudo -i -u postgres psql
+
+## show db
+\l
+
+psql -h hostname -U username -d database_name

@@ -1,0 +1,71 @@
+# Delete the current prisma generated files
+rm -rf node_modules/.prisma
+
+# Reinstall dependencies
+npm install
+
+# Create prism schema 
+npx prisma format
+npx prisma validate
+
+# Generate Prisma client
+npx prisma generate
+
+# Restart your Next.js server
+npm run dev
+
+# To run database
+npx prisma studio
+
+npx prisma migrate deploy
+
+npx prisma migrate dev --name init
+
+\l - show databases
+
+ALTER USER admin WITH SUPERUSER CREATEROLE CREATEDB REPLICATION BYPASSRLS;
+
+\conninfo - verifiy credentials
+
+\du- connection dertials
+
+#SQL
+SELECT table_name 
+FROM information_schema.tables 
+WHERE table_schema = 'public';
+
+\password postgres  - update pass 
+
+SELECT rolname, rolpassword FROM pg_authid WHERE rolname = 'admin';
+
+
+
+Command	Use Case
+prisma db pull	Sync schema from an existing database.
+prisma db push	Sync schema to a new or prototyping database.
+prisma migrate dev	Create and test migrations in development.
+prisma migrate deploy	Apply migrations in production.
+prisma migrate reset	Reset the database during development.
+prisma studio	View and manipulate database records visually.
+
+
+## Create migrations:
+npx prisma migrate dev --name init
+
+## Test locally:
+npx prisma studio
+
+## Deploy to production:
+npx prisma migrate deploy
+
+## Utility Commands
+npx prisma introspect
+
+## Updates the Prisma schema file based on the database's current state (similar to db pull).
+
+npx prisma introspect
+
+## Runs the seed script defined in the package.json or prisma/seed.ts file.
+npx prisma db seed
+
+npx prisma generate

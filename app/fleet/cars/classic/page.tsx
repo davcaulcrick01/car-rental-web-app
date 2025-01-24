@@ -20,11 +20,11 @@ import Breadcrumbs from '@/components/Breadcrumbs'
 const classicCars = cars.filter(car => car.category === 'classic')
 
 const brandLogos = [
-  { name: "Ford", logo: "/images/ford/ford-logo.png" },
-  { name: "Chevrolet", logo: "/images/chevrolet/chevrolet-logo.png" },
-  { name: "Cadillac", logo: "/images/cadillac/cadillac-logo.png" },
-  { name: "Pontiac", logo: "/images/pontiac/pontiac-logo.png" },
-  { name: "Oldsmobile", logo: "/images/oldsmobile/oldsmobile-logo.png" },
+  { name: "Ford", logo: `${process.env.NEXT_PUBLIC_CDN_URL}/images/ford/ford-logo.png` },
+  { name: "Chevrolet", logo: `${process.env.NEXT_PUBLIC_CDN_URL}/images/chevrolet/chevrolet-logo.png` },
+  { name: "Cadillac", logo: `${process.env.NEXT_PUBLIC_CDN_URL}/images/cadillac/cadillac-logo.png` },
+  { name: "Pontiac", logo: `${process.env.NEXT_PUBLIC_CDN_URL}/images/pontiac/pontiac-logo.png` },
+  { name: "Oldsmobile", logo: `${process.env.NEXT_PUBLIC_CDN_URL}/images/oldsmobile/oldsmobile-logo.png` },
 ]
 
 const faqItems = [
@@ -43,27 +43,27 @@ const faqItems = [
 ]
 
 const experienceCategories = [
-  { name: "VINTAGE DRIVES", image: "/images/vintage-drives.jpg" },
-  { name: "CLASSIC CAR SHOWS", image: "/images/classic-car-shows.jpg" },
-  { name: "RETRO ROAD TRIPS", image: "/images/retro-road-trips.jpg" },
-  { name: "NOSTALGIC TOURS", image: "/images/nostalgic-tours.jpg" },
+  { name: "VINTAGE DRIVES", image: `${process.env.NEXT_PUBLIC_CDN_URL}/images/vintage-drives.jpg` },
+  { name: "CLASSIC CAR SHOWS", image: `${process.env.NEXT_PUBLIC_CDN_URL}/images/classic-car-shows.jpg` },
+  { name: "RETRO ROAD TRIPS", image: `${process.env.NEXT_PUBLIC_CDN_URL}/images/retro-road-trips.jpg` },
+  { name: "NOSTALGIC TOURS", image: `${process.env.NEXT_PUBLIC_CDN_URL}/images/nostalgic-tours.jpg` },
 ]
 
 const youtubeVideos = [
-  { title: "1957 Chevrolet Bel Air", thumbnail: "/images/57-chevy-thumb.jpg" },
-  { title: "1965 Ford Mustang", thumbnail: "/images/65-mustang-thumb.jpg" },
-  { title: "1959 Cadillac Eldorado", thumbnail: "/images/59-cadillac-thumb.jpg" },
+  { title: "1957 Chevrolet Bel Air", thumbnail: `${process.env.NEXT_PUBLIC_CDN_URL}/images/57-chevy-thumb.jpg` },
+  { title: "1965 Ford Mustang", thumbnail: `${process.env.NEXT_PUBLIC_CDN_URL}/images/65-mustang-thumb.jpg` },
+  { title: "1959 Cadillac Eldorado", thumbnail: `${process.env.NEXT_PUBLIC_CDN_URL}/images/59-cadillac-thumb.jpg` },
 ]
 
 const carGallery = [
-  "/images/classic-gallery-1.jpg",
-  "/images/classic-gallery-2.jpg",
-  "/images/classic-gallery-3.jpg",
-  "/images/classic-gallery-4.jpg",
-  "/images/classic-gallery-5.jpg",
-  "/images/classic-gallery-6.jpg",
-  "/images/classic-gallery-7.jpg",
-  "/images/classic-gallery-8.jpg",
+  `${process.env.NEXT_PUBLIC_CDN_URL}/images/classic-gallery-1.jpg`,
+  `${process.env.NEXT_PUBLIC_CDN_URL}/images/classic-gallery-2.jpg`,
+  `${process.env.NEXT_PUBLIC_CDN_URL}/images/classic-gallery-3.jpg`,
+  `${process.env.NEXT_PUBLIC_CDN_URL}/images/classic-gallery-4.jpg`,
+  `${process.env.NEXT_PUBLIC_CDN_URL}/images/classic-gallery-5.jpg`,
+  `${process.env.NEXT_PUBLIC_CDN_URL}/images/classic-gallery-6.jpg`,
+  `${process.env.NEXT_PUBLIC_CDN_URL}/images/classic-gallery-7.jpg`,
+  `${process.env.NEXT_PUBLIC_CDN_URL}/images/classic-gallery-8.jpg`,
 ]
 
 export default function ClassicCarsPage() {

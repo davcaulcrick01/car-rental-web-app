@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model User {
+  id                 String           @id @default(uuid())
+  email              String           @unique
+  password           String
+  name               String?
+  role               Role             @default(USER)
+  phoneNumber        String?
+  address            String?
+  profileImage       String?
+  emailVerified      Boolean          @default(false)
+  isActive           Boolean          @default(true)
+  lastLogin          DateTime?
+  googleId           String?          @unique
+  appleId            String?          @unique
+  resetPasswordToken String?
+  tokenExpiry        DateTime?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  bookings           Booking[]
+  reviews            Review[]
+  serviceBookings    ServiceBooking[]
+}
+
+model Booking {
+  id              String           @id @default(uuid())
+  userId          String
+  carId           String
+  startDate       DateTime
+  endDate         DateTime
+  totalPrice      Float
+  status          BookingStatus    @default(PENDING)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  car             Car              @relation(fields: [carId], references: [id])
+  user            User             @relation(fields: [userId], references: [id])
+  serviceBookings ServiceBooking[]
+}
+
+model Car {
+  id           String      @id @default(uuid())
+  make         String
+  model        String
+  year         Int
+  color        String
+  licensePlate String      @unique
+  price        Float
+  isAvailable  Boolean     @default(true)
+  images       String[]
+  category     CarCategory
+  features     String[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  bookings     Booking[]
+  reviews      Review[]
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int
+  comment   String?
+  userId    String
+  carId     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  car       Car      @relation(fields: [carId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Service {
+  id              String           @id @default(uuid())
+  name            String
+  description     String?
+  price           Float
+  durationMinutes Int
+  availability    Int              @default(1)
+  serviceType     String           @db.VarChar(50)
+  status          ServiceStatus    @default(ACTIVE)
+  reasonInactive  String?
+  lastActiveDate  DateTime?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  serviceBookings ServiceBooking[]
+}
+
+model ServiceBooking {
+  id            String               @id @default(uuid())
+  bookingId     String
+  serviceId     String
+  userId        String
+  status        ServiceBookingStatus @default(PENDING)
+  scheduledDate DateTime
+  completedDate DateTime?
+  notes         String?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  booking       Booking              @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  service       Service              @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  user          User                 @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum CarCategory {
+  ECONOMY
+  COMPACT
+  MIDSIZE
+  LUXURY
+  SUV
+  VAN
+  CLASSIC
+  CONVERTIBLE
+  EXOTIC
+  SEDAN
+  SPORT
+  SUPER
+}
+
+enum ServiceStatus {
+  ACTIVE
+  INACTIVE
+  DISCONTINUED
+  MAINTENANCE
+}
+
+enum ServiceBookingStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}

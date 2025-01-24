@@ -35,28 +35,44 @@ const aboutUsCategories = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 20
+      setScrolled(isScrolled)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
   return (
-    <header className="bg-black bg-opacity-90 py-4 fixed w-full z-50">
-      <div className="container mx-auto flex items-center justify-between px-4">
+    <header className={`fixed w-full z-50 transition-all duration-300 ${
+      scrolled ? 'bg-black bg-opacity-90 py-2' : 'bg-black bg-opacity-90 py-4'
+    }`}>
+      <div className="max-w-[2000px] mx-auto flex items-center justify-between px-4 md:px-6 lg:px-8">
         {/* Left: Logo */}
-        <div className="flex-shrink-0 mr-8">
+        <div className="flex-shrink-0 mr-4 md:mr-8">
           <Link href="/" className="flex items-center">
-            <Image
-              src= {`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/logos/GreyZone-Exotics-01.png` }
-              alt="GreyZone Exotics Logo"
-              width={100}
-              height={50}
-              className="mr-2"
-            />
-            <span className="text-xl font-bold text-white">GreyZone Exotics</span>
+            <div className="relative w-[60px] h-[30px] md:w-[80px] md:h-[40px] lg:w-[100px] lg:h-[50px]">
+              <Image
+                src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/car_images/images/logos/GreyZone-Exotics-01.png`}
+                alt="GreyZone Exotics Logo"
+                fill
+                className="object-contain transition-all duration-300"
+              />
+            </div>
+            <span className="hidden sm:block font-bold text-white ml-2 transition-all duration-300 text-sm md:text-base lg:text-lg">
+              GreyZone Exotics
+            </span>
           </Link>
         </div>
 
         {/* Middle: Navigation (Desktop) */}
-        <nav className="hidden lg:flex items-center space-x-6">
+        <nav className="hidden xl:flex items-center space-x-4 lg:space-x-6">
           <NavItem href="/" label="Home" />
           <DropdownNavItem
             label="Fleet"
@@ -86,26 +102,32 @@ export default function Header() {
         </nav>
 
         {/* Right: Call to Action buttons (Desktop) */}
-        <div className="hidden lg:flex items-center space-x-2">
-          <Button className="bg-green-600 hover:bg-green-700 text-white text-sm px-2 py-1">Call Now</Button>
+        <div className="hidden xl:flex items-center space-x-2">
+          <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white text-xs sm:text-sm">
+            Call Now
+          </Button>
           <Link href="/login">
-            <Button variant="outline" className="text-white border-white hover:bg-white hover:text-black text-sm px-2 py-1">Login</Button>
+            <Button size="sm" variant="outline" className="text-white border-white hover:bg-white hover:text-black text-xs sm:text-sm">
+              Login
+            </Button>
           </Link>
           <Link href="/signup">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-2 py-1">Sign Up</Button>
+            <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm">
+              Sign Up
+            </Button>
           </Link>
         </div>
 
         {/* Mobile Menu Button */}
-        <button className="lg:hidden text-white" onClick={toggleMenu}>
+        <button className="xl:hidden text-white p-2" onClick={toggleMenu}>
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-black bg-opacity-90 py-4">
-          <nav className="flex flex-col items-center space-y-4">
+        <div className="xl:hidden bg-black bg-opacity-90">
+          <nav className="flex flex-col px-4 py-4 space-y-3">
             <NavItem href="/" label="Home" />
             <MobileDropdownNavItem label="Fleet" items={fleetCategories} mainLink="/fleet" />
             <MobileDropdownNavItem label="Services" items={serviceCategories} mainLink="/services" />
@@ -115,13 +137,15 @@ export default function Header() {
             <NavItem href="/reserve" label="Reserve Now" />
             <NavItem href="/contact" label="Contact Us" />
           </nav>
-          <div className="flex flex-col items-center space-y-4 mt-4">
-            <Button className="bg-green-600 hover:bg-green-700 text-white w-full max-w-xs">Call Now</Button>
-            <Link href="/login" className="w-full max-w-xs">
-              <Button variant="outline" className="text-white border-white hover:bg-white hover:text-black w-full">Login</Button>
+          <div className="flex flex-col px-4 pb-4 space-y-2">
+            <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">Call Now</Button>
+            <Link href="/login" className="w-full">
+              <Button size="sm" variant="outline" className="text-white border-white hover:bg-white hover:text-black w-full">
+                Login
+              </Button>
             </Link>
-            <Link href="/signup" className="w-full max-w-xs">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full">Sign Up</Button>
+            <Link href="/signup" className="w-full">
+              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white w-full">Sign Up</Button>
             </Link>
           </div>
         </div>
@@ -157,7 +181,7 @@ function DropdownNavItem({ label, items, isActive, setActiveDropdown, mainLink }
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setActiveDropdown(null);
-    }, 300); // 300ms delay before closing
+    }, 300);
   };
 
   return (
@@ -198,23 +222,23 @@ function MobileDropdownNavItem({ label, items, mainLink }: {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center">
-        <Link href={mainLink} className="text-white hover:text-gray-300 transition-colors text-lg">
+        <Link href={mainLink} className="text-white hover:text-gray-300 transition-colors text-base">
           {label}
         </Link>
         <button
-          className="text-white hover:text-gray-300 transition-colors p-2"
+          className="text-white hover:text-gray-300 transition-colors p-1"
           onClick={() => setIsOpen(!isOpen)}
         >
           <ChevronDown className={`h-4 w-4 transform transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </button>
       </div>
       {isOpen && (
-        <div className="mt-2 w-full bg-gray-800">
+        <div className="mt-2 w-full bg-gray-800 rounded-md">
           {items.map((item) => (
             <Link
               key={item.name}
               href={item.path}
-              className="block px-4 py-2 text-sm text-white hover:bg-gray-700"
+              className="block px-4 py-2 text-sm text-white hover:bg-gray-700 first:rounded-t-md last:rounded-b-md"
             >
               {item.name}
             </Link>

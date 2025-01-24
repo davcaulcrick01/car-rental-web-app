@@ -14,7 +14,8 @@ import Breadcrumbs from '@/components/Breadcrumbs'
 import cars from '@/lib/cars'
 import { loadStripe } from '@stripe/stripe-js'
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+// Type assertion to handle undefined case
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
 export default function ReservePage() {
   const [selectedCar, setSelectedCar] = useState("")
@@ -114,19 +115,19 @@ export default function ReservePage() {
                 <h2 className="text-2xl font-semibold">Personal Information</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="firstName" className="text-white">First Name</Label>
+                    <div className="mb-2">First Name</div>
                     <Input id="firstName" className="bg-gray-700 text-white" required />
                   </div>
                   <div>
-                    <Label htmlFor="lastName" className="text-white">Last Name</Label>
+                    <div className="mb-2">Last Name</div>
                     <Input id="lastName" className="bg-gray-700 text-white" required />
                   </div>
                   <div>
-                    <Label htmlFor="email" className="text-white">Email</Label>
+                    <div className="mb-2">Email</div>
                     <Input id="email" type="email" className="bg-gray-700 text-white" required />
                   </div>
                   <div>
-                    <Label htmlFor="phone" className="text-white">Phone</Label>
+                    <div className="mb-2">Phone</div>
                     <Input id="phone" type="tel" className="bg-gray-700 text-white" required />
                   </div>
                 </div>
@@ -162,7 +163,7 @@ export default function ReservePage() {
                 <h2 className="text-2xl font-semibold">Rental Details</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label>Pick-up Date</Label>
+                    <div className="mb-2">Pick-up Date</div>
                     <Calendar
                       mode="single"
                       selected={startDate}
@@ -170,7 +171,7 @@ export default function ReservePage() {
                       className="bg-gray-700 rounded-md border-0 [&_button:hover]:bg-gray-600 [&_button]:transition-colors [&_.rdp-day_focus]:bg-green-600 [&_.rdp-day_focus]:text-white"
                       required
                     />
-                    <Label className="text-white mt-2">Pick-up Time</Label>
+                    <div className="mb-2">Pick-up Time</div>
                     <Select onValueChange={setPickupTime} required>
                       <SelectTrigger className="bg-gray-700">
                         <SelectValue placeholder="Select time" />
@@ -189,7 +190,7 @@ export default function ReservePage() {
                     </Select>
                   </div>
                   <div>
-                    <Label>Return Date</Label>
+                    <div className="mb-2">Return Date</div>
                     <Calendar
                       mode="single"
                       selected={endDate}
@@ -197,7 +198,7 @@ export default function ReservePage() {
                       className="bg-gray-700 rounded-md border-0 [&_button:hover]:bg-gray-600 [&_button]:transition-colors [&_.rdp-day_focus]:bg-green-600 [&_.rdp-day_focus]:text-white"
                       required
                     />
-                    <Label className="text-white mt-2">Return Time</Label>
+                    <div className="mb-2">Return Time</div>
                     <Select onValueChange={setReturnTime} required>
                       <SelectTrigger className="bg-gray-700">
                         <SelectValue placeholder="Select time" />
