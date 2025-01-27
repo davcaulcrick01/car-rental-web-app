@@ -47,7 +47,7 @@ car-rental-app/
 │   │   └── index.ts         # TypeScript types
 │   ├── hooks/
 │   │   ├── useAuth.ts
-│   │   └── useDatabase.ts
+│   │   └── useDatabaase.ts
 │   ├── middleware.ts        # Next.js middleware
 │   └── styles/
 │       └── globals.css

@@ -94,7 +94,7 @@ export default function AdminPricingPage() {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold">Dynamic Pricing Management</h1>
+            <h1 className="text-2xl font-bold">Dynamic/Seasonal Pricing Management</h1>
             <p className="text-gray-600 mt-1">Manage base rates, seasonal adjustments and dynamic pricing rules</p>
           </div>
           <div className="space-x-2">

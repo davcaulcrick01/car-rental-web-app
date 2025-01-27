@@ -1,7 +1,9 @@
 |-- .dockerignore
 |-- .eslintrc.json
 |-- .git/
+|   |-- FETCH_HEAD
 |   |-- HEAD
+|   |-- ORIG_HEAD
 |   |-- config
 |   |-- description
 |   |-- hooks/
@@ -26,23 +28,32 @@
 |   |   |-- HEAD
 |   |   |-- refs/
 |   |   |   |-- heads/
+|   |   |   |   |-- Database_features
 |   |   |   |   |-- development
 |   |   |   |-- remotes/
 |   |   |   |   |-- origin/
+|   |   |   |   |   |-- Database_features
 |   |   |   |   |   |-- HEAD
+|   |   |   |   |   |-- development
 |   |-- objects/
 |   |   |-- info/
 |   |   |-- pack/
 |   |   |   |-- pack-29300a244e9324184438fa77c6185dc091d57579.idx
 |   |   |   |-- pack-29300a244e9324184438fa77c6185dc091d57579.pack
 |   |   |   |-- pack-29300a244e9324184438fa77c6185dc091d57579.rev
+|   |   |   |-- pack-62d28cc698440f3c9882add6f7e696f54f6353e7.idx
+|   |   |   |-- pack-62d28cc698440f3c9882add6f7e696f54f6353e7.pack
+|   |   |   |-- pack-62d28cc698440f3c9882add6f7e696f54f6353e7.rev
 |   |-- packed-refs
 |   |-- refs/
 |   |   |-- heads/
+|   |   |   |-- Database_features
 |   |   |   |-- development
 |   |   |-- remotes/
 |   |   |   |-- origin/
+|   |   |   |   |-- Database_features
 |   |   |   |   |-- HEAD
+|   |   |   |   |-- development
 |   |   |-- tags/
 |-- .github/
 |   |-- workflows/
@@ -54,6 +65,71 @@
 |   |-- ClientLayout.tsx
 |   |-- about/
 |   |   |-- page.tsx
+|   |-- api/
+|   |   |-- audit-logs/
+|   |   |   |-- index.ts
+|   |   |-- auth/
+|   |   |   |-- login/
+|   |   |   |   |-- route.ts
+|   |   |   |-- logout/
+|   |   |   |   |-- route.ts
+|   |   |   |-- logout.ts
+|   |   |   |-- signup/
+|   |   |   |   |-- route.ts
+|   |   |   |   |-- success/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |-- user/
+|   |   |   |   |-- route.ts
+|   |   |   |-- verify-token/
+|   |   |   |   |-- route.ts
+|   |   |-- cars/
+|   |   |   |-- [carId]/
+|   |   |   |   |-- status.ts
+|   |   |   |-- [carId].ts
+|   |   |   |-- index.ts
+|   |   |-- dashboard/
+|   |   |   |-- stats.ts
+|   |   |-- external-services/
+|   |   |   |-- index.ts
+|   |   |-- insurance/
+|   |   |   |-- damage-logs.ts
+|   |   |   |-- damage-reports.ts
+|   |   |   |-- policies.ts
+|   |   |-- integrations/
+|   |   |   |-- [integration[Id].ts
+|   |   |-- locations/
+|   |   |   |-- [locationId].ts
+|   |   |   |-- index.ts
+|   |   |-- maintenance/
+|   |   |   |-- logs/
+|   |   |   |   |-- index.ts
+|   |   |-- notifications/
+|   |   |   |-- templates/
+|   |   |   |   |-- [templateId].ts
+|   |   |   |-- templates.ts
+|   |   |   |-- triggers.ts
+|   |   |-- pricing/
+|   |   |   |-- [ruleId]/
+|   |   |   |   |-- status.ts
+|   |   |   |-- rules/
+|   |   |   |   |-- index.ts
+|   |   |-- promotions/
+|   |   |   |-- [promoId].ts
+|   |   |-- sentry/
+|   |   |   |-- issues/
+|   |   |   |   |-- index.ts
+|   |   |-- staff/
+|   |   |   |-- [staffId].ts
+|   |   |-- system/
+|   |   |   |-- cache/
+|   |   |   |   |-- clear.ts
+|   |   |   |-- cache.ts
+|   |   |   |-- database/
+|   |   |   |   |-- metrics.ts
+|   |   |   |-- database.ts
+|   |   |   |-- stats.ts
+|   |   |-- test-db/
+|   |   |   |-- route.ts
 |   |-- booking/
 |   |   |-- BookingContent.tsx
 |   |   |-- layout.tsx
@@ -104,9 +180,74 @@
 |   |-- login/
 |   |   |-- layout.tsx
 |   |   |-- page.tsx
+|   |-- middleware.ts
 |   |-- not-found.tsx
 |   |-- page.tsx
 |   |-- porsche.png
+|   |-- protected/
+|   |   |-- admin/
+|   |   |   |-- billing/
+|   |   |   |   |-- page.tsx
+|   |   |   |-- cars/
+|   |   |   |   |-- [carId]/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |   |-- history/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |   |-- page.tsx
+|   |   |   |-- insurance/
+|   |   |   |   |-- damage-reports/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |   |-- page.tsx
+|   |   |   |-- integrations/
+|   |   |   |   |-- [integrationId]/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |   |-- page.tsx
+|   |   |   |-- layout.tsx
+|   |   |   |-- locations/
+|   |   |   |   |-- [locationId]/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |   |-- page.tsx
+|   |   |   |-- logs/
+|   |   |   |   |-- audit/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |   |-- errors/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |   |-- page.tsx
+|   |   |   |-- maintenance/
+|   |   |   |   |-- page.tsx
+|   |   |   |-- marketing/
+|   |   |   |   |-- page.tsx
+|   |   |   |-- notifications/
+|   |   |   |   |-- logs/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |   |-- page.tsx
+|   |   |   |-- page.tsx
+|   |   |   |-- pricing/
+|   |   |   |   |-- page.tsx
+|   |   |   |-- promotions/
+|   |   |   |   |-- [promoId]/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |   |-- page.tsx
+|   |   |   |-- rentals/
+|   |   |   |   |-- [rentalId]/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |   |-- page.tsx
+|   |   |   |-- reports/
+|   |   |   |   |-- page.tsx
+|   |   |   |-- settings/
+|   |   |   |   |-- page.tsx
+|   |   |   |-- staff/
+|   |   |   |   |-- [staffId]/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |   |-- page.tsx
+|   |   |   |-- system/
+|   |   |   |   |-- database/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |   |-- page.tsx
+|   |   |   |-- users/
+|   |   |   |   |-- [userId]/
+|   |   |   |   |   |-- page.tsx
+|   |   |   |   |-- page.tsx
 |   |-- requirements/
 |   |   |-- page.tsx
 |   |-- reserve/
@@ -145,13 +286,25 @@
 |   |-- Footer.tsx
 |   |-- Header.tsx
 |   |-- Layout.tsx
+|   |-- LogoutButton.tsx
 |   |-- NavLink.tsx
 |   |-- PerformanceOptimizer.tsx
 |   |-- VehicleCard.tsx
 |   |-- VehicleShowcase.tsx
+|   |-- auth/
+|   |   |-- LoginForm.tsx
+|   |   |-- SignupForm.tsx
+|   |-- database/
+|   |   |-- DatabaseErrorBoundary.tsx
+|   |   |-- DatabaseStatus.tsx
 |   |-- ui/
 |   |   |-- accordion.tsx
+|   |   |-- alert-dialog.tsx
+|   |   |-- alert.tsx
 |   |   |-- animated.tsx
+|   |   |-- aspect-ratio.tsx
+|   |   |-- avatar.tsx
+|   |   |-- badge.tsx
 |   |   |-- button.tsx
 |   |   |-- calendar.tsx
 |   |   |-- card.tsx
@@ -165,21 +318,42 @@
 |   |   |-- slider.tsx
 |   |   |-- tabs.tsx
 |   |   |-- textarea.tsx
+|   |   |-- toast.tsx
+|   |   |-- use-toast.ts
 |-- components.json
+|-- file_structure.txt
+|-- hooks/
+|   |-- useAuth.ts
+|   |-- useDatabase.ts
 |-- lib/
 |   |-- animations.ts
+|   |-- auth.ts
 |   |-- cars.ts
 |   |-- constants.ts
+|   |-- db.ts
 |   |-- utils.ts
+|-- middleware.ts
 |-- next.config.js
 |-- package-lock.json
 |-- package.json
 |-- postcss.config.js
+|-- prisma/
+|   |-- migrations/
+|   |   |-- 20250123035444_init/
+|   |   |   |-- migration.sql
+|   |   |-- 20250123051633_init/
+|   |   |   |-- migration.sql
+|   |   |-- migration_lock.toml
+|   |-- prisma.doc
+|   |-- schema.prisma
+|   |-- testPrisma.js
 |-- scripts/
 |   |-- ec2-iam-policy.json
 |   |-- ec2-user-data.sh
 |-- tailwind.config.ts
+|-- tree.txt
 |-- tsconfig.json
 |-- types/
+|   |-- index.ts
 |   |-- stripe.d.ts
 |-- yarn.lock

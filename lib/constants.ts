@@ -9,49 +9,49 @@ export const fleetCategories: FleetCategory[] = [
   {
     name: "Classic Cars",
     description: "Timeless elegance and vintage charm",
-    image: "/images/fleet/classic.jpg",
+    image: "https://car-rental-web-app-bucket.s3.us-east-1.amazonaws.com/car_images/images/fleet/classic.jpg",
     link: "/fleet/cars/classic"
   },
   {
-    name: "Luxury Cars",
+    name: "Luxury Cars", 
     description: "Experience ultimate comfort and sophistication",
-    image: "/images/fleet/luxury.jpg",
+    image: "https://car-rental-web-app-bucket.s3.us-east-1.amazonaws.com/car_images/images/fleet/luxury.jpg",
     link: "/fleet/cars/luxury"
   },
   {
     name: "Sports Cars",
     description: "Feel the thrill of high-performance vehicles",
-    image: "/images/fleet/sports.jpg",
+    image: "https://car-rental-web-app-bucket.s3.us-east-1.amazonaws.com/car_images/images/fleet/sports.jpg",
     link: "/fleet/cars/sport"
   },
   {
     name: "SUVs",
     description: "Spacious and versatile luxury SUVs",
-    image: "/images/fleet/suv.jpg",
+    image: "https://car-rental-web-app-bucket.s3.us-east-1.amazonaws.com/car_images/images/fleet/suv.jpg",
     link: "/fleet/cars/suv"
   },
   {
     name: "Convertibles",
     description: "Open-top driving experience",
-    image: "/images/fleet/convertible.jpg",
+    image: "https://car-rental-web-app-bucket.s3.us-east-1.amazonaws.com/car_images/images/fleet/convertible.jpg",
     link: "/fleet/cars/convertible"
   },
   {
     name: "Sedans",
     description: "Comfortable and elegant sedans",
-    image: "/images/fleet/sedan.jpg",
+    image: "https://car-rental-web-app-bucket.s3.us-east-1.amazonaws.com/car_images/images/fleet/sedan.jpg",
     link: "/fleet/cars/sedan"
   },
   {
     name: "Super Cars",
     description: "Ultimate performance and exclusivity",
-    image: "/images/fleet/super.jpg",
+    image: "https://car-rental-web-app-bucket.s3.us-east-1.amazonaws.com/car_images/images/fleet/super.jpg",
     link: "/fleet/cars/super"
   },
   {
     name: "Exotic Cars",
     description: "Rare and extraordinary vehicles",
-    image: "/images/fleet/exotic.jpg",
+    image: "https://car-rental-web-app-bucket.s3.us-east-1.amazonaws.com/car_images/images/fleet/exotic.jpg",
     link: "/fleet/cars/exotic"
   }
 ]
@@ -67,3 +67,6 @@ export const youtubeVideos = [
 export const carGallery = [
   // ... your carGallery array
 ] 
+
+// Create this new file for constants
+export const BASE_PATH = "https://car-rental-web-app-bucket.s3.us-east-1.amazonaws.com/car_images";

@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import Header from '@/components/Header'
-// Prisma client is not needed in the frontend component
+import { signIn } from 'next-auth/react'
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -17,12 +17,24 @@ export default function SignUpPage() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
+    setPasswordError('')
+    setIsLoading(true)
+
+    // Validate password
+    if (password.length < 6) {
+      setPasswordError('Password must be at least 6 characters')
+      setIsLoading(false)
+      return
+    }
+
     if (password !== confirmPassword) {
       setPasswordError('Passwords do not match')
+      setIsLoading(false)
       return
     }
 
@@ -42,21 +54,41 @@ export default function SignUpPage() {
         body: JSON.stringify(userData),
       })
 
+      const data = await response.json()
+
       if (response.ok) {
-        router.push('/login')
+        // Auto sign in after successful signup
+        const signInResult = await signIn('credentials', {
+          email: userData.email,
+          password: userData.password,
+          redirect: false
+        })
+
+        if (signInResult?.ok) {
+          router.push(`/protected/users/${data.userId}`)
+        } else {
+          router.push('/login')
+        }
       } else {
-        const data = await response.json()
         setPasswordError(data.error || 'Failed to create account')
       }
     } catch (error) {
       console.error('Error creating account:', error)
       setPasswordError('Failed to create account')
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  const handleDummyOAuthSignIn = (provider: string) => {
-    console.log(`Signing in with ${provider} (dummy)`)
-    router.push('/') // Simulate redirect after OAuth sign-in
+  const handleOAuthSignIn = async (provider: 'google' | 'apple') => {
+    try {
+      await signIn(provider, {
+        callbackUrl: '/protected/users',
+        redirect: true
+      })
+    } catch (error) {
+      console.error(`${provider} sign in error:`, error)
+    }
   }
 
   return (
@@ -69,7 +101,8 @@ export default function SignUpPage() {
               src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/GreyZone%20Exotics-01-yBPXfYu8PidVXbuFuq8IHycSxvWbHq.png"
               alt="GreyZone Exotics Logo"
               fill
-              className="object-contain animate-pulse"
+              className="object-contain"
+              priority
             />
           </div>
           <h2 className="mt-6 text-center text-4xl font-extrabold text-white bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
@@ -87,9 +120,9 @@ export default function SignUpPage() {
           <div className="bg-gray-800/50 backdrop-blur-lg py-8 px-4 shadow-2xl sm:rounded-xl sm:px-10 border border-gray-700">
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
-                <div className="block text-sm font-medium text-gray-300">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-300">
                   Full Name
-                </div>
+                </label>
                 <div className="mt-1">
                   <Input
                     id="name"
@@ -103,9 +136,9 @@ export default function SignUpPage() {
               </div>
 
               <div>
-                <div className="block text-sm font-medium text-gray-300">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300">
                   Email address
-                </div>
+                </label>
                 <div className="mt-1">
                   <Input
                     id="email"
@@ -119,9 +152,9 @@ export default function SignUpPage() {
               </div>
 
               <div>
-                <div className="block text-sm font-medium text-gray-300">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-300">
                   Password
-                </div>
+                </label>
                 <div className="mt-1 relative">
                   <Input
                     id="password"
@@ -137,6 +170,7 @@ export default function SignUpPage() {
                     type="button"
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
                     onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? (
                       <EyeOffIcon className="h-5 w-5 text-gray-400 hover:text-gray-300 transition-colors duration-200" />
@@ -148,9 +182,9 @@ export default function SignUpPage() {
               </div>
 
               <div>
-                <div className="block text-sm font-medium text-gray-300">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300">
                   Confirm Password
-                </div>
+                </label>
                 <div className="mt-1 relative">
                   <Input
                     id="confirmPassword"
@@ -166,6 +200,7 @@ export default function SignUpPage() {
                     type="button"
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
                   >
                     {showConfirmPassword ? (
                       <EyeOffIcon className="h-5 w-5 text-gray-400 hover:text-gray-300 transition-colors duration-200" />
@@ -175,41 +210,47 @@ export default function SignUpPage() {
                   </button>
                 </div>
                 {passwordError && (
-                  <p className="mt-2 text-sm text-red-500 animate-pulse">{passwordError}</p>
+                  <p className="mt-2 text-sm text-red-500" role="alert">{passwordError}</p>
                 )}
               </div>
 
               <div className="flex items-center">
                 <Checkbox id="terms" className="bg-gray-700/50 border-gray-600" required />
-                <div className="ml-2 block text-sm text-gray-300">
+                <label htmlFor="terms" className="ml-2 block text-sm text-gray-300">
                   I agree to the{' '}
-                  <a href="#" className="text-blue-500 hover:text-blue-400 transition-colors duration-200">
+                  <Link href="/terms" className="text-blue-500 hover:text-blue-400 transition-colors duration-200">
                     Terms of Service
-                  </a>{' '}
+                  </Link>{' '}
                   and{' '}
-                  <a href="#" className="text-blue-500 hover:text-blue-400 transition-colors duration-200">
+                  <Link href="/privacy" className="text-blue-500 hover:text-blue-400 transition-colors duration-200">
                     Privacy Policy
-                  </a>
-                </div>
+                  </Link>
+                </label>
               </div>
 
               <div>
-                <Button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-200 transform hover:scale-[1.02]">
-                  Sign up
+                <Button 
+                  type="submit" 
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-200 transform hover:scale-[1.02]"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Creating account...' : 'Sign up'}
                 </Button>
               </div>
             </form>
 
             <div className="mt-6 space-y-4">
               <Button 
-                onClick={() => handleDummyOAuthSignIn('Google')} 
+                onClick={() => handleOAuthSignIn('google')}
                 className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 transition-all duration-200 transform hover:scale-[1.02]"
+                disabled={isLoading}
               >
                 Sign up with Google
               </Button>
               <Button 
-                onClick={() => handleDummyOAuthSignIn('Apple')} 
+                onClick={() => handleOAuthSignIn('apple')}
                 className="w-full bg-gradient-to-r from-gray-900 to-black hover:from-black hover:to-gray-900 transition-all duration-200 transform hover:scale-[1.02]"
+                disabled={isLoading}
               >
                 Sign up with Apple
               </Button>

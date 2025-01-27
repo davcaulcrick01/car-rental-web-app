@@ -21,7 +21,7 @@ export default function LoginForm() {
   const [rememberMe, setRememberMe] = useState(false)
   
   const router = useRouter()
-  const { login, error: authError, loading: isLoading } = useAuth()
+  const { login, error: authError, loading: isLoading, user } = useAuth()
 
   useEffect(() => {
     setMounted(true)
@@ -29,9 +29,12 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setEmailError(null)
+    setPasswordError(null)
 
-    // Basic validation
-    if (!email.includes('@')) {
+    // Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
       setEmailError('Please enter a valid email address')
       return
     }
@@ -40,25 +43,37 @@ export default function LoginForm() {
       return
     }
 
-    const success = await login(email, password)
-    if (success) {
-      router.push('/protected/dashboard')
+    try {
+      const success = await login(email, password)
+      if (!success) {
+        console.error('Login failed')
+      }
+      // Redirection is handled in useAuth
+    } catch (error) {
+      console.error('Login error:', error)
     }
   }
 
   const handleGoogleSignIn = async () => {
     try {
       await signIn('google', {
-        callbackUrl: '/protected/dashboard',
+        callbackUrl: '/protected/users/profile',
+        redirect: true
       })
     } catch (error) {
       console.error('Google sign in error:', error)
     }
   }
 
-  const handleAppleSignIn = () => {
-    // Implement Apple Sign In 
-    console.log('Apple sign in clicked')
+  const handleAppleSignIn = async () => {
+    try {
+      await signIn('apple', {
+        callbackUrl: '/protected/users/profile',
+        redirect: true
+      })
+    } catch (error) {
+      console.error('Apple sign in error:', error)
+    }
   }
 
   if (!mounted) {
@@ -105,8 +120,10 @@ export default function LoginForm() {
                   required
                   placeholder="your@email.com"
                   className="bg-gray-700/50 text-white border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                  aria-invalid={!!emailError}
+                  aria-describedby={emailError ? "email-error" : undefined}
                 />
-                {emailError && <p className="mt-1 text-sm text-red-500">{emailError}</p>}
+                {emailError && <p id="email-error" className="mt-1 text-sm text-red-500">{emailError}</p>}
               </div>
             </div>
 
@@ -125,11 +142,14 @@ export default function LoginForm() {
                   required
                   placeholder="••••••••"
                   className="bg-gray-700/50 text-white pr-10 border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                  aria-invalid={!!passwordError}
+                  aria-describedby={passwordError ? "password-error" : undefined}
                 />
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
                     <EyeOffIcon className="h-5 w-5 text-gray-400 hover:text-gray-300 transition-colors duration-200" />
@@ -137,7 +157,7 @@ export default function LoginForm() {
                     <EyeIcon className="h-5 w-5 text-gray-400 hover:text-gray-300 transition-colors duration-200" />
                   )}
                 </button>
-                {passwordError && <p className="mt-1 text-sm text-red-500">{passwordError}</p>}
+                {passwordError && <p id="password-error" className="mt-1 text-sm text-red-500">{passwordError}</p>}
               </div>
             </div>
 
@@ -164,7 +184,7 @@ export default function LoginForm() {
           </div>
 
           {authError && (
-            <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-2">
+            <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-2" role="alert">
               <p className="text-red-500 text-sm">{authError}</p>
             </div>
           )}
@@ -173,6 +193,7 @@ export default function LoginForm() {
             type="submit" 
             className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-blue-500/20"
             disabled={isLoading}
+            aria-busy={isLoading}
           >
             {isLoading ? 'Signing in...' : 'Sign in'}
           </Button>
@@ -192,6 +213,7 @@ export default function LoginForm() {
             type="button"
             onClick={handleGoogleSignIn}
             className="w-full bg-white hover:bg-gray-100 text-gray-900 font-semibold py-2 px-4 border border-gray-300 rounded-lg shadow-sm transition-all duration-200"
+            disabled={isLoading}
           >
             <Image src="/google.svg" alt="Google" width={20} height={20} className="mr-2" />
             Continue with Google
@@ -201,6 +223,7 @@ export default function LoginForm() {
             type="button"
             onClick={handleAppleSignIn}
             className="w-full bg-black hover:bg-gray-900 text-white font-semibold py-2 px-4 border border-gray-700 rounded-lg shadow-sm transition-all duration-200"
+            disabled={isLoading}
           >
             <Image src="/apple.svg" alt="Apple" width={20} height={20} className="mr-2" />
             Continue with Apple

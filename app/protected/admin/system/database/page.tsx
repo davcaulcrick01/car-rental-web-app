@@ -56,7 +56,7 @@ export default function DatabaseStatsPage() {
           className="space-y-6"
         >
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Database Statistics</h1>
+            <h1 className="text-2xl font-bold">Database Status</h1>
             <Button onClick={fetchDatabaseMetrics} variant="outline">
               <RefreshCw className="w-4 h-4 mr-2" />
               Refresh
@@ -69,12 +69,16 @@ export default function DatabaseStatsPage() {
             <div className="bg-red-50 text-red-600 p-4 rounded-lg">{error}</div>
           ) : metrics ? (
             <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="bg-white p-6 rounded-lg shadow">
                   <div className="flex items-center space-x-2">
                     <Database className="w-5 h-5 text-blue-500" />
-                    <h3 className="font-semibold">Database Size</h3>
+                    <h3 className="font-semibold">Status</h3>
                   </div>
+                  <p className="text-2xl font-bold mt-2 text-green-500">Online</p>
+                </div>
+                <div className="bg-white p-6 rounded-lg shadow">
+                  <h3 className="font-semibold">Database Size</h3>
                   <p className="text-2xl font-bold mt-2">{metrics.size}</p>
                 </div>
                 <div className="bg-white p-6 rounded-lg shadow">
@@ -89,7 +93,7 @@ export default function DatabaseStatsPage() {
 
               <div className="bg-white rounded-lg shadow">
                 <div className="p-6">
-                  <h3 className="font-semibold mb-4">Table Statistics</h3>
+                  <h3 className="font-semibold mb-4">Tables Information</h3>
                   <div className="overflow-x-auto">
                     <table className="min-w-full">
                       <thead>
@@ -98,7 +102,7 @@ export default function DatabaseStatsPage() {
                             Table Name
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Rows
+                            Total Rows
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Size
@@ -132,7 +136,7 @@ export default function DatabaseStatsPage() {
               </div>
 
               <div className="bg-white p-6 rounded-lg shadow">
-                <h3 className="font-semibold mb-4">Query Performance</h3>
+                <h3 className="font-semibold mb-4">Query Statistics</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-gray-500">Total Queries</p>

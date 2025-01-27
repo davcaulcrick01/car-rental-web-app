@@ -122,6 +122,13 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!authLoading && !user) {
       router.push('/auth/login')
+      return
+    }
+    
+    // Check if user is admin
+    if (!authLoading && user && user.role !== 'admin') {
+      router.push('/protected/user')
+      return
     }
   }, [authLoading, user, router])
 
@@ -165,7 +172,7 @@ export default function DashboardPage() {
         
         const [statsData, carsData] = await Promise.all([
           statsRes.json(),
-          carsRes.json()
+          carsRes.json() 
         ])
 
         if (statsRes.ok) {
@@ -888,7 +895,6 @@ export default function DashboardPage() {
                         </Button>
                       </div>
                     */}
-
                   </div>
                 )}
               </motion.div>

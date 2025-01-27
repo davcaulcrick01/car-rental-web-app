@@ -1,0 +1,37 @@
+'use server'
+
+import { prisma } from '@/lib/db'
+
+interface AuditLogInput {
+  userId: string
+  action: string
+  entityType: string
+  entityId: string
+  changes: Record<string, any>
+  ipAddress?: string
+  userAgent?: string
+}
+
+export async function createAuditLog(entry: AuditLogInput) {
+  if (!entry || !entry.userId || !entry.action) {
+    console.error('Invalid audit log entry:', entry)
+    return null
+  }
+
+  try {
+    return await prisma.auditLog.create({
+      data: {
+        user_id: entry.userId,
+        action: entry.action,
+        entity_type: entry.entityType,
+        entity_id: entry.entityId,
+        changes: entry.changes,
+        ip_address: entry.ipAddress,
+        user_agent: entry.userAgent,
+      }
+    })
+  } catch (error) {
+    console.error('Failed to create audit log:', error)
+    return null
+  }
+} 

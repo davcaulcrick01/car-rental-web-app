@@ -1,13 +1,20 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Alert } from '@/components/ui/alert';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { getRentalDetails, extendRental, reportRentalIssue } from '@/services/rentals';
+import { formatDate, formatCurrency } from '@/utils/formatters';
+import ExtendRentalModal from '@/components/ExtendRentalModal';
+import ReportIssueModal from '@/components/ReportIssueModal';
 
 export default function SignupForm() {
   const [mounted, setMounted] = useState(false);
@@ -26,6 +33,8 @@ export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState('');
+  const [isExtendModalOpen, setIsExtendModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
 
@@ -101,9 +110,9 @@ export default function SignupForm() {
       if (authRes.ok && authData.success) {
         const loginSuccess = await login(formData.email.toLowerCase().trim(), formData.password);
         if (loginSuccess) {
-          router.push('/auth/signup/success');
+          router.push('api/auth/signup/success');
         } else {
-          router.push('/auth/login');
+          router.push('api/auth/login');
         }
       } else {
         setServerError(authData.error || 'Signup failed. Please try again.');
@@ -125,10 +134,39 @@ export default function SignupForm() {
     }
   };
 
+  const handleExtendSubmit = async (additionalDays: number) => {
+    try {
+      const userId = formData.email; // Using email as userId for this example
+      const rentalId = '123'; // This should come from your rental context/state
+      await extendRental(userId, rentalId, additionalDays);
+      setIsExtendModalOpen(false);
+    } catch (error) {
+      console.error('Failed to extend rental:', error);
+    }
+  };
+
+  const handleReportSubmit = async (issueDetails: string) => {
+    try {
+      const userId = formData.email;
+      const rentalId = '123';
+      await reportRentalIssue(userId, rentalId, {
+        type: 'general',
+        description: issueDetails
+      });
+      setIsReportModalOpen(false);
+    } catch (error) {
+      console.error('Failed to report issue:', error);
+    }
+  };
+
   if (!mounted) return null;
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto p-6">
+      <Alert variant="default" className="mb-6">
+        Create your account to start renting cars
+      </Alert>
+      
       <div className="space-y-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -206,9 +244,9 @@ export default function SignupForm() {
           </div>
 
           {serverError && (
-            <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-3" role="alert">
-              <p className="text-red-500 text-sm">{serverError}</p>
-            </div>
+            <Alert variant="destructive" className="mt-4">
+              {serverError}
+            </Alert>
           )}
 
           <Button
@@ -251,7 +289,19 @@ export default function SignupForm() {
             Continue with Apple
           </Button>
         </div>
+
+        <ExtendRentalModal 
+          isOpen={isExtendModalOpen}
+          onClose={() => setIsExtendModalOpen(false)}
+          handleSubmit={handleExtendSubmit}
+          currentEndDate={new Date()}
+        />
+        <ReportIssueModal
+          isOpen={isReportModalOpen} 
+          onClose={() => setIsReportModalOpen(false)}
+          onSubmit={handleReportSubmit}
+        />
       </div>
-    </div>
+    </Card>
   );
 }

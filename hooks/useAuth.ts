@@ -1,9 +1,15 @@
-import { useState, useEffect, useCallback } from 'react'
+'use client'
+
+import { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSession, signIn, signOut } from 'next-auth/react'
 
 interface User {
   userId: string
-  role: string
+  id: string
+  email: string
+  name?: string
+  role: 'ADMIN' | 'USER'
 }
 
 export function useAuth() {
@@ -11,64 +17,99 @@ export function useAuth() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
+  const { data: session, status } = useSession()
 
-  // Memoized checkAuth function to avoid recreating on every render
   const checkAuth = useCallback(async () => {
+    if (status === 'loading') {
+      setLoading(true)
+      return
+    }
+
     try {
-      const res = await fetch('/api/auth/verify-token', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include'
-      })
-      const data = await res.json()
-      
-      if (res.ok && data.authenticated) {
-        setUser(data.user)
-        setError(null)
-      } else {
+      if (status === 'unauthenticated') {
         setUser(null)
-        setError(data.message || 'Authentication failed')
+        setLoading(false)
+        return
       }
-    } catch (error) {
-      console.error('Auth check failed:', error)
-      setError('Authentication check failed')
-      setUser(null)
+
+      if (session?.user) {
+        const userData = {
+          userId: session.user.id,
+          id: session.user.id,
+          email: session.user.email!,
+          name: session.user.name!,
+          role: session.user.role as 'ADMIN' | 'USER'
+        }
+        setUser(userData)
+
+        // Redirect based on role
+        const redirectUrl = userData.role === 'ADMIN'
+          ? '/protected/admin'
+          : `/protected/users/${userData.userId}`
+        router.push(redirectUrl)
+      }
+    } catch (err) {
+      console.error('Auth check failed:', err)
+      setError('Authentication failed')
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [status, session, router])
 
   useEffect(() => {
     checkAuth()
   }, [checkAuth])
 
   const login = async (email: string, password: string) => {
-    setLoading(true)
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include'
-      })
-      const data = await res.json()
+      setLoading(true)
+      setError(null)
 
-      if (res.ok && data.user) {
-        setUser(data.user)
-        setError(null)
-        router.push('/protected/dashboard')
-        return true
-      } else {
-        setError(data.message || 'Login failed')
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false
+      })
+
+      if (result?.error) {
+        setError(result.error)
         return false
       }
+
+      // Wait briefly for session to update
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      // Get fresh session data
+      const session = await fetch('/api/auth/session')
+      const data = await session.json()
+
+      if (!data?.user) {
+        setError('Failed to get user session')
+        return false
+      }
+
+      // Set user data
+      const userData = {
+        id: data.user.id,
+        userId: data.user.id,
+        email: data.user.email,
+        name: data.user.name,
+        role: data.user.role
+      }
+      setUser(userData)
+
+      // Force immediate redirect
+      const redirectUrl = userData.role === 'ADMIN'
+        ? '/protected/admin'
+        : `/protected/users/${userData.userId}`
+      
+      // Use window.location for hard redirect
+      window.location.href = redirectUrl
+
+      return true
     } catch (error) {
       console.error('Login failed:', error)
-      setError('Login request failed')
+      setError('Login failed')
       return false
     } finally {
       setLoading(false)
@@ -76,24 +117,11 @@ export function useAuth() {
   }
 
   const logout = async () => {
-    setLoading(true)
     try {
-      const res = await fetch('/api/auth/logout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include'
-      })
-      
-      if (res.ok) {
-        setUser(null)
-        setError(null)
-        router.push('/auth/login')
-      } else {
-        const data = await res.json()
-        setError(data.message || 'Logout failed')
-      }
+      setLoading(true)
+      await signOut({ redirect: false })
+      setUser(null)
+      router.replace('/login')
     } catch (error) {
       console.error('Logout failed:', error)
       setError('Logout request failed')
@@ -102,18 +130,12 @@ export function useAuth() {
     }
   }
 
-  const refreshAuth = async () => {
-    setLoading(true)
-    await checkAuth()
-  }
-
   return {
     user,
-    loading,
+    loading: status === 'loading' || loading,
     error,
     login,
     logout,
-    refreshAuth,
     isAuthenticated: !!user
   }
 }

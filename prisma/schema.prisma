@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
@@ -26,9 +26,25 @@ model User {
   tokenExpiry        DateTime?
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
+  auditLogs          AuditLog[]       @relation("UserAuditLogs")
   bookings           Booking[]
+  loginSessions      LoginSession[]
   reviews            Review[]
   serviceBookings    ServiceBooking[]
+}
+
+model LoginSession {
+  id         String   @id @default(uuid())
+  userId     String
+  token      String   @unique
+  deviceInfo String?
+  ipAddress  String?
+  lastActive DateTime @default(now())
+  expiresAt  DateTime
+  isValid    Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id])
 }
 
 model Booking {
@@ -47,21 +63,65 @@ model Booking {
 }
 
 model Car {
-  id           String      @id @default(uuid())
-  make         String
-  model        String
-  year         Int
-  color        String
-  licensePlate String      @unique
-  price        Float
-  isAvailable  Boolean     @default(true)
-  images       String[]
-  category     CarCategory
-  features     String[]
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  bookings     Booking[]
-  reviews      Review[]
+  id            String            @id @default(uuid())
+  make          String
+  model         String
+  year          Int
+  color         String
+  licensePlate  String            @unique
+  price         Float
+  isAvailable   Boolean           @default(true)
+  images        String[]
+  category      CarCategory
+  features      String[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  bookings      Booking[]
+  availability  CarAvailability[]
+  damageReports DamageReport[]
+  reviews       Review[]
+  locations     Location[]        @relation("CarToLocation")
+}
+
+model CarAvailability {
+  id          String   @id @default(uuid())
+  carId       String
+  date        DateTime
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  car         Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+
+  @@unique([carId, date])
+}
+
+model Location {
+  id           String   @id @default(uuid())
+  name         String
+  address      String
+  city         String
+  state        String
+  zipCode      String
+  phoneNumber  String
+  email        String
+  openingHours String
+  isActive     Boolean  @default(true)
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  staff        Staff[]  @relation("StaffToLocation")
+  cars         Car[]    @relation("CarToLocation")
+}
+
+model Staff {
+  id         String    @id @default(uuid())
+  name       String
+  email      String    @unique
+  role       StaffRole
+  locationId String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  location   Location  @relation("StaffToLocation", fields: [locationId], references: [id])
 }
 
 model Review {
@@ -108,9 +168,110 @@ model ServiceBooking {
   user          User                 @relation(fields: [userId], references: [id])
 }
 
+model AuditLog {
+  action      String
+  changes     Json
+  created_at  DateTime @default(now())
+  entity_id   String
+  entity_type String
+  ip_address  String?
+  user_agent  String?
+  user_id     String
+  id          Int      @id @default(autoincrement())
+  user        User     @relation("UserAuditLogs", fields: [user_id], references: [id])
+}
+
+model DamageReport {
+  id                 Int             @id @default(autoincrement())
+  carId              String
+  rentalId           Int
+  dateOfIncident     DateTime
+  locationOfIncident String
+  driverStatement    String
+  damageDescription  String
+  weatherConditions  String
+  policeReportFiled  Boolean
+  policeReportNumber String?
+  car                Car             @relation(fields: [carId], references: [id])
+  insuranceClaim     InsuranceClaim?
+  photos             Photo[]
+}
+
+model InsuranceClaim {
+  id                Int          @id @default(autoincrement())
+  damageReportId    Int          @unique
+  claimNumber       String       @unique
+  status            String
+  estimatedDamage   Float
+  deductibleAmount  Float
+  insuranceProvider String
+  adjusterName      String?
+  adjusterContact   String?
+  damageReport      DamageReport @relation(fields: [damageReportId], references: [id])
+}
+
+model Photo {
+  id             Int          @id @default(autoincrement())
+  damageReportId Int
+  url            String
+  caption        String?
+  dateUploaded   DateTime     @default(now())
+  damageReport   DamageReport @relation(fields: [damageReportId], references: [id])
+}
+
+model Integration {
+  id         String               @id @default(uuid())
+  name       String
+  providerId String
+  enabled    Boolean              @default(true)
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+  provider   IntegrationProvider  @relation(fields: [providerId], references: [id])
+  settings   IntegrationSettings?
+  lastSync   IntegrationSync?
+}
+
+model IntegrationProvider {
+  id           String        @id @default(uuid())
+  name         String        @unique
+  description  String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  integrations Integration[]
+}
+
+model IntegrationSettings {
+  id            String      @id @default(uuid())
+  integrationId String      @unique
+  apiKey        String?
+  webhookUrl    String?
+  customConfig  Json?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  integration   Integration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+}
+
+model IntegrationSync {
+  id            String      @id @default(uuid())
+  integrationId String      @unique
+  timestamp     DateTime    @default(now())
+  status        String
+  details       String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  integration   Integration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+}
+
 enum Role {
   USER
   ADMIN
+}
+
+enum StaffRole {
+  MANAGER
+  AGENT
+  MECHANIC
+  CLEANER
 }
 
 enum BookingStatus {
